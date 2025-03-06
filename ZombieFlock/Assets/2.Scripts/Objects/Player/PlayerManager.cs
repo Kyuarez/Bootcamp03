@@ -1,5 +1,6 @@
 using System.Collections.Generic;
-using UnityEngine; 
+using UnityEngine;
+using TKCamera;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -49,6 +50,18 @@ public class PlayerManager : MonoBehaviour
     
     private void Update()
     {
+        #region Test
+        if (Input.GetKeyDown(KeyCode.Q) == true)
+        {
+            CameraShake shake = mainCam.GetComponent<CameraShake>();
+            if (shake != null) 
+            {
+                shake.ExplosiveCameraShake();
+            }
+        }
+
+        #endregion
+
         //Mouse Rotation
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
