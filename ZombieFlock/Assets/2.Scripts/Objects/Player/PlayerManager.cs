@@ -6,21 +6,21 @@ using TKCamera;
 public class PlayerManager : MonoBehaviour
 {
     public float walkSpeed = 5.0f;
-    public float runSpeed = 18.0f;
+    public float runSpeed = 12.0f;
     public float mouseSensitivity = 100.0f; //마우스 감도
     private float moveSpeed;
-    
+
     public Transform camTransform;
     public Transform playerHead; //플레이어 머리 위치(1인칭 cam)
     public Transform WeaponTransform;
     public float thirdPersonDistance = 3.0f; //플레이어 - cam 거리
     public float immersionDistance = 1.0f; //3인칭 몰입형 거리
-    public Vector3 thirdPersonOffset = new Vector3(0f, 1.5f, 0f); 
+    public Vector3 thirdPersonOffset = new Vector3(0f, 1.5f, 0f);
     public Transform playerLookObj; //플레이어 시야 위치 (배그 숄더숏)
 
     //Sight
     public float zoomDistance = 1.0f; //3인칭
-    public float zoomImmersionDistance = 0.75f; 
+    public float zoomImmersionDistance = 0.75f;
     public float zoomSpeed = 5.0f;
     public float defaultFov = 60.0f;
     public float zoomFov = 30.0f; //확대 시 카메라 시야각 (1인칭)
@@ -28,7 +28,6 @@ public class PlayerManager : MonoBehaviour
     private float currentDistance; //현재 카메라와의 거리 (3인칭)
     private float targetDistance; //목표 카메라 거리
     private float targetFov;
-    private bool isZoomed = false;
     private Coroutine zoomCoroutine; //코루틴 사용하여 확대 축소 처리
     private Camera mainCam;
 
@@ -40,7 +39,7 @@ public class PlayerManager : MonoBehaviour
 
     //Gravity
     private CharacterController characterController;
-    public float gravity = -9.81f; 
+    public float gravity = -9.81f;
     public float jump = 2.0f;
     private Vector3 velocity;
     private bool isGround;
@@ -50,6 +49,19 @@ public class PlayerManager : MonoBehaviour
     private float horizontal;
     private float vertical;
     private bool isRunning = false;
+    private bool isAim = false;
+
+    private BucketManager bucket;
+
+    //@tk : temp
+    //sound
+    public AudioClip audioClipFire;
+    public AudioClip audioClipWeaponChange;
+    public AudioSource audioSource;
+
+    public bool IsFirstPerson {  get { return isFirstPerson; } }
+    public bool IsImersion {  get { return isImmersion; } }
+
 
     private void Start()
     {
@@ -62,16 +74,19 @@ public class PlayerManager : MonoBehaviour
 
         characterController = GetComponent<CharacterController>();
         anim = GetComponent<Animator>();
+        bucket = GetComponent<BucketManager>();
+
         moveSpeed = walkSpeed;
+        bucket.InitBucket();
     }
-    
+
     private void Update()
     {
         #region Test
         if (Input.GetKeyDown(KeyCode.Q) == true)
         {
             CameraShake shake = mainCam.GetComponent<CameraShake>();
-            if (shake != null) 
+            if (shake != null)
             {
                 shake.ExplosiveCameraShake();
             }
@@ -93,16 +108,20 @@ public class PlayerManager : MonoBehaviour
             velocity.y = -2.0f;
         }
 
+        EquippedWeapon();
 
         UpdateSight();
         Zoom();
 
         SetMoveState();
         SetAnimation();
+
+        OnShot();
     }
 
     private void UpdateSight()
     {
+
         //1인칭, 3인칭 결정
         if (Input.GetKeyDown(KeyCode.V) == true)
         {
@@ -114,7 +133,7 @@ public class PlayerManager : MonoBehaviour
             isRotaterAroundPlayer = !isRotaterAroundPlayer;
         }
         //몰입형 모드인지 여부
-        if(Input.GetKeyDown(KeyCode.M) == true)
+        if (Input.GetKeyDown(KeyCode.M) == true)
         {
             isImmersion = !isImmersion;
             targetDistance = (isImmersion == false) ? thirdPersonDistance : immersionDistance;
@@ -136,6 +155,8 @@ public class PlayerManager : MonoBehaviour
         //Zoom part
         if (Input.GetMouseButtonDown(1) == true)
         {
+            isAim = true;
+
             //Coroutine 관리 위해서, 변수화(메소드 명 직접 받으면 이렇게 관리)
             if (zoomCoroutine != null)
             {
@@ -157,6 +178,8 @@ public class PlayerManager : MonoBehaviour
 
         if (Input.GetMouseButtonUp(1) == true)
         {
+            isAim = false;
+
             if (zoomCoroutine != null)
             {
                 StopCoroutine(zoomCoroutine);
@@ -182,6 +205,7 @@ public class PlayerManager : MonoBehaviour
         anim.SetFloat("Horizontal", horizontal);
         anim.SetFloat("Vertical", vertical);
         anim.SetBool("IsRunning", isRunning);
+        anim.SetBool("IsAim", isAim);
     }
 
     private void SetMoveState()
@@ -200,14 +224,16 @@ public class PlayerManager : MonoBehaviour
 
     private void FirstPersonMovement()
     {
-        horizontal = Input.GetAxis("Horizontal");
-        vertical = Input.GetAxis("Vertical");
+        if (isAim == false)
+        {
+            horizontal = Input.GetAxis("Horizontal");
+            vertical = Input.GetAxis("Vertical");
 
-        //@tk : camTransform = playerHead
-        Vector3 direction = camTransform.right * horizontal + camTransform.forward * vertical;
-        direction.y = 0; //1인칭 위 아래 움직이면 절대 안 됨.(눈 아파.)
-        characterController.Move(direction * moveSpeed * Time.deltaTime);
-
+            //@tk : camTransform = playerHead
+            Vector3 direction = camTransform.right * horizontal + camTransform.forward * vertical;
+            direction.y = 0; //1인칭 위 아래 움직이면 절대 안 됨.(눈 아파.)
+            characterController.Move(direction * moveSpeed * Time.deltaTime);
+        }
         //cam 위치, 1인칭 처리
         camTransform.position = playerHead.transform.position;
         camTransform.rotation = Quaternion.Euler(pitch, yaw, 0); //시야 움직임
@@ -215,12 +241,15 @@ public class PlayerManager : MonoBehaviour
     }
     private void ThirdPersonMovement()
     {
-        horizontal = Input.GetAxis("Horizontal");
-        vertical = Input.GetAxis("Vertical");
+        if (isAim == false)
+        {
+            horizontal = Input.GetAxis("Horizontal");
+            vertical = Input.GetAxis("Vertical");
 
-        Vector3 direction = transform.right * horizontal + transform.forward * vertical;
-        characterController.Move(direction * moveSpeed * Time.deltaTime);
-        
+            Vector3 direction = transform.right * horizontal + transform.forward * vertical;
+            characterController.Move(direction * moveSpeed * Time.deltaTime);
+        }
+
         UpdateCameraPosition();
     }
 
@@ -253,6 +282,44 @@ public class PlayerManager : MonoBehaviour
             camTransform.LookAt(playerLookObj.position + new Vector3(0, thirdPersonOffset.y, 0));
         }
     }
+
+    private void OnShot()
+    {
+        if(isAim == false)
+        {
+            return;
+        }
+
+        if(Input.GetMouseButtonDown(0) == true)
+        {
+            
+            if(bucket.CurrentWeapon == null)
+            {
+                return;
+            }
+
+            bucket.CurrentWeapon.transform.localPosition = Define.RifleAim_Pos;
+            bucket.CurrentWeapon.transform.localRotation = Quaternion.Euler(Define.RifleAim_Rotate);
+            anim.SetTrigger("IsShot");
+            audioSource.PlayOneShot(audioClipFire);
+        }
+    }
+
+    private void EquippedWeapon()
+    {
+        if(bucket.WeaponQueue == null)
+        {
+            return;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha1) == true)
+        {
+            bucket.EquippedWeapon();
+            audioSource.PlayOneShot(audioClipWeaponChange);
+            anim.SetTrigger("IsWeaponChange");
+        }
+    }
+
 
     #region Coroutine
     /// <summary>
