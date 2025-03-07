@@ -61,6 +61,24 @@ public class PlayerManager : MonoBehaviour
 
     public bool IsFirstPerson {  get { return isFirstPerson; } }
     public bool IsImersion {  get { return isImmersion; } }
+    public bool IsAim
+    {
+        get { return isAim; }
+        private set
+        {
+            if (value == true)
+            {
+                bucket.CurrentWeapon.transform.localPosition = Define.RifleAim_Pos;
+                bucket.CurrentWeapon.transform.localRotation = Quaternion.Euler(Define.RifleAim_Rotate);
+            }
+            else
+            {
+                bucket.CurrentWeapon.transform.localPosition = Define.Rifle_Pos;
+                bucket.CurrentWeapon.transform.localRotation = Quaternion.Euler(Define.Rifle_Rotate);
+            }
+            isAim = value;
+        }
+    }
 
 
     private void Start()
@@ -155,7 +173,7 @@ public class PlayerManager : MonoBehaviour
         //Zoom part
         if (Input.GetMouseButtonDown(1) == true)
         {
-            isAim = true;
+            IsAim = true;
 
             //Coroutine 관리 위해서, 변수화(메소드 명 직접 받으면 이렇게 관리)
             if (zoomCoroutine != null)
@@ -178,7 +196,7 @@ public class PlayerManager : MonoBehaviour
 
         if (Input.GetMouseButtonUp(1) == true)
         {
-            isAim = false;
+            IsAim = false;
 
             if (zoomCoroutine != null)
             {
@@ -298,8 +316,6 @@ public class PlayerManager : MonoBehaviour
                 return;
             }
 
-            bucket.CurrentWeapon.transform.localPosition = Define.RifleAim_Pos;
-            bucket.CurrentWeapon.transform.localRotation = Quaternion.Euler(Define.RifleAim_Rotate);
             anim.SetTrigger("IsShot");
             audioSource.PlayOneShot(audioClipFire);
         }
