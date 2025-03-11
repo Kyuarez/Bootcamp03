@@ -87,6 +87,7 @@ public class PlayerManager : MonoBehaviour
         currentDistance = thirdPersonDistance;
         targetDistance = thirdPersonDistance;
         targetFov = defaultFov;
+        camTransform = Camera.main.transform;
         mainCam = camTransform.GetComponent<Camera>();
         mainCam.fieldOfView = defaultFov;
 
