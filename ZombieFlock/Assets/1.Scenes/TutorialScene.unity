@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 141345487}
   - component: {fileID: 141345486}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: UICanvas(Overlay)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -374,6 +374,51 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ex_Duration: 0.5
   ex_Magnitude: 0.025
+--- !u!1 &404370914
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 404370915}
+  - component: {fileID: 404370916}
+  m_Layer: 0
+  m_Name: TKPoolManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &404370915
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 404370914}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &404370916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 404370914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18356b1748e9564488a36daca6e01874, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poolMaxCount: 20
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -3095,7 +3140,6 @@ MonoBehaviour:
   camTransform: {fileID: 330585546}
   playerHead: {fileID: 963956596162380407}
   WeaponTransform: {fileID: 1192355297}
-  Bucket: {fileID: 1333870075}
   thirdPersonDistance: 3
   immersionDistance: 1
   thirdPersonOffset: {x: 0, y: 1.5, z: 0}
@@ -5479,3 +5523,4 @@ SceneRoots:
   - {fileID: 1517785858617898045}
   - {fileID: 141345489}
   - {fileID: 798250537}
+  - {fileID: 404370915}

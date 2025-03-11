@@ -5,6 +5,8 @@ public class Operator : MonoSingleton<Operator>
     [SerializeField] private bool isDevMode;
 
     private PlayerManager ingamePlayer;
+    private PoolManager poolManager;
+
     public bool IsDevMode
     {
         get
@@ -25,4 +27,14 @@ public class Operator : MonoSingleton<Operator>
             return ingamePlayer; 
         }
     }
+
+    protected override void Awake()
+    {
+        //Bind
+        poolManager = Object.FindAnyObjectByType<PoolManager>();
+
+        //Init
+        poolManager.Init();
+    }
+
 }

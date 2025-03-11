@@ -98,6 +98,9 @@ public class PlayerManager : MonoBehaviour
         bucket.InitBucket();
     }
 
+    #region TestPool
+    private Queue<GameObject> objQueue = new Queue<GameObject>();
+    #endregion
     private void Update()
     {
         #region Test
@@ -135,6 +138,26 @@ public class PlayerManager : MonoBehaviour
         SetAnimation();
 
         OnShot();
+
+        #region Test_Pool
+        if (Input.GetKeyDown(KeyCode.F1) == true)
+        {
+            objQueue.Enqueue(PoolManager.Instance.SpawnObject<TKZombie>());
+        }
+        if(Input.GetKeyDown(KeyCode.F2) == true)
+        {
+            if(objQueue.Count <= 0)
+            {
+                return;
+            }
+
+            GameObject obj = objQueue.Dequeue();
+            if (obj != null) 
+            {
+                PoolManager.Instance.DeSpawnObject(obj.GetComponent<IPoolable>());
+            }
+        }
+        #endregion
     }
 
     private void UpdateSight()
