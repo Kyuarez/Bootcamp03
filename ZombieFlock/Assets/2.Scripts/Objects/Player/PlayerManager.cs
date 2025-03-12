@@ -66,7 +66,7 @@ public class PlayerManager : MonoBehaviour
     public AudioSource audioSource;
     //Gun : 나중엔 총 클래스에서 가져오기 (bucket)
     private float gunMaxRange = 1000.0f;
-    private LayerMask hitMask;
+    private int bulletDamage = 10;
 
     public bool IsFirstPerson {  get { return isFirstPerson; } }
     public bool IsImersion {  get { return isImmersion; } }
@@ -104,7 +104,6 @@ public class PlayerManager : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         anim = GetComponent<Animator>();
         bucket = GetComponent<BucketManager>();
-        hitMask = LayerMask.NameToLayer("Enemy");
 
         moveSpeed = walkSpeed;
         bucket.InitBucket();
@@ -390,16 +389,18 @@ public class PlayerManager : MonoBehaviour
 
             Ray ray = new Ray(mainCam.transform.position, mainCam.transform.forward);
             RaycastHit hit;
-            if(Physics.Raycast(ray, out hit, gunMaxRange, hitMask))
+            if(Physics.Raycast(ray, out hit, gunMaxRange))
             {
-                Debug.LogFormat($"{hit.collider.gameObject.name}이 맞았어욧!");
-                IPoolable poolable = hit.collider.gameObject.GetComponent<IPoolable>();
-                if(poolable != null)
+                if(hit.collider.gameObject.tag.CompareTo("Enemy") == 0)
                 {
-                    PoolManager.Instance.DeSpawnObject(poolable);
-                }
+                    TKZombie zombie = hit.collider.gameObject.GetComponent<TKZombie>();
+                    if(zombie != null)
+                    {
+                        zombie.Damage(bulletDamage);
+                    }
 
-                Debug.DrawLine(ray.origin, hit.point, Color.red);
+                    Debug.DrawLine(ray.origin, hit.point, Color.red);
+                }
             }
             else
             {
