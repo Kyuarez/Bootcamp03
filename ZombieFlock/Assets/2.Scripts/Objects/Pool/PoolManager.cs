@@ -9,6 +9,11 @@ public class PoolManager : MonoSingleton<PoolManager>
 
     private Dictionary<string, IPool> poolDict = new Dictionary<string, IPool>();
 
+    protected override void Awake()
+    {
+        Init();
+    }
+
     public void Init()
     {
         //Resources에서 IPoolable인거 가져오기
@@ -58,11 +63,22 @@ public class PoolManager : MonoSingleton<PoolManager>
         var pool = poolDict[typeof(T).Name];
         return pool.SpawnObject(Root);
     }
+    public GameObject SpawnObject<T>(Transform Root, Vector3 localPosition) where T : MonoBehaviour
+    {
+        if (poolDict.ContainsKey(typeof(T).Name) == false)
+        {
+            return null;
+        }
+
+        var pool = poolDict[typeof(T).Name];
+        return pool.SpawnObject(Root, localPosition);
+    }
 
     public void DeSpawnObject(IPoolable poolObj)
     {
         if(poolDict.ContainsKey(poolObj.PoolPath) == false)
         {
+            Destroy(poolObj.Prefab);
             return;
         }
 

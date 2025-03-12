@@ -22,4 +22,12 @@ public class TKZombie : MonoBehaviour, IPoolable
     {
         PoolManager.Instance.DeSpawnObject(this);
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag.CompareTo("Player") == 0)
+        {
+            Debug.Log("OnCollision");
+        }
+    }
 }

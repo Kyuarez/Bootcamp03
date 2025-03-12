@@ -10,5 +10,6 @@ public interface IPool
 
     public void InitPool(GameObject prefab, Transform objParent, int maxCount);
     public GameObject SpawnObject(Transform parent);
+    public GameObject SpawnObject(Transform parent, Vector3 localPosition);
     public void DeSpawnObject(GameObject prefab);
 }

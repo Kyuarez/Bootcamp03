@@ -34,7 +34,7 @@ public class Operator : MonoSingleton<Operator>
         poolManager = Object.FindAnyObjectByType<PoolManager>();
 
         //Init
-        poolManager.Init();
+        //poolManager.Init();
     }
 
 }

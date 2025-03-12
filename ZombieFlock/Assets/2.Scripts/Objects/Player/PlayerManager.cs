@@ -17,10 +17,11 @@ public class PlayerManager : MonoBehaviour
     public float immersionDistance = 1.0f; //3인칭 몰입형 거리
     public Vector3 thirdPersonOffset = new Vector3(0f, 1.5f, 0f);
     public Transform playerLookObj; //플레이어 시야 위치 (배그 숄더숏)
+    public Transform playerImmersionLookObj; //플레이어 시야 위치 : 다리 자르기
 
     //Sight
     public float zoomDistance = 1.0f; //3인칭
-    public float zoomImmersionDistance = 0.75f;
+    public float zoomImmersionDistance = 0.5f;
     public float zoomSpeed = 5.0f;
     public float defaultFov = 60.0f;
     public float zoomFov = 30.0f; //확대 시 카메라 시야각 (1인칭)
@@ -50,6 +51,11 @@ public class PlayerManager : MonoBehaviour
     private float vertical;
     private bool isRunning = false;
     private bool isAim = false;
+    private bool isPickup = false;
+
+    //Rig
+    public Transform aimTarget;
+
 
     private BucketManager bucket;
 
@@ -58,6 +64,9 @@ public class PlayerManager : MonoBehaviour
     public AudioClip audioClipFire;
     public AudioClip audioClipWeaponChange;
     public AudioSource audioSource;
+    //Gun : 나중엔 총 클래스에서 가져오기 (bucket)
+    private float gunMaxRange = 1000.0f;
+    private LayerMask hitMask;
 
     public bool IsFirstPerson {  get { return isFirstPerson; } }
     public bool IsImersion {  get { return isImmersion; } }
@@ -84,6 +93,7 @@ public class PlayerManager : MonoBehaviour
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        
         currentDistance = thirdPersonDistance;
         targetDistance = thirdPersonDistance;
         targetFov = defaultFov;
@@ -94,6 +104,7 @@ public class PlayerManager : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         anim = GetComponent<Animator>();
         bucket = GetComponent<BucketManager>();
+        hitMask = LayerMask.NameToLayer("Enemy");
 
         moveSpeed = walkSpeed;
         bucket.InitBucket();
@@ -102,33 +113,16 @@ public class PlayerManager : MonoBehaviour
     #region TestPool
     private Queue<GameObject> objQueue = new Queue<GameObject>();
     #endregion
+
     private void Update()
     {
         #region Test
-        if (Input.GetKeyDown(KeyCode.Q) == true)
-        {
-            CameraShake shake = mainCam.GetComponent<CameraShake>();
-            if (shake != null)
-            {
-                shake.ExplosiveCameraShake();
-            }
-        }
-
+        CameraShake();
+        TestPool();
         #endregion
 
-        //Mouse Rotation
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
-
-        yaw += mouseX;
-        pitch += mouseY;
-        pitch = Mathf.Clamp(pitch, -45, 45);
-
-        isGround = characterController.isGrounded;
-        if (isGround == true && velocity.y < 0)
-        {
-            velocity.y = -2.0f;
-        }
+        UpdateMouseSet();
+        CheckIsGrounded();
 
         EquippedWeapon();
 
@@ -140,25 +134,54 @@ public class PlayerManager : MonoBehaviour
 
         OnShot();
 
-        #region Test_Pool
-        if (Input.GetKeyDown(KeyCode.F1) == true)
+        if (Input.GetKeyDown(KeyCode.E) == true)
         {
-            objQueue.Enqueue(PoolManager.Instance.SpawnObject<TKZombie>());
-        }
-        if(Input.GetKeyDown(KeyCode.F2) == true)
-        {
-            if(objQueue.Count <= 0)
+            if(isPickup == true)
             {
                 return;
             }
 
-            GameObject obj = objQueue.Dequeue();
-            if (obj != null) 
+            //TODO : 아이템 체킹해서 예외 처리
+            bucket.OnHideWeapon();
+            anim.SetTrigger("IsPickup");
+            isPickup = true;
+        }
+
+        if(isPickup == true)
+        {
+            AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
+            if(stateInfo.IsName("Picking Up") == true && stateInfo.normalizedTime >= 1.0f)
             {
-                PoolManager.Instance.DeSpawnObject(obj.GetComponent<IPoolable>());
+                bucket.OnShowWeapon();
+                isPickup = false;
             }
         }
-        #endregion
+    }
+
+    private void UpdateAimTarget()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        aimTarget.position = ray.GetPoint(10.0f);
+         
+    }
+    private void UpdateMouseSet()
+    {
+        //Mouse Rotation
+        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
+        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+
+        yaw += mouseX;
+        pitch += mouseY;
+        pitch = Mathf.Clamp(pitch, -45, 45);
+    }
+
+    private void CheckIsGrounded()
+    {
+        isGround = characterController.isGrounded;
+        if (isGround == true && velocity.y < 0)
+        {
+            velocity.y = -2.0f;
+        }
     }
 
     private void UpdateSight()
@@ -197,7 +220,13 @@ public class PlayerManager : MonoBehaviour
         //Zoom part
         if (Input.GetMouseButtonDown(1) == true)
         {
+            if (bucket.CurrentWeapon == null)
+            {
+                return;
+            }
+
             IsAim = true;
+            anim.SetLayerWeight(1, 1); //@tk : 레이어 1번 무게 1로 변경
 
             //Coroutine 관리 위해서, 변수화(메소드 명 직접 받으면 이렇게 관리)
             if (zoomCoroutine != null)
@@ -220,7 +249,13 @@ public class PlayerManager : MonoBehaviour
 
         if (Input.GetMouseButtonUp(1) == true)
         {
+            if (bucket.CurrentWeapon == null)
+            {
+                return;
+            }
+
             IsAim = false;
+            anim.SetLayerWeight(1, 0); 
 
             if (zoomCoroutine != null)
             {
@@ -247,7 +282,7 @@ public class PlayerManager : MonoBehaviour
         anim.SetFloat("Horizontal", horizontal);
         anim.SetFloat("Vertical", vertical);
         anim.SetBool("IsRunning", isRunning);
-        anim.SetBool("IsAim", isAim);
+        //anim.SetBool("IsAim", isAim);
     }
 
     private void SetMoveState()
@@ -266,7 +301,7 @@ public class PlayerManager : MonoBehaviour
 
     private void FirstPersonMovement()
     {
-        if (isAim == false)
+        if(isPickup == false)
         {
             horizontal = Input.GetAxis("Horizontal");
             vertical = Input.GetAxis("Vertical");
@@ -275,7 +310,8 @@ public class PlayerManager : MonoBehaviour
             Vector3 direction = camTransform.right * horizontal + camTransform.forward * vertical;
             direction.y = 0; //1인칭 위 아래 움직이면 절대 안 됨.(눈 아파.)
             characterController.Move(direction * moveSpeed * Time.deltaTime);
-        }
+        }       
+
         //cam 위치, 1인칭 처리
         camTransform.position = playerHead.transform.position;
         camTransform.rotation = Quaternion.Euler(pitch, yaw, 0); //시야 움직임
@@ -283,7 +319,7 @@ public class PlayerManager : MonoBehaviour
     }
     private void ThirdPersonMovement()
     {
-        if (isAim == false)
+        if (isPickup == false)
         {
             horizontal = Input.GetAxis("Horizontal");
             vertical = Input.GetAxis("Vertical");
@@ -291,6 +327,7 @@ public class PlayerManager : MonoBehaviour
             Vector3 direction = transform.right * horizontal + transform.forward * vertical;
             characterController.Move(direction * moveSpeed * Time.deltaTime);
         }
+
 
         UpdateCameraPosition();
     }
@@ -320,8 +357,11 @@ public class PlayerManager : MonoBehaviour
             transform.rotation = Quaternion.Euler(0, yaw, 0);
             Vector3 direction = new Vector3(0, 0, -currentDistance);
             Quaternion rotation = Quaternion.Euler(pitch, yaw, 0);
-            camTransform.position = playerLookObj.position + thirdPersonOffset + rotation * direction;
-            camTransform.LookAt(playerLookObj.position + new Vector3(0, thirdPersonOffset.y, 0));
+
+            Vector3 destPos = (IsImersion == true) ? playerImmersionLookObj.position : playerLookObj.position;
+            camTransform.position = destPos + thirdPersonOffset + rotation * direction;
+            camTransform.LookAt(destPos + new Vector3(0, thirdPersonOffset.y, 0));
+            UpdateAimTarget();
         }
     }
 
@@ -340,8 +380,31 @@ public class PlayerManager : MonoBehaviour
                 return;
             }
 
+            //AnimatorStateInfo animInfo = anim.GetCurrentAnimatorStateInfo(1); //Upper
+            //if(animInfo.IsName("Fire Gun") == false && animInfo.normalizedTime < 0.5f)
+            //{
+            //    return;
+            //}
+
             anim.SetTrigger("IsShot");
-            audioSource.PlayOneShot(audioClipFire);
+
+            Ray ray = new Ray(mainCam.transform.position, mainCam.transform.forward);
+            RaycastHit hit;
+            if(Physics.Raycast(ray, out hit, gunMaxRange, hitMask))
+            {
+                Debug.LogFormat($"{hit.collider.gameObject.name}이 맞았어욧!");
+                IPoolable poolable = hit.collider.gameObject.GetComponent<IPoolable>();
+                if(poolable != null)
+                {
+                    PoolManager.Instance.DeSpawnObject(poolable);
+                }
+
+                Debug.DrawLine(ray.origin, hit.point, Color.red);
+            }
+            else
+            {
+                Debug.DrawLine(ray.origin, ray.origin + ray.direction, Color.green);
+            }
         }
     }
 
@@ -352,14 +415,33 @@ public class PlayerManager : MonoBehaviour
             return;
         }
 
+        if(IsAim == true)
+        {
+            return;
+        }
+
         if (Input.GetKeyDown(KeyCode.Alpha1) == true)
         {
             bucket.EquippedWeapon();
-            audioSource.PlayOneShot(audioClipWeaponChange);
             anim.SetTrigger("IsWeaponChange");
         }
     }
 
+    #region On Animation Event
+    public void OnAnimEventFootSound()
+    {
+        //audioSource.PlayOneShot(audioClipFire);
+    }
+    public void OnAnimEventWeaponChangeSound()
+    {
+        audioSource.PlayOneShot(audioClipWeaponChange);
+    }
+
+    public void OnAnimEventOneShotSound()
+    {
+        audioSource.PlayOneShot(audioClipFire);
+    }
+    #endregion
 
     #region Coroutine
     /// <summary>
@@ -387,5 +469,49 @@ public class PlayerManager : MonoBehaviour
         }
         mainCam.fieldOfView = targetFov;
     }
+    #endregion
+
+    #region Test
+    private void TestPool()
+    {
+        if (Input.GetKeyDown(KeyCode.F1) == true)
+        {
+            objQueue.Enqueue(PoolManager.Instance.SpawnObject<TKZombie>());
+        }
+        if (Input.GetKeyDown(KeyCode.F2) == true)
+        {
+            if (objQueue.Count <= 0)
+            {
+                return;
+            }
+
+            GameObject obj = objQueue.Dequeue();
+            if (obj != null)
+            {
+                PoolManager.Instance.DeSpawnObject(obj.GetComponent<IPoolable>());
+            }
+        }
+    }
+
+    private void CameraShake()
+    {
+        if (Input.GetKeyDown(KeyCode.Q) == true)
+        {
+            CameraShake shake = mainCam.GetComponent<CameraShake>();
+            if (shake != null)
+            {
+                shake.ExplosiveCameraShake();
+            }
+        }
+    }
+    public void TestCameraShake()
+    {
+        CameraShake shake = mainCam.GetComponent<CameraShake>();
+        if (shake != null)
+        {
+            shake.ExplosiveCameraShake();
+        }
+    }
+
     #endregion
 }

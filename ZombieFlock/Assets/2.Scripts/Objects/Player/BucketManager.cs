@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Net.Sockets;
 using UnityEngine;
 
 public class BucketManager : MonoBehaviour
@@ -18,6 +19,11 @@ public class BucketManager : MonoBehaviour
     {
         get
         {
+            if(equippedTransfrom.childCount == 0)
+            {
+                return null;
+            }
+
             GameObject weapon = equippedTransfrom.GetChild(0).gameObject;
             return weapon;
         }
@@ -64,5 +70,24 @@ public class BucketManager : MonoBehaviour
         weapon.transform.localRotation = Quaternion.Euler(Define.Rifle_Rotate);
         weapon.transform.localScale = Vector3.one;
         weapon.SetActive(true);
+    }
+
+    public void OnHideWeapon()
+    {
+        if(CurrentWeapon == null)
+        {
+            return;
+        }
+
+        CurrentWeapon.SetActive(false);
+    }
+    public void OnShowWeapon()
+    {
+        if (CurrentWeapon == null)
+        {
+            return;
+        }
+
+        CurrentWeapon.SetActive(true);
     }
 }
