@@ -11,7 +11,11 @@ public static class Define
 }
 
 #region Enum
-
+public enum GunType
+{
+    Rifle,
+    Sniper,
+}
 
 
 #endregion

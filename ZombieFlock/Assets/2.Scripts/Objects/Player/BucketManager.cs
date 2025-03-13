@@ -34,13 +34,13 @@ public class BucketManager : MonoBehaviour
     {
         weaponQueue = new Queue<GameObject>();
 
-        GameObject[] weapons = Resources.LoadAll<GameObject>(Define.RES_WEAPONS);
-        foreach (GameObject weapon in weapons) 
-        {
-            GameObject obj = Instantiate(weapon, bucketTransform);
-            weaponQueue.Enqueue(obj);
-            obj.SetActive(false);
-        }
+        //GameObject[] weapons = Resources.LoadAll<GameObject>(Define.RES_WEAPONS);
+        //foreach (GameObject weapon in weapons) 
+        //{
+        //    GameObject obj = Instantiate(weapon, bucketTransform);
+        //    weaponQueue.Enqueue(obj);
+        //    obj.SetActive(false);
+        //}
     }
     
     public void EquippedWeapon()
@@ -70,6 +70,14 @@ public class BucketManager : MonoBehaviour
         weapon.transform.localRotation = Quaternion.Euler(Define.Rifle_Rotate);
         weapon.transform.localScale = Vector3.one;
         weapon.SetActive(true);
+    }
+
+    public void OnRegisterGun(GunData gun)
+    {
+        GameObject weapon = Resources.Load<GameObject>(Define.RES_WEAPONS + "/" + gun.Name);
+        GameObject obj = Instantiate(weapon, bucketTransform);
+        weaponQueue.Enqueue(obj);
+        obj.SetActive(false);
     }
 
     public void OnHideWeapon()

@@ -147,7 +147,7 @@ public class PlayerManager : MonoBehaviour
         PostPickupItem();
     }
 
-    private GameObject adjacentItme;
+    private GameObject adjacentItem;
     private void PickupItem()
     {
         if (Input.GetKeyDown(KeyCode.E) == true)
@@ -162,9 +162,14 @@ public class PlayerManager : MonoBehaviour
             Vector3 direction = itemGetPos.forward;
             RaycastHit[] hits;
             hits = Physics.BoxCastAll(origin, pickupBoxSize / 2, direction, Quaternion.identity, castDistance, pickupMask);
+            if(hits.Length <= 0)
+            {
+                return;
+            }
+
             foreach (RaycastHit hit in hits) 
             {
-                adjacentItme = hit.collider.gameObject;
+                adjacentItem = hit.collider.gameObject;
             }
 
             bucket.OnHideWeapon();
@@ -180,13 +185,20 @@ public class PlayerManager : MonoBehaviour
             AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
             if (stateInfo.IsName("Picking Up") == true && stateInfo.normalizedTime > 0.2f && stateInfo.normalizedTime < 0.3f)
             {
-                if (adjacentItme != null)
+                if (adjacentItem == null)
                 {
-                    adjacentItme.SetActive(false);
+                    return;
                 }
+
+                adjacentItem.SetActive(false);
+                if (adjacentItem.GetComponent<GunData>() != null)
+                {
+                    bucket.OnRegisterGun(adjacentItem.GetComponent<GunData>());
+                }
+                adjacentItem = null;
             }
 
-            if (stateInfo.IsName("Picking Up") == true && stateInfo.normalizedTime >= 1.0f)
+            if (stateInfo.IsName("Picking Up") == true && stateInfo.normalizedTime >= 0.9f)
             {
                 bucket.OnShowWeapon();
                 isPickup = false;
@@ -466,12 +478,12 @@ public class PlayerManager : MonoBehaviour
 
     private void EquippedWeapon()
     {
-        if(bucket.WeaponQueue == null)
+        if(bucket.WeaponQueue == null || bucket.WeaponQueue.Count == 0)
         {
             return;
         }
 
-        if(IsAim == true)
+        if (IsAim == true || isPickup == true)
         {
             return;
         }
