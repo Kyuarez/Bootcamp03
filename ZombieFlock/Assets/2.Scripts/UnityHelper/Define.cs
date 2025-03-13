@@ -8,6 +8,7 @@ public static class Define
     public static Vector3 RifleAim_Rotate = new Vector3(14.174f, 101.724f, 78f);
 
     public const string RES_WEAPONS = "Prefabs/Weapon";
+    public const string RES_SO_GUN = "SO/Weapon";
 }
 
 #region Enum
@@ -17,5 +18,10 @@ public enum GunType
     Sniper,
 }
 
+public enum PickableType
+{
+    Gun,
+    Usable,
+}
 
 #endregion

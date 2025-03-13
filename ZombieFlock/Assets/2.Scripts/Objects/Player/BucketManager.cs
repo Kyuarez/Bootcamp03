@@ -15,7 +15,7 @@ public class BucketManager : MonoBehaviour
         get { return weaponQueue; }
     }
 
-    public GameObject CurrentWeapon
+    public Gun CurrentWeapon
     {
         get
         {
@@ -25,7 +25,8 @@ public class BucketManager : MonoBehaviour
             }
 
             GameObject weapon = equippedTransfrom.GetChild(0).gameObject;
-            return weapon;
+            Gun gun = weapon.GetComponent<Gun>();
+            return gun;
         }
     }
 
@@ -33,14 +34,6 @@ public class BucketManager : MonoBehaviour
     public void InitBucket()
     {
         weaponQueue = new Queue<GameObject>();
-
-        //GameObject[] weapons = Resources.LoadAll<GameObject>(Define.RES_WEAPONS);
-        //foreach (GameObject weapon in weapons) 
-        //{
-        //    GameObject obj = Instantiate(weapon, bucketTransform);
-        //    weaponQueue.Enqueue(obj);
-        //    obj.SetActive(false);
-        //}
     }
     
     public void EquippedWeapon()
@@ -72,10 +65,11 @@ public class BucketManager : MonoBehaviour
         weapon.SetActive(true);
     }
 
-    public void OnRegisterGun(GunData gun)
+    public void OnRegisterGun(GunData data)
     {
-        GameObject weapon = Resources.Load<GameObject>(Define.RES_WEAPONS + "/" + gun.Name);
+        GameObject weapon = Resources.Load<GameObject>(Define.RES_WEAPONS + "/" + data.CodeName);
         GameObject obj = Instantiate(weapon, bucketTransform);
+        obj.GetComponent<Gun>().InitGunData(data);
         weaponQueue.Enqueue(obj);
         obj.SetActive(false);
     }
@@ -87,7 +81,7 @@ public class BucketManager : MonoBehaviour
             return;
         }
 
-        CurrentWeapon.SetActive(false);
+        CurrentWeapon.gameObject.SetActive(false);
     }
     public void OnShowWeapon()
     {
@@ -96,6 +90,6 @@ public class BucketManager : MonoBehaviour
             return;
         }
 
-        CurrentWeapon.SetActive(true);
+        CurrentWeapon.gameObject.SetActive(true);
     }
 }

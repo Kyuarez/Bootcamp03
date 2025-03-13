@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using TKCamera;
 using UnityEngine.Animations.Rigging;
+using System.Net.Sockets;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -65,7 +66,8 @@ public class PlayerManager : MonoBehaviour
     public LayerMask pickupMask;
     public Transform itemGetPos;
 
-
+    private float rifleFireDelay = 0.5f;
+    private bool isShot = false;
     private BucketManager bucket;
 
     //@tk : temp
@@ -100,6 +102,14 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    public Gun CurrentWeapon
+    {
+        get
+        {
+            return bucket.CurrentWeapon;
+        }
+    }
+
 
     private void Start()
     {
@@ -120,17 +130,8 @@ public class PlayerManager : MonoBehaviour
         bucket.InitBucket();
     }
 
-    #region TestPool
-    private Queue<GameObject> objQueue = new Queue<GameObject>();
-    #endregion
-
     private void Update()
     {
-        #region Test
-        CameraShake();
-        TestPool();
-        #endregion
-
         UpdateMouseSet();
         CheckIsGrounded();
 
@@ -169,6 +170,7 @@ public class PlayerManager : MonoBehaviour
 
             foreach (RaycastHit hit in hits) 
             {
+                //TODO : 거리 계산해서 가장 가까운 아이템으로 세팅
                 adjacentItem = hit.collider.gameObject;
             }
 
@@ -190,11 +192,11 @@ public class PlayerManager : MonoBehaviour
                     return;
                 }
 
-                adjacentItem.SetActive(false);
                 if (adjacentItem.GetComponent<GunData>() != null)
                 {
                     bucket.OnRegisterGun(adjacentItem.GetComponent<GunData>());
                 }
+                adjacentItem.SetActive(false);
                 adjacentItem = null;
             }
 
@@ -265,6 +267,11 @@ public class PlayerManager : MonoBehaviour
 
     private void Zoom()
     {
+        if(isPickup == true)
+        {
+            return;
+        }
+
         //Zoom part
         if (Input.GetMouseButtonDown(1) == true)
         {
@@ -415,27 +422,28 @@ public class PlayerManager : MonoBehaviour
 
     private void OnShot()
     {
-        if(isAim == false)
+        if(isAim == false || isShot == true)
         {
             return;
         }
 
         if(Input.GetMouseButtonDown(0) == true)
         {
-            
             if(bucket.CurrentWeapon == null)
             {
                 return;
             }
+            if(bucket.CurrentWeapon.CurrentBulletCount <= 0)
+            {
+                return;
+            }
 
-            //AnimatorStateInfo animInfo = anim.GetCurrentAnimatorStateInfo(1); //Upper
-            //if(animInfo.IsName("Fire Gun") == false && animInfo.normalizedTime < 0.5f)
-            //{
-            //    return;
-            //}
-
+            isShot = true;
             anim.SetTrigger("IsShot");
+            bucket.CurrentWeapon.OnShot();
+            StartCoroutine(ShotDelayCo());
 
+            float gunMaxRange = CurrentWeapon.CurrentGunData.gunMaxRange;
             Ray ray = new Ray(mainCam.transform.position, mainCam.transform.forward);
             //@tk : multi
             RaycastHit[] hits = Physics.RaycastAll(ray, gunMaxRange, targetMask);
@@ -500,6 +508,7 @@ public class PlayerManager : MonoBehaviour
     #region On Animation Event
     public void OnAnimEventFootSound()
     {
+        //@tk : 지면 Raycast해서 발소리 변경
         //audioSource.PlayOneShot(audioClipFire);
     }
     public void OnAnimEventWeaponChangeSound()
@@ -539,41 +548,20 @@ public class PlayerManager : MonoBehaviour
         }
         mainCam.fieldOfView = targetFov;
     }
+
+    IEnumerator ShotDelayCo()
+    {
+        float elapsedTime = 0.0f;
+        while (elapsedTime < rifleFireDelay) 
+        {
+            elapsedTime += Time.deltaTime;
+            yield return null;  
+        }
+        isShot = false;
+    }
     #endregion
 
     #region Test
-    private void TestPool()
-    {
-        if (Input.GetKeyDown(KeyCode.F1) == true)
-        {
-            objQueue.Enqueue(PoolManager.Instance.SpawnObject<TKZombie>());
-        }
-        if (Input.GetKeyDown(KeyCode.F2) == true)
-        {
-            if (objQueue.Count <= 0)
-            {
-                return;
-            }
-
-            GameObject obj = objQueue.Dequeue();
-            if (obj != null)
-            {
-                PoolManager.Instance.DeSpawnObject(obj.GetComponent<IPoolable>());
-            }
-        }
-    }
-
-    private void CameraShake()
-    {
-        if (Input.GetKeyDown(KeyCode.Q) == true)
-        {
-            CameraShake shake = mainCam.GetComponent<CameraShake>();
-            if (shake != null)
-            {
-                shake.ExplosiveCameraShake();
-            }
-        }
-    }
     public void TestCameraShake()
     {
         CameraShake shake = mainCam.GetComponent<CameraShake>();

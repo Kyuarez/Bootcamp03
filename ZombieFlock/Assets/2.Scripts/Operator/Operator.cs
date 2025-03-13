@@ -37,4 +37,11 @@ public class Operator : MonoSingleton<Operator>
         //poolManager.Init();
     }
 
+    private void Update()
+    {
+        //if(Input.GetKeyDown(KeyCode.Q) == true)
+        //{
+
+        //}
+    }
 }

@@ -1,17 +1,46 @@
 using System;
-using System.Collections;
 using UnityEngine;
 
-public class GunData : MonoBehaviour, IComparable
+[Serializable]
+public class GunData : MonoBehaviour
 {
-    public string Name;
+    public string CodeName;
     public GunType GunType;
     public AudioClip ShotSfx;
-    public int magazineCount; //ÅºÃ¢ ¼ö
-    public int bulletCount; //Åº¾Ë ¼ö
+    public int magazineMaxCount; //ÅºÃ¢ ¼ö
+    public int bulletMaxCount; //Åº¾Ë ¼ö
 
-    public int CompareTo(object obj)
+    public int gunDamage;
+    public float gunMaxRange;
+    public float shotDelay;
+
+    private void OnEnable()
     {
-        throw new NotImplementedException();
+        //TODO : Resource¿¡¼­ ¾Ë¾Æ¼­ GunData ¹Þ±â
+        string fileName = gameObject.name.Replace(prefix, "Weapon_");
+        GunDataSO dataSO = Resources.Load<GunDataSO>(Define.RES_SO_GUN + "/" + fileName);
+
+        if(dataSO == null)
+        {
+            return;
+        }
+
+        InitGunData(dataSO);
     }
+
+    public void InitGunData(GunDataSO dataSO)
+    {
+        this.CodeName = dataSO.CodeName;
+        this.GunType = dataSO.GunType;
+        this.ShotSfx = dataSO.ShotSfx;
+        this.magazineMaxCount = dataSO.magazineCount;
+        this.bulletMaxCount = dataSO.bulletCount;
+
+        this.gunDamage = dataSO.gunDamage;
+        this.gunMaxRange = dataSO.gunMaxRange;
+        this.shotDelay = dataSO.shotDelay;
+    }
+
+
+    private readonly string prefix = "Pickup_";
 }

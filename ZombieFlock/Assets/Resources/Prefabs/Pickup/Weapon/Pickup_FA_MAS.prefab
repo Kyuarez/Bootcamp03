@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 6251872876242692216}
   - component: {fileID: 1484727185810389556}
   - component: {fileID: 2085391142844202108}
-  - component: {fileID: -1164613871537907470}
   - component: {fileID: 3128773141969246428}
+  - component: {fileID: -5564670728184376082}
   m_Layer: 8
   m_Name: Pickup_FA_MAS
   m_TagString: Untagged
@@ -88,23 +88,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &-1164613871537907470
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5084672743642604745}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e67a89300f2a304bbc1ebb3eaf4efd9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Name: FA_MAS
-  GunType: 0
-  ShotSfx: {fileID: 0}
-  magazineCount: 0
-  bulletCount: 0
 --- !u!135 &3128773141969246428
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -126,3 +109,20 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 1.8060398
   m_Center: {x: 0, y: 0.1963807, z: 0.43729442}
+--- !u!114 &-5564670728184376082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5084672743642604745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e67a89300f2a304bbc1ebb3eaf4efd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CodeName: 
+  GunType: 0
+  ShotSfx: {fileID: 0}
+  magazineMaxCount: 0
+  bulletMaxCount: 0
