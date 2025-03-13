@@ -1919,6 +1919,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2458811343609392963}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3862114385816955141
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4303939799952644027}
+  m_Layer: 0
+  m_Name: PickupTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4303939799952644027
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3862114385816955141}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6744656035260504612}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3993323467783765796
 GameObject:
   m_ObjectHideFlags: 0
@@ -4030,6 +4061,7 @@ Transform:
   - {fileID: 685340375880179929}
   - {fileID: 1563472323765268005}
   - {fileID: 3596071588213014557}
+  - {fileID: 4303939799952644027}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2140926015940797819
@@ -4047,6 +4079,9 @@ MonoBehaviour:
   walkSpeed: 5
   runSpeed: 12
   mouseSensitivity: 100
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 128
   camTransform: {fileID: 0}
   playerHead: {fileID: 7478299750117533721}
   WeaponTransform: {fileID: 4382554053195541750}
@@ -4063,6 +4098,11 @@ MonoBehaviour:
   gravity: -9.81
   jump: 2
   aimTarget: {fileID: 3596071588213014557}
+  multiAimConstraint: {fileID: 4486370286672154034}
+  pickupMask:
+    serializedVersion: 2
+    m_Bits: 256
+  itemGetPos: {fileID: 4303939799952644027}
   audioClipFire: {fileID: 8300000, guid: 08e69622a48de234b9bc3193c1b079b9, type: 3}
   audioClipWeaponChange: {fileID: 8300000, guid: 1e22cb384edac9c4a9819eab30270bdd, type: 3}
   audioSource: {fileID: 811126644720761595}

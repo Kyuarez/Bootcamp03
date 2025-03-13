@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using TKCamera;
+using UnityEngine.Animations.Rigging;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class PlayerManager : MonoBehaviour
     public float runSpeed = 12.0f;
     public float mouseSensitivity = 100.0f; //마우스 감도
     private float moveSpeed;
+    public LayerMask targetMask;
 
     public Transform camTransform;
     public Transform playerHead; //플레이어 머리 위치(1인칭 cam)
@@ -55,6 +57,13 @@ public class PlayerManager : MonoBehaviour
 
     //Rig
     public Transform aimTarget;
+    public MultiAimConstraint multiAimConstraint;
+
+    //ItemPickup
+    private Vector3 pickupBoxSize = new Vector3(1.0f, 1.0f, 1.0f);
+    private float castDistance = 5.0f;
+    public LayerMask pickupMask;
+    public Transform itemGetPos;
 
 
     private BucketManager bucket;
@@ -79,11 +88,13 @@ public class PlayerManager : MonoBehaviour
             {
                 bucket.CurrentWeapon.transform.localPosition = Define.RifleAim_Pos;
                 bucket.CurrentWeapon.transform.localRotation = Quaternion.Euler(Define.RifleAim_Rotate);
+                multiAimConstraint.data.offset = new Vector3(-30f, 0f, 0f);
             }
             else
             {
                 bucket.CurrentWeapon.transform.localPosition = Define.Rifle_Pos;
                 bucket.CurrentWeapon.transform.localRotation = Quaternion.Euler(Define.Rifle_Rotate);
+                multiAimConstraint.data.offset = new Vector3(0f, 0f, 0f);
             }
             isAim = value;
         }
@@ -132,24 +143,50 @@ public class PlayerManager : MonoBehaviour
         SetAnimation();
 
         OnShot();
+        PickupItem();
+        PostPickupItem();
+    }
 
+    private GameObject adjacentItme;
+    private void PickupItem()
+    {
         if (Input.GetKeyDown(KeyCode.E) == true)
         {
-            if(isPickup == true)
+            if (isPickup == true)
             {
                 return;
             }
 
             //TODO : 아이템 체킹해서 예외 처리
+            Vector3 origin = itemGetPos.position;
+            Vector3 direction = itemGetPos.forward;
+            RaycastHit[] hits;
+            hits = Physics.BoxCastAll(origin, pickupBoxSize / 2, direction, Quaternion.identity, castDistance, pickupMask);
+            foreach (RaycastHit hit in hits) 
+            {
+                adjacentItme = hit.collider.gameObject;
+            }
+
             bucket.OnHideWeapon();
             anim.SetTrigger("IsPickup");
             isPickup = true;
         }
+    }
 
-        if(isPickup == true)
+    private void PostPickupItem()
+    {
+        if (isPickup == true)
         {
             AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
-            if(stateInfo.IsName("Picking Up") == true && stateInfo.normalizedTime >= 1.0f)
+            if (stateInfo.IsName("Picking Up") == true && stateInfo.normalizedTime > 0.2f && stateInfo.normalizedTime < 0.3f)
+            {
+                if (adjacentItme != null)
+                {
+                    adjacentItme.SetActive(false);
+                }
+            }
+
+            if (stateInfo.IsName("Picking Up") == true && stateInfo.normalizedTime >= 1.0f)
             {
                 bucket.OnShowWeapon();
                 isPickup = false;
@@ -388,24 +425,42 @@ public class PlayerManager : MonoBehaviour
             anim.SetTrigger("IsShot");
 
             Ray ray = new Ray(mainCam.transform.position, mainCam.transform.forward);
-            RaycastHit hit;
-            if(Physics.Raycast(ray, out hit, gunMaxRange))
+            //@tk : multi
+            RaycastHit[] hits = Physics.RaycastAll(ray, gunMaxRange, targetMask);
+            int searchCount = 0;
+            if(hits.Length > 0)
             {
-                if(hit.collider.gameObject.tag.CompareTo("Enemy") == 0)
+                foreach (RaycastHit hit in hits)
                 {
-                    TKZombie zombie = hit.collider.gameObject.GetComponent<TKZombie>();
-                    if(zombie != null)
-                    {
-                        zombie.Damage(bulletDamage);
-                    }
-
+                    searchCount++;
+                    Debug.LogFormat($"충돌 객체 : {hit.collider.gameObject.name}");
                     Debug.DrawLine(ray.origin, hit.point, Color.red);
                 }
             }
             else
             {
-                Debug.DrawLine(ray.origin, ray.origin + ray.direction, Color.green);
+                Debug.DrawLine(ray.origin, ray.origin + ray.direction * gunMaxRange, Color.green);
             }
+
+            //@tk : single object
+            //RaycastHit hit;
+            //if(Physics.Raycast(ray, out hit, gunMaxRange, targetMask))
+            //{
+            //    if(hit.collider.gameObject.tag.CompareTo("Enemy") == 0)
+            //    {
+            //        TKZombie zombie = hit.collider.gameObject.GetComponent<TKZombie>();
+            //        if(zombie != null)
+            //        {
+            //            zombie.Damage(bulletDamage);
+            //        }
+
+            //        Debug.DrawLine(ray.origin, hit.point, Color.red);
+            //    }
+            //}
+            //else
+            //{
+            //    Debug.DrawLine(ray.origin, ray.origin + ray.direction, Color.green);
+            //}
         }
     }
 
@@ -427,6 +482,8 @@ public class PlayerManager : MonoBehaviour
             anim.SetTrigger("IsWeaponChange");
         }
     }
+
+
 
     #region On Animation Event
     public void OnAnimEventFootSound()
