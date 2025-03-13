@@ -124,6 +124,7 @@ public class PlayerManager : MonoBehaviour
 
         characterController = GetComponent<CharacterController>();
         anim = GetComponent<Animator>();
+        anim.applyRootMotion = false;
         bucket = GetComponent<BucketManager>();
 
         moveSpeed = walkSpeed;

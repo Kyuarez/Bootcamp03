@@ -24,4 +24,14 @@ public enum PickableType
     Usable,
 }
 
+public enum ZombieState
+{
+    Patrol,
+    Chase,
+    Attack,
+    Evade,
+    Damage,
+    Idle,
+    Die,
+}
 #endregion
