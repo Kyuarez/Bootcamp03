@@ -44,4 +44,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18356b1748e9564488a36daca6e01874, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  poolMaxCount: 20
+  poolMaxCount: 100

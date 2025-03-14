@@ -30,7 +30,7 @@ public enum ZombieState
     Chase,
     Attack,
     Evade,
-    Damage,
+    Damaged,
     Idle,
     Die,
 }

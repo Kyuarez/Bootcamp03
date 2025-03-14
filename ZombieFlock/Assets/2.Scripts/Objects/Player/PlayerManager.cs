@@ -455,6 +455,14 @@ public class PlayerManager : MonoBehaviour
                 {
                     searchCount++;
                     Debug.LogFormat($"Ãæµ¹ °´Ã¼ : {hit.collider.gameObject.name}");
+
+                    ZombieManager zombie = hit.collider.GetComponent<ZombieManager>();
+                    if(zombie != null)
+                    {
+                        //zombie.Damaged(bucket.CurrentWeapon.)
+                        zombie.OnDamage(20f);
+                    }
+                   
                     Debug.DrawLine(ray.origin, hit.point, Color.red);
                 }
             }
@@ -572,5 +580,6 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    
     #endregion
 }

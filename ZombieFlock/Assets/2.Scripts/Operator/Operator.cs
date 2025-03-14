@@ -6,6 +6,7 @@ public class Operator : MonoSingleton<Operator>
 
     private PlayerManager ingamePlayer;
     private PoolManager poolManager;
+    private PatrolPointManager patrolManager;
 
     public bool IsDevMode
     {
@@ -19,12 +20,27 @@ public class Operator : MonoSingleton<Operator>
     {
         get 
         {
+            //@tk 이거 나중엔 씬 전환 할 때 마다 player 받아오는 방식 필요
             if (ingamePlayer == null) 
             {
                 ingamePlayer = Object.FindFirstObjectByType<PlayerManager>();
             }
             
             return ingamePlayer; 
+        }
+    }
+
+    public PatrolPointManager PatrolManager
+    {
+        get
+        {
+            //@tk 이거 나중엔 씬 전환 할 때 마다 patrolManager를 받아오는 방식 필요
+            if (patrolManager == null)
+            {
+                patrolManager = Object.FindFirstObjectByType<PatrolPointManager>();
+            }
+
+            return patrolManager;
         }
     }
 
