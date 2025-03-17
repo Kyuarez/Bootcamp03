@@ -59,7 +59,7 @@ public class ZombieManager : MonoBehaviour, IPoolable
         get { return currentState; }
         set
         {
-            Debug.LogFormat($"{gameObject.name} : {value} 상태");
+            //Debug.LogFormat($"{gameObject.name} : {value} 상태");
             currentState = value;   
         }
     }
@@ -90,7 +90,11 @@ public class ZombieManager : MonoBehaviour, IPoolable
         CurrentState = ZombieState.Idle;
         stateRoutine = StartCoroutine(currentState.ToString());
 
-        patrolPoints = Operator.Instance.PatrolManager.GetRandomPointList();
+        patrolPoints = new List<Transform>();
+        foreach (Transform patrolPoint in Operator.Instance.PatrolManager.GetRandomPointList())
+        {
+            patrolPoints.Add(patrolPoint);
+        }
     }
 
     private void Update()

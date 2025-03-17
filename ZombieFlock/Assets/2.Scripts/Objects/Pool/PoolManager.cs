@@ -11,6 +11,12 @@ public class PoolManager : MonoSingleton<PoolManager>
 
     protected override void Awake()
     {
+        base.Awake();
+    }
+
+    private void Start()
+    {
+        //@tk : 생성은 start에 하는 게 좋을 듯. (awake는 캐싱 및 데이터 생성)
         Init();
     }
 

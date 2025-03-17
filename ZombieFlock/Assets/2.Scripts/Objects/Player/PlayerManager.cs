@@ -7,8 +7,8 @@ using System.Net.Sockets;
 
 public class PlayerManager : MonoBehaviour
 {
-    public float walkSpeed = 5.0f;
-    public float runSpeed = 12.0f;
+    public float walkSpeed = 2.5f;
+    public float runSpeed = 5.0f;
     public float mouseSensitivity = 100.0f; //마우스 감도
     private float moveSpeed;
     public LayerMask targetMask;

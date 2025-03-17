@@ -5,7 +5,7 @@ public class PatrolPointManager : MonoBehaviour
 {
     protected List<Transform> pointList;
 
-    private void OnEnable()
+    private void Awake()
     {
         pointList = new List<Transform>();
 
