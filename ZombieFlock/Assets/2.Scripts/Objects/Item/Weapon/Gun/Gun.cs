@@ -51,7 +51,7 @@ public class Gun : MonoBehaviour
         }
 
         currentBulletCount--;
-        ShotFX.Play();
+        ShotFX?.Play();
     }
     public void OnReloading()
     {
