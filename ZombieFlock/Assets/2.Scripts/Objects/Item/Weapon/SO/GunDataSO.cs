@@ -16,4 +16,6 @@ public class GunDataSO : ScriptableObject
     public int gunDamage;
     public float gunMaxRange;
     public float shotDelay;
+    public float recoilDuration;
+    public float recoilMagnitude;
 }

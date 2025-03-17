@@ -13,6 +13,8 @@ public class GunData : MonoBehaviour
     public int gunDamage;
     public float gunMaxRange;
     public float shotDelay;
+    public float recoilDuration;
+    public float recoilMagnitude;
 
     private void OnEnable()
     {
@@ -39,6 +41,8 @@ public class GunData : MonoBehaviour
         this.gunDamage = dataSO.gunDamage;
         this.gunMaxRange = dataSO.gunMaxRange;
         this.shotDelay = dataSO.shotDelay;
+        this.recoilDuration = dataSO.recoilDuration;
+        this.recoilMagnitude = dataSO.recoilMagnitude;
     }
 
 

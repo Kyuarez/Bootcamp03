@@ -1,3 +1,4 @@
+using TKCamera;
 using UnityEngine;
 
 public class Operator : MonoSingleton<Operator>
@@ -7,6 +8,7 @@ public class Operator : MonoSingleton<Operator>
     private PlayerManager ingamePlayer;
     private PoolManager poolManager;
     private PatrolPointManager patrolManager;
+    private CameraShake cameraShake;
 
     public bool IsDevMode
     {
@@ -30,6 +32,18 @@ public class Operator : MonoSingleton<Operator>
         }
     }
 
+    public CameraShake CameraShake
+    {
+        get
+        {
+            if(cameraShake == null)
+            {
+                cameraShake = Camera.main.GetComponent<CameraShake>();
+            }
+            return cameraShake;
+        }
+    }
+
     public PatrolPointManager PatrolManager
     {
         get
@@ -48,9 +62,9 @@ public class Operator : MonoSingleton<Operator>
     {
         //Bind
         poolManager = Object.FindAnyObjectByType<PoolManager>();
+        cameraShake = Camera.main.GetComponent<CameraShake>();
 
-        //Init
-        //poolManager.Init();
+        
     }
 
     private void Update()

@@ -20,3 +20,5 @@ MonoBehaviour:
   gunDamage: 5
   gunMaxRange: 1000
   shotDelay: 0.25
+  recoilDuration: 0.25
+  recoilMagnitude: 0.0005

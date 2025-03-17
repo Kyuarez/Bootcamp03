@@ -1,3 +1,4 @@
+using TKCamera;
 using UnityEngine;
 
 public class Gun : MonoBehaviour
@@ -41,16 +42,17 @@ public class Gun : MonoBehaviour
         gunData = data;
         currentBulletCount = gunData.bulletMaxCount;
         currentMagazineCount = gunData.magazineMaxCount;
-    }
+    }       
 
     public void OnShot()
-    {
+    {   
         if (currentBulletCount <= 0)
         {
             return;
         }
 
         currentBulletCount--;
+        Operator.Instance.CameraShake.RecoilCameraShake(CurrentGunData.recoilDuration, CurrentGunData.recoilMagnitude);
         ShotFX?.Play();
     }
     public void OnReloading()

@@ -41,7 +41,7 @@ public class TestCube : MonoBehaviour, IPoolable
                 pManager.transform.position = new Vector3(0f, pManager.transform.position.y, 0f);
                 pManager.GetComponent<CharacterController>().enabled = true;
 
-                pManager.TestCameraShake();
+                //pManager.TestCameraShake();
                 pManager.OnAnimEventOneShotSound();
             }
 

@@ -375,7 +375,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3596071588213014557}
   m_Layer: 0
-  m_Name: AimTarget
+  m_Name: '@AimTarget'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -730,7 +730,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5670407701412428053}
   m_Layer: 0
-  m_Name: PlayerObj
+  m_Name: '@PlayerObj'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -910,7 +910,7 @@ GameObject:
   m_Component:
   - component: {fileID: 786892322056163390}
   m_Layer: 0
-  m_Name: PlayerImmersionObj
+  m_Name: '@PlayerImmersionObj'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1929,7 +1929,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4303939799952644027}
   m_Layer: 0
-  m_Name: PickupTransform
+  m_Name: '@PickupTransform'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4082,14 +4082,9 @@ MonoBehaviour:
   targetMask:
     serializedVersion: 2
     m_Bits: 128
-  camTransform: {fileID: 0}
-  playerHead: {fileID: 7478299750117533721}
-  WeaponTransform: {fileID: 4382554053195541750}
   thirdPersonDistance: 3
   immersionDistance: 1
   thirdPersonOffset: {x: 0, y: 1.5, z: 0}
-  playerLookObj: {fileID: 5670407701412428053}
-  playerImmersionLookObj: {fileID: 786892322056163390}
   zoomDistance: 1
   zoomImmersionDistance: 0.5
   zoomSpeed: 5
@@ -4097,12 +4092,10 @@ MonoBehaviour:
   zoomFov: 30
   gravity: -9.81
   jump: 2
-  aimTarget: {fileID: 3596071588213014557}
   multiAimConstraint: {fileID: 4486370286672154034}
   pickupMask:
     serializedVersion: 2
     m_Bits: 256
-  itemGetPos: {fileID: 4303939799952644027}
   audioClipFire: {fileID: 8300000, guid: 08e69622a48de234b9bc3193c1b079b9, type: 3}
   audioClipWeaponChange: {fileID: 8300000, guid: 1e22cb384edac9c4a9819eab30270bdd, type: 3}
   audioSource: {fileID: 811126644720761595}
@@ -4473,7 +4466,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4382554053195541750}
   m_Layer: 0
-  m_Name: WeaponTransform
+  m_Name: '@WeaponTransform'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

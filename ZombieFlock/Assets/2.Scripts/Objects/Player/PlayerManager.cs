@@ -3,7 +3,6 @@ using System.Collections;
 using UnityEngine;
 using TKCamera;
 using UnityEngine.Animations.Rigging;
-using System.Net.Sockets;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -13,14 +12,14 @@ public class PlayerManager : MonoBehaviour
     private float moveSpeed;
     public LayerMask targetMask;
 
-    public Transform camTransform;
-    public Transform playerHead; //플레이어 머리 위치(1인칭 cam)
-    public Transform WeaponTransform;
+    private Transform camTransform;
+    private Transform playerHead; //플레이어 머리 위치(1인칭 cam)
+    private Transform WeaponTransform;
     public float thirdPersonDistance = 3.0f; //플레이어 - cam 거리
     public float immersionDistance = 1.0f; //3인칭 몰입형 거리
     public Vector3 thirdPersonOffset = new Vector3(0f, 1.5f, 0f);
-    public Transform playerLookObj; //플레이어 시야 위치 (배그 숄더숏)
-    public Transform playerImmersionLookObj; //플레이어 시야 위치 : 다리 자르기
+    private Transform playerLookObj; //플레이어 시야 위치 (배그 숄더숏)
+    private Transform playerImmersionLookObj; //플레이어 시야 위치 : 다리 자르기
 
     //Sight
     public float zoomDistance = 1.0f; //3인칭
@@ -57,14 +56,14 @@ public class PlayerManager : MonoBehaviour
     private bool isPickup = false;
 
     //Rig
-    public Transform aimTarget;
+    private Transform aimTarget;
     public MultiAimConstraint multiAimConstraint;
 
     //ItemPickup
     private Vector3 pickupBoxSize = new Vector3(1.0f, 1.0f, 1.0f);
     private float castDistance = 5.0f;
     public LayerMask pickupMask;
-    public Transform itemGetPos;
+    private Transform itemGetPos;
 
     private float rifleFireDelay = 0.5f;
     private bool isShot = false;
@@ -75,9 +74,6 @@ public class PlayerManager : MonoBehaviour
     public AudioClip audioClipFire;
     public AudioClip audioClipWeaponChange;
     public AudioSource audioSource;
-    //Gun : 나중엔 총 클래스에서 가져오기 (bucket)
-    private float gunMaxRange = 1000.0f;
-    private int bulletDamage = 10;
 
     public bool IsFirstPerson {  get { return isFirstPerson; } }
     public bool IsImersion {  get { return isImmersion; } }
@@ -110,6 +106,15 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    private void Awake()
+    {
+        playerHead = transform.FindRecursiveChild(Name_PlayerHead);
+        WeaponTransform = transform.FindRecursiveChild(Name_WeaponTransform);
+        playerLookObj = transform.FindRecursiveChild(Name_PlayerObj);
+        playerImmersionLookObj = transform.FindRecursiveChild(Name_PlayerImmersionObj);
+        aimTarget = transform.FindRecursiveChild(Name_AimTarget);
+        itemGetPos = transform.FindRecursiveChild(Name_PickupTransform);
+    }
 
     private void Start()
     {
@@ -571,15 +576,15 @@ public class PlayerManager : MonoBehaviour
     #endregion
 
     #region Test
-    public void TestCameraShake()
-    {
-        CameraShake shake = mainCam.GetComponent<CameraShake>();
-        if (shake != null)
-        {
-            shake.ExplosiveCameraShake();
-        }
-    }
 
-    
+
+
     #endregion
+
+    private readonly string Name_PlayerHead = "head";
+    private readonly string Name_WeaponTransform = "@WeaponTransform";
+    private readonly string Name_PlayerObj = "@PlayerObj";
+    private readonly string Name_PlayerImmersionObj = "@PlayerImmersionObj";
+    private readonly string Name_AimTarget = "@AimTarget";
+    private readonly string Name_PickupTransform = "@PickupTransform";
 }
