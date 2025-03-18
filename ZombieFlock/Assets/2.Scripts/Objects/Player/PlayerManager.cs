@@ -150,6 +150,7 @@ public class PlayerManager : MonoBehaviour
         SetAnimation();
 
         OnShot();
+        OnReload();
         PickupItem();
         PostPickupItem();
     }
@@ -435,6 +436,7 @@ public class PlayerManager : MonoBehaviour
             return;
         }
 
+        //@tk : 이거 무기 별로 다르게 적용 : 현재 총 쏘는 것을 샷건, 스나이퍼로 하고 라이플은 꾹 누르면 연사
         if(Input.GetMouseButtonDown(0) == true)
         {
             if(bucket.CurrentWeapon == null)
@@ -499,6 +501,25 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    private void OnReload()
+    {
+        if (bucket.CurrentWeapon == null)
+        {
+            return;
+        }
+        if (IsAim == true || isPickup == true)
+        {
+            return;
+        }
+        if (Input.GetKeyDown(KeyCode.R) == true)
+        {
+            if (bucket.CurrentWeapon.OnReloading() == true)
+            {
+                anim.SetTrigger("IsWeaponChange");
+            }
+        }
+    }
+
 
 
     #region On Animation Event
@@ -554,6 +575,7 @@ public class PlayerManager : MonoBehaviour
             yield return null;  
         }
         isShot = false;
+        CurrentWeapon.OnShotFX(false);
     }
     #endregion
 

@@ -10,6 +10,7 @@ public class Gun : MonoBehaviour
 
     public Transform Pos_ShotFX;
     public ParticleSystem ShotFX;
+    private GameObject FX_Light;
     
     public GunData CurrentGunData
     {
@@ -42,6 +43,9 @@ public class Gun : MonoBehaviour
         gunData = data;
         currentBulletCount = gunData.bulletMaxCount;
         currentMagazineCount = gunData.magazineMaxCount;
+
+        FX_Light = transform.GetComponentInChildren<Light>().gameObject;
+        FX_Light.SetActive(false);
     }       
 
     public void OnShot()
@@ -53,16 +57,31 @@ public class Gun : MonoBehaviour
 
         currentBulletCount--;
         Operator.Instance.CameraShake.RecoilCameraShake(CurrentGunData.recoilDuration, CurrentGunData.recoilMagnitude);
-        ShotFX?.Play();
+        OnShotFX(true);
     }
-    public void OnReloading()
+    public bool OnReloading()
     {
         if(currentMagazineCount <= 0)
         {
-            return;
+            return false;
         }
 
         currentBulletCount = gunData.bulletMaxCount;
         currentMagazineCount--;
+        return true;
+    }
+
+    public void OnShotFX(bool active)
+    {
+        if(active == true)
+        {
+            ShotFX?.Play();
+            FX_Light.SetActive(active);
+        }
+        else
+        {
+            ShotFX?.Stop();
+            FX_Light.SetActive(active);
+        }
     }
 }

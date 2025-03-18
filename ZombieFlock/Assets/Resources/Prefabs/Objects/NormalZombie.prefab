@@ -2397,10 +2397,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentState: 5
-  patrolPoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   sfx_attack_s: {fileID: 8300000, guid: 543fc519c4b70244cb1295138a51afd5, type: 3}
   sfx_attack_b: {fileID: 8300000, guid: 1a43e0f79fc6878439f14eb32d9f1c09, type: 3}
   sfx_dead: {fileID: 8300000, guid: 0c0e94d4014a4154184fe1d4a78610e9, type: 3}
@@ -2452,9 +2448,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.25
-  m_Height: 2
+  m_Height: 2.2
   m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
+  m_Center: {x: 0, y: 1.1, z: 0}
 --- !u!82 &2738245664472952271
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2894,7 +2890,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5544286140045427100}
