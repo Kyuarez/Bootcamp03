@@ -99,6 +99,11 @@ public class ZombieManager : MonoBehaviour, IPoolable
 
     private void Update()
     {
+        if (currentState == ZombieState.Die) 
+        {
+            return;
+        }
+
         distanceToTarget = Vector3.Distance(transform.position, Target.position);
     }
 
@@ -147,6 +152,11 @@ public class ZombieManager : MonoBehaviour, IPoolable
 
     public void OnDamage(float damage) 
     {
+        if(currentState == ZombieState.Die)
+        {
+            return;
+        }
+
         if(stateRoutine != null)
         {
             StopCoroutine(stateRoutine);

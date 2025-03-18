@@ -362,7 +362,8 @@ public class PlayerManager : MonoBehaviour
 
     private void FirstPersonMovement()
     {
-        if(isPickup == false)
+        AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
+        if(isPickup == false && stateInfo.IsName("Rifle Pull Out") == false)
         {
             horizontal = Input.GetAxis("Horizontal");
             vertical = Input.GetAxis("Vertical");
@@ -380,7 +381,8 @@ public class PlayerManager : MonoBehaviour
     }
     private void ThirdPersonMovement()
     {
-        if (isPickup == false)
+        AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
+        if (isPickup == false && stateInfo.IsName("Rifle Pull Out") == false)
         {
             horizontal = Input.GetAxis("Horizontal");
             vertical = Input.GetAxis("Vertical");
@@ -475,26 +477,6 @@ public class PlayerManager : MonoBehaviour
             {
                 Debug.DrawLine(ray.origin, ray.origin + ray.direction * gunMaxRange, Color.green);
             }
-
-            //@tk : single object
-            //RaycastHit hit;
-            //if(Physics.Raycast(ray, out hit, gunMaxRange, targetMask))
-            //{
-            //    if(hit.collider.gameObject.tag.CompareTo("Enemy") == 0)
-            //    {
-            //        TKZombie zombie = hit.collider.gameObject.GetComponent<TKZombie>();
-            //        if(zombie != null)
-            //        {
-            //            zombie.Damage(bulletDamage);
-            //        }
-
-            //        Debug.DrawLine(ray.origin, hit.point, Color.red);
-            //    }
-            //}
-            //else
-            //{
-            //    Debug.DrawLine(ray.origin, ray.origin + ray.direction, Color.green);
-            //}
         }
     }
 
