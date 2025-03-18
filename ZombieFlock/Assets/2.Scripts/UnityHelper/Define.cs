@@ -7,8 +7,11 @@ public static class Define
     public static Vector3 RifleAim_Pos = new Vector3(1.034f, -0.258f, -0.163f);
     public static Vector3 RifleAim_Rotate = new Vector3(14.174f, 101.724f, 78f);
 
+
     public const string RES_WEAPONS = "Prefabs/Weapon";
     public const string RES_SO_GUN = "SO/Weapon";
+
+    public static readonly string Local_DataPath = Application.streamingAssetsPath + "/Local";
 }
 
 #region Enum
