@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class ZombieManager : MonoBehaviour, IPoolable
 {
@@ -25,7 +26,9 @@ public class ZombieManager : MonoBehaviour, IPoolable
     protected int currentPointIndex = 0;
 
     protected Transform target;
+    protected CapsuleCollider col;
     protected Animator anim;
+    protected NavMeshAgent agent;
     protected Coroutine stateRoutine;
 
     protected float attackRange = 1.0f;
@@ -41,6 +44,8 @@ public class ZombieManager : MonoBehaviour, IPoolable
     protected bool isAttack = false;
     protected bool isWaiting = false; //@tk 상태 전환 후 대기 상태
     protected float idleTime = 2.0f; //@tk 상태 전환 후 대기 시간
+
+    protected GameObject handAttackArea;
 
     //Health
     protected float zombieHP = 100.0f;
@@ -79,17 +84,28 @@ public class ZombieManager : MonoBehaviour, IPoolable
     protected void Awake()
     {
         anim = GetComponent<Animator>();
+        col = GetComponent<CapsuleCollider>();
         audioSource = GetComponent<AudioSource>();
+        agent = GetComponent<NavMeshAgent>();
+        handAttackArea = transform.FindRecursiveChild(Name_Z_AttackArea).gameObject;
 
         anim.applyRootMotion = false;
     }
 
     protected void OnEnable()
     {
+        if(col.enabled == false)
+        {
+            col.enabled = true;
+        }
+
         distanceToTarget = Vector3.Distance(transform.position, Target.position);
         CurrentState = ZombieState.Idle;
         stateRoutine = StartCoroutine(currentState.ToString());
+    }
 
+    private void Start()
+    {
         patrolPoints = new List<Transform>();
         foreach (Transform patrolPoint in Operator.Instance.PatrolManager.GetRandomPointList())
         {
@@ -176,8 +192,11 @@ public class ZombieManager : MonoBehaviour, IPoolable
             SetStateByDistance();
             Transform targetPoint = patrolPoints[currentPointIndex];
             Vector3 direction = (targetPoint.position - transform.position).normalized;
-            transform.position += direction * moveSpeed * Time.deltaTime;
-            transform.LookAt(targetPoint.position);
+            //transform.position += direction * moveSpeed * Time.deltaTime;
+            //transform.LookAt(targetPoint.position);
+            agent.speed = moveSpeed;
+            agent.isStopped = false;
+            agent.destination = targetPoint.position;
 
             if (Vector3.Distance(transform.position, targetPoint.position) < 0.3f)
             {
@@ -192,7 +211,7 @@ public class ZombieManager : MonoBehaviour, IPoolable
         anim.SetBool("IsRun", true);
         while (currentState == ZombieState.Chase)
         {
-            transform.LookAt(Target.position);
+            //transform.LookAt(Target.position);
             SetStateByDistance();
             
             AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
@@ -211,7 +230,9 @@ public class ZombieManager : MonoBehaviour, IPoolable
             else
             {
                 Vector3 direction = (Target.position - transform.position).normalized;
-                transform.position += direction * chaseSpeed * Time.deltaTime;
+                agent.speed = chaseSpeed;
+                agent.isStopped = false;
+                agent.destination = target.position;
             }
             
             yield return null;
@@ -222,6 +243,10 @@ public class ZombieManager : MonoBehaviour, IPoolable
         anim.Play("Z_Idle");
         anim.SetBool("IsWalk", false);
         anim.SetBool("IsRun", false);
+
+        agent.speed = 0f;
+        agent.isStopped = false;
+
         while (currentState == ZombieState.Idle)
         {
             SetStateByDistance();
@@ -235,10 +260,19 @@ public class ZombieManager : MonoBehaviour, IPoolable
         {
             SetStateByDistance();
 
-            if(distanceToTarget < attackRange)
+            if (distanceToTarget < attackRange)
             {
+                agent.speed = 0.0f;
+                agent.isStopped = true;
+                
+                if(transform.IsTargetInFront(target) == false)
+                {
+                    agent.speed = chaseSpeed;
+                    agent.destination = target.position;
+                    agent.isStopped = false;
+                }
+                
                 anim.SetTrigger("OnAttack_s");
-                transform.LookAt(target.position);
             }
             yield return new WaitForSeconds(attackDelay);
         }
@@ -247,6 +281,17 @@ public class ZombieManager : MonoBehaviour, IPoolable
     {
         //TODO : 일부 수정 필요
         anim.SetTrigger("OnDie");
+
+        if (col.enabled == true)
+        {
+            col.enabled = false;
+        }
+
+        agent.speed = 0f;
+        agent.isStopped = true;
+        
+        
+
         yield return new WaitForSeconds(2.0f);
         PoolManager.Instance.DeSpawnObject(this);
     }
@@ -263,6 +308,8 @@ public class ZombieManager : MonoBehaviour, IPoolable
         {
             anim.SetTrigger("OnDamaged");
             Debug.LogFormat($"zombie HP : {zombieHP}");
+            agent.speed = 0f;
+            agent.isStopped = true;
 
             if (distanceToTarget < trackingRange)
             {
@@ -285,12 +332,18 @@ public class ZombieManager : MonoBehaviour, IPoolable
         float evadeTime = 3.0f;
         float timer = 0.0f;
 
-        Quaternion targetRotation = Quaternion.LookRotation(evadeDirection);
-        transform.rotation = targetRotation;
+        agent.speed = evadeSpeed;
+        agent.isStopped = true;
+        agent.destination = transform.position + evadeDirection * 10f;
 
         while (currentState == ZombieState.Evade && timer < evadeTime)
         {
-            transform.position += evadeDirection * evadeSpeed * Time.deltaTime;
+            if(Vector3.Distance(agent.destination, transform.position) < 1.2f)
+            {
+                ChangeState(ZombieState.Idle);
+                yield break;
+            }
+
             timer += Time.deltaTime;
             yield return null;
         }
@@ -330,4 +383,6 @@ public class ZombieManager : MonoBehaviour, IPoolable
         //@tk 이거 소리 다른걸로 바꿔야함. 너무 커서 주석처리
         //audioSource.PlayOneShot(sfx_scream);
     }
+
+    private readonly string Name_Z_AttackArea = "@AttackArea";
 }

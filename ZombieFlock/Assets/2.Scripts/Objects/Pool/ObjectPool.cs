@@ -32,8 +32,8 @@ public class ObjectPool : IPool
         }
 
         GameObject obj = pools.Dequeue();
-        obj.SetActive(true);
         obj.transform.parent = parent;
+        obj.SetActive(true);
         return obj;
     }
     public GameObject SpawnObject(Transform parent, Vector3 localPosition)
@@ -44,16 +44,17 @@ public class ObjectPool : IPool
         }
 
         GameObject obj = pools.Dequeue();
+        obj.transform.SetParent(parent);
+        obj.transform.localPosition += localPosition;
         obj.SetActive(true);
-        obj.transform.parent = parent;
-        obj.transform.position = localPosition;
         return obj;
     }
 
     public void DeSpawnObject(GameObject prefab)
     {
         prefab.gameObject.SetActive(false);
-        prefab.transform.parent = ObjParent; 
+        prefab.transform.parent = ObjParent;
+        prefab.transform.position = Vector3.zero;
         pools.Enqueue(prefab);
     }
 }

@@ -1020,7 +1020,7 @@ GameObject:
   - component: {fileID: 1254088913938563513}
   - component: {fileID: 8566123696992299264}
   m_Layer: 0
-  m_Name: AWM_Black
+  m_Name: AWM
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

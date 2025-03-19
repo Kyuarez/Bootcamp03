@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Gun : MonoBehaviour
 {
-    private GunData gunData;
+    [SerializeField] private GunData gunData;
 
     private int currentBulletCount;
     private int currentMagazineCount;
@@ -16,11 +16,14 @@ public class Gun : MonoBehaviour
     {
         get { return gunData; }
     }
-    public string CurrentGunName
+    public GunType CurrentGunType
+    {
+        get { return gunData.GunType; }
+    }
+    public string GunName
     {
         get { return gunData.CodeName; } 
     }
-
     public int CurrentBulletCount
     {
         get { return currentBulletCount; }
@@ -75,6 +78,10 @@ public class Gun : MonoBehaviour
     {
         if(active == true)
         {
+            if (ShotFX.isPlaying)
+            {
+                ShotFX.Stop();
+            }
             ShotFX?.Play();
             FX_Light.SetActive(active);
         }

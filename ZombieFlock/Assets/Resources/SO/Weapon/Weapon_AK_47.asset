@@ -17,8 +17,8 @@ MonoBehaviour:
   ShotSfx: {fileID: 0}
   magazineCount: 6
   bulletCount: 50
-  gunDamage: 20
-  gunMaxRange: 1000
-  shotDelay: 1
+  gunDamage: 10
+  gunMaxRange: 500
+  shotDelay: 0.5
   recoilDuration: 0.25
   recoilMagnitude: 0.005

@@ -65,7 +65,6 @@ public class PlayerManager : MonoBehaviour
     public LayerMask pickupMask;
     private Transform itemGetPos;
 
-    private float rifleFireDelay = 0.5f;
     private bool isShot = false;
     private BucketManager bucket;
 
@@ -78,6 +77,7 @@ public class PlayerManager : MonoBehaviour
 
     //@tk particle
     public ParticleSystem DamageFX;
+    private GameObject flashLight;
 
     public bool IsFirstPerson {  get { return isFirstPerson; } }
     public bool IsImersion {  get { return isImmersion; } }
@@ -118,6 +118,7 @@ public class PlayerManager : MonoBehaviour
         playerImmersionLookObj = transform.FindRecursiveChild(Name_PlayerImmersionObj);
         aimTarget = transform.FindRecursiveChild(Name_AimTarget);
         itemGetPos = transform.FindRecursiveChild(Name_PickupTransform);
+        flashLight = transform.FindRecursiveChild(Name_FlashLight).gameObject;
     }
 
     private void Start()
@@ -368,7 +369,7 @@ public class PlayerManager : MonoBehaviour
     private void FirstPersonMovement()
     {
         AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
-        if(isPickup == false && stateInfo.IsName("Rifle Pull Out") == false)
+        if(isPickup == false && stateInfo.IsName("Rifle Pull Out") == false && stateInfo.IsName("Damaged") == false)
         {
             horizontal = Input.GetAxis("Horizontal");
             vertical = Input.GetAxis("Vertical");
@@ -387,7 +388,7 @@ public class PlayerManager : MonoBehaviour
     private void ThirdPersonMovement()
     {
         AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
-        if (isPickup == false && stateInfo.IsName("Rifle Pull Out") == false)
+        if ((isPickup == false && stateInfo.IsName("Rifle Pull Out") == false) && stateInfo.IsName("Damaged") == false)
         {
             horizontal = Input.GetAxis("Horizontal");
             vertical = Input.GetAxis("Vertical");
@@ -435,19 +436,97 @@ public class PlayerManager : MonoBehaviour
 
     private void OnShot()
     {
-        if(isAim == false || isShot == true)
+        if (isAim == false || isShot == true)
+        {
+            return;
+        }
+        if (bucket.CurrentWeapon == null)
         {
             return;
         }
 
-        //@tk : 이거 무기 별로 다르게 적용 : 현재 총 쏘는 것을 샷건, 스나이퍼로 하고 라이플은 꾹 누르면 연사
-        if(Input.GetMouseButtonDown(0) == true)
+        switch (bucket.CurrentWeapon.CurrentGunType)
         {
-            if(bucket.CurrentWeapon == null)
+            case GunType.Rifle:
+                OnRifleShot();
+                break;
+            case GunType.Sniper:
+                OnSniperShot();
+                break;
+            case GunType.Shotgun:
+                OnShotgunShot();    
+                break;
+            default:
+                break;
+        }
+
+    }
+
+    private void OnRifleShot()
+    {
+        if (Input.GetMouseButton(0) == true)
+        {
+            if (bucket.CurrentWeapon.CurrentBulletCount <= 0)
             {
                 return;
             }
-            if(bucket.CurrentWeapon.CurrentBulletCount <= 0)
+
+            if(isShot == true)
+            {
+                return;
+            }
+
+            isShot = true;
+            anim.ResetTrigger("IsShot");
+            anim.SetTrigger("IsShot");
+            bucket.CurrentWeapon.OnShot();
+            audioSource.PlayOneShot(audioClipFire);
+            StartCoroutine(ShotDelayCo(bucket.CurrentWeapon.CurrentGunData.shotDelay));
+
+            float gunMaxRange = CurrentWeapon.CurrentGunData.gunMaxRange;
+            RaycastHit hit;
+            Ray ray = new Ray(mainCam.transform.position, mainCam.transform.forward);
+            if(Physics.Raycast(ray, out hit, gunMaxRange, targetMask))
+            {
+                if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+                {
+                    ZombieManager zombie = hit.collider.GetComponent<ZombieManager>();
+                    if (zombie != null)
+                    {
+                        zombie.OnDamage(bucket.CurrentWeapon.CurrentGunData.gunDamage);
+                        ParticleSystem fx = Instantiate<ParticleSystem>(DamageFX, hit.point, Quaternion.identity);
+                        DamageFX.Play();
+                        audioSource.PlayOneShot(audioClipDamage);
+                        Debug.DrawLine(ray.origin, hit.point, Color.red);
+
+                    }
+                    else
+                    {
+                        Debug.DrawLine(ray.origin, ray.origin + ray.direction * gunMaxRange, Color.green);
+                    }
+                }
+                else if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Environment"))
+                {
+                    //@tk 이거 환경 재질 마다 차이 주기
+                    ParticleSystem fx = Instantiate<ParticleSystem>(DamageFX, hit.point, Quaternion.identity);
+                    DamageFX.Play();
+                }
+
+            }
+        }
+    }
+
+    private void OnSniperShot()
+    {
+
+    }
+
+    private void OnShotgunShot()
+    {
+        //@tk : 이거 무기 별로 다르게 적용 : 현재 총 쏘는 것을 샷건, 스나이퍼로 하고 라이플은 꾹 누르면 연사
+        if (Input.GetMouseButtonDown(0) == true)
+        {
+            if (bucket.CurrentWeapon.CurrentBulletCount <= 0)
             {
                 return;
             }
@@ -455,37 +534,39 @@ public class PlayerManager : MonoBehaviour
             isShot = true;
             anim.SetTrigger("IsShot");
             bucket.CurrentWeapon.OnShot();
-            StartCoroutine(ShotDelayCo());
+            audioSource.PlayOneShot(audioClipFire);
+            StartCoroutine(ShotDelayCo(bucket.CurrentWeapon.CurrentGunData.shotDelay));
 
             float gunMaxRange = CurrentWeapon.CurrentGunData.gunMaxRange;
             Ray ray = new Ray(mainCam.transform.position, mainCam.transform.forward);
-            //@tk : multi
+            //@tk : TODO 이거 shotgun은 범위로 쏘자 ray가 아니라
             RaycastHit[] hits = Physics.RaycastAll(ray, gunMaxRange, targetMask);
-            int searchCount = 0;
-            if(hits.Length > 0)
+            if (hits.Length > 0)
             {
                 foreach (RaycastHit hit in hits)
                 {
-                    //@tk : 일단 단일 객체만 공격 (나중에 총기 별로 관통 수 구현)
-                    if(searchCount >= 1)
+                    if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Enemy"))
                     {
-                        break;
+                        ZombieManager zombie = hit.collider.GetComponent<ZombieManager>();
+                        if (zombie != null)
+                        {
+                            zombie.OnDamage(bucket.CurrentWeapon.CurrentGunData.gunDamage);
+                            ParticleSystem fx = Instantiate<ParticleSystem>(DamageFX, hit.point, Quaternion.identity);
+                            DamageFX.Play();
+                            audioSource.PlayOneShot(audioClipDamage);
+                            Debug.DrawLine(ray.origin, hit.point, Color.red);
+                        }
+                        else
+                        {
+                            Debug.DrawLine(ray.origin, ray.origin + ray.direction * gunMaxRange, Color.green);
+                        }
                     }
-
-                    searchCount++;
-                    Debug.LogFormat($"충돌 객체 : {hit.collider.gameObject.name}");
-
-                    ZombieManager zombie = hit.collider.GetComponent<ZombieManager>();
-                    if(zombie != null)
+                    else if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Environment"))
                     {
-                        //zombie.Damaged(bucket.CurrentWeapon.)
-                        zombie.OnDamage(20f);
+                        //@tk 이거 환경 재질 마다 차이 주기
                         ParticleSystem fx = Instantiate<ParticleSystem>(DamageFX, hit.point, Quaternion.identity);
                         DamageFX.Play();
-                        audioSource.PlayOneShot(audioClipDamage);
                     }
-
-                    Debug.DrawLine(ray.origin, hit.point, Color.red);
                 }
             }
             else
@@ -533,6 +614,14 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("EnemyAttack") == true)
+        {
+            anim.SetTrigger("OnDamaged");
+            
+        }
+    }
 
 
     #region On Animation Event
@@ -548,7 +637,7 @@ public class PlayerManager : MonoBehaviour
 
     public void OnAnimEventOneShotSound()
     {
-        audioSource.PlayOneShot(audioClipFire);
+        //
     }
     #endregion
 
@@ -579,10 +668,10 @@ public class PlayerManager : MonoBehaviour
         mainCam.fieldOfView = targetFov;
     }
 
-    IEnumerator ShotDelayCo()
+    IEnumerator ShotDelayCo(float delay)
     {
         float elapsedTime = 0.0f;
-        while (elapsedTime < rifleFireDelay) 
+        while (elapsedTime < delay) 
         {
             elapsedTime += Time.deltaTime;
             yield return null;  
@@ -604,4 +693,5 @@ public class PlayerManager : MonoBehaviour
     private readonly string Name_PlayerImmersionObj = "@PlayerImmersionObj";
     private readonly string Name_AimTarget = "@AimTarget";
     private readonly string Name_PickupTransform = "@PickupTransform";
+    private readonly string Name_FlashLight = "@FlashLight";
 }

@@ -20,7 +20,6 @@ public enum GunType
     Rifle,
     Sniper,
     Shotgun,
-
 }
 
 public enum PickableType

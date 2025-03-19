@@ -30,6 +30,14 @@ public class BucketManager : MonoBehaviour
         }
     }
 
+    public GunType CurrentGunType
+    {
+        get
+        {
+            return CurrentWeapon.CurrentGunData.GunType;
+        }
+    }
+
     //@tk : (25.03.07) 일단, 총기다 로드. 나중에는 먹은 총기만 사용하도록
     public void InitBucket()
     {

@@ -3,6 +3,16 @@ using UnityEngine;
 
 public static class UnityHelper
 {
+    public static bool IsTargetInFront(this Transform caller, Transform target)
+    {
+        Vector3 playerForward = caller.forward.normalized;
+        Vector3 toTarget = (target.position - caller.position).normalized;
+
+        float dot = Vector3.Dot(playerForward, toTarget);
+
+        return dot > 0;
+    }
+
     public static List<T> Shuffle<T>(List<T> originalList)
     {
         List<T> list = new List<T>(originalList);
@@ -35,4 +45,6 @@ public static class UnityHelper
 
         return null;
     }
+
+
 }

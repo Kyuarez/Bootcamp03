@@ -43,7 +43,7 @@ public class SpawnManager : MonoBehaviour
         float z = randomRadius * Mathf.Sin(randomAngle);
         float y = 0; // 고정
 
-        return new Vector3(x, y, z) + transform.position; // 현재 Transform 위치 기준
+        return new Vector3(x, y, z); // 현재 Transform 위치 기준
     }
 
 

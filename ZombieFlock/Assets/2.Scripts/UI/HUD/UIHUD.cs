@@ -36,7 +36,7 @@ public class UIHUD : MonoBehaviour
         Gun gun = Operator.Instance.PlayerManager.CurrentWeapon;
         bulletText.text = $"{gun.CurrentBulletCount}/{gun.MaxBulletCount}";
         magazineText.text = $"{gun.CurrentMagazineCount}/{gun.MaxMagazineCount}";
-        weaponNameText.text = $"Current : {gun.CurrentGunName}";
+        weaponNameText.text = $"Current : {gun.GunName}";
     }
 
     private void ResetWeaponHUD()
