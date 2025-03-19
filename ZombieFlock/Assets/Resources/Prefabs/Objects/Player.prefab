@@ -4098,7 +4098,9 @@ MonoBehaviour:
     m_Bits: 256
   audioClipFire: {fileID: 8300000, guid: 08e69622a48de234b9bc3193c1b079b9, type: 3}
   audioClipWeaponChange: {fileID: 8300000, guid: 1e22cb384edac9c4a9819eab30270bdd, type: 3}
+  audioClipDamage: {fileID: 8300000, guid: ea244dfd762ff314187efab367683654, type: 3}
   audioSource: {fileID: 811126644720761595}
+  DamageFX: {fileID: 19800002, guid: 3b1513bcb86426b4795879be6a128ed7, type: 3}
 --- !u!114 &6748273487277140945
 MonoBehaviour:
   m_ObjectHideFlags: 0

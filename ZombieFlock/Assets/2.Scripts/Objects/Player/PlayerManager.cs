@@ -73,7 +73,11 @@ public class PlayerManager : MonoBehaviour
     //sound
     public AudioClip audioClipFire;
     public AudioClip audioClipWeaponChange;
+    public AudioClip audioClipDamage;
     public AudioSource audioSource;
+
+    //@tk particle
+    public ParticleSystem DamageFX;
 
     public bool IsFirstPerson {  get { return isFirstPerson; } }
     public bool IsImersion {  get { return isImmersion; } }
@@ -462,6 +466,12 @@ public class PlayerManager : MonoBehaviour
             {
                 foreach (RaycastHit hit in hits)
                 {
+                    //@tk : 일단 단일 객체만 공격 (나중에 총기 별로 관통 수 구현)
+                    if(searchCount >= 1)
+                    {
+                        break;
+                    }
+
                     searchCount++;
                     Debug.LogFormat($"충돌 객체 : {hit.collider.gameObject.name}");
 
@@ -470,8 +480,11 @@ public class PlayerManager : MonoBehaviour
                     {
                         //zombie.Damaged(bucket.CurrentWeapon.)
                         zombie.OnDamage(20f);
+                        ParticleSystem fx = Instantiate<ParticleSystem>(DamageFX, hit.point, Quaternion.identity);
+                        DamageFX.Play();
+                        audioSource.PlayOneShot(audioClipDamage);
                     }
-                   
+
                     Debug.DrawLine(ray.origin, hit.point, Color.red);
                 }
             }

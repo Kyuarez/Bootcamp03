@@ -2400,7 +2400,7 @@ MonoBehaviour:
   sfx_attack_s: {fileID: 8300000, guid: 543fc519c4b70244cb1295138a51afd5, type: 3}
   sfx_attack_b: {fileID: 8300000, guid: 1a43e0f79fc6878439f14eb32d9f1c09, type: 3}
   sfx_dead: {fileID: 8300000, guid: 0c0e94d4014a4154184fe1d4a78610e9, type: 3}
-  sfx_scream: {fileID: 0}
+  sfx_scream: {fileID: 8300000, guid: b24eab66be413c342812ba7d6987fa95, type: 3}
 --- !u!54 &3446600762408841132
 Rigidbody:
   m_ObjectHideFlags: 0

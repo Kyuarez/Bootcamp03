@@ -254,32 +254,24 @@ public class ZombieManager : MonoBehaviour, IPoolable
     public IEnumerator Damaged(float damage)
     {
         //TODO : 계속 못 맞게 무적
-        AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
-        if(stateInfo.IsName("Z_Damaged") == true)
-        {
-            while(stateInfo.normalizedTime < 1.0f)
-            {
-                yield return null;
-            }
-        }
-
-        anim.SetTrigger("OnDamaged");
         zombieHP -= damage;
-        Debug.LogFormat($"zombie HP : {zombieHP}");
-
         if(zombieHP <= 0)
         {
             ChangeState(ZombieState.Die);
         }
         else
         {
-            if(distanceToTarget < trackingRange)
+            anim.SetTrigger("OnDamaged");
+            Debug.LogFormat($"zombie HP : {zombieHP}");
+
+            if (distanceToTarget < trackingRange)
             {
                 ChangeState(ZombieState.Chase); 
             }
             else
             {
-                ChangeState(ZombieState.Evade);
+                //@tk: Evade는 나중에 다른 로직으로
+                ChangeState(ZombieState.Patrol);
             }
         }
         yield return null;
@@ -331,5 +323,11 @@ public class ZombieManager : MonoBehaviour, IPoolable
             default:
                 break;
         }
+    }
+
+    public void OnSfxScream()
+    {
+        //@tk 이거 소리 다른걸로 바꿔야함. 너무 커서 주석처리
+        //audioSource.PlayOneShot(sfx_scream);
     }
 }
