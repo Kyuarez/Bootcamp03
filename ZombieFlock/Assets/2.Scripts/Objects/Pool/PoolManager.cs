@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEditor.Recorder.OutputPath;
 
 //@tk : 
 public class PoolManager : MonoSingleton<PoolManager>
@@ -68,6 +69,16 @@ public class PoolManager : MonoSingleton<PoolManager>
 
         var pool = poolDict[typeof(T).Name];
         return pool.SpawnObject(Root);
+    }
+    public GameObject SpawnObjectInWorld<T>(Vector3 position)
+    {
+        if (poolDict.ContainsKey(typeof(T).Name) == false)
+        {
+            return null;
+        }
+
+        var pool = poolDict[typeof(T).Name];
+        return pool.SpawnObjectInWorld(position);
     }
     public GameObject SpawnObject<T>(Transform Root, Vector3 localPosition) where T : MonoBehaviour
     {

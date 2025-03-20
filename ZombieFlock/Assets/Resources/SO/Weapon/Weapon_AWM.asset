@@ -14,11 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CodeName: AWM
   GunType: 1
-  ShotSfx: {fileID: 0}
   magazineCount: 5
   bulletCount: 10
   gunDamage: 25
   gunMaxRange: 1000
   shotDelay: 5
+  shakeDuration: 0.25
+  shakeMagnitude: 0.005
   recoilDuration: 0.25
   recoilMagnitude: 0.005

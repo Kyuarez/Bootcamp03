@@ -27,7 +27,18 @@ public class CFX_AutoDestructShuriken : MonoBehaviour
 					#endif
 				}
 				else
-					GameObject.Destroy(this.gameObject);
+				{
+					IPoolable poolObj = gameObject.GetComponent<IPoolable>();
+
+                    if (poolObj != null)
+					{
+						PoolManager.Instance.DeSpawnObject(poolObj);
+					}
+					else
+					{
+						GameObject.Destroy(this.gameObject);
+					}
+				}
 				break;
 			}
 		}

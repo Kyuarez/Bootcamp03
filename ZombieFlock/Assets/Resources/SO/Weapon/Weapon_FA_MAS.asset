@@ -14,11 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CodeName: FA_MAS
   GunType: 0
-  ShotSfx: {fileID: 0}
   magazineCount: 6
   bulletCount: 50
   gunDamage: 5
   gunMaxRange: 500
   shotDelay: 0.1
+  shakeDuration: 0.25
+  shakeMagnitude: 0.0005
   recoilDuration: 0.25
   recoilMagnitude: 0.0005

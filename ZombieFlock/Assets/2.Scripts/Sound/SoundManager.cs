@@ -42,16 +42,27 @@ public class SoundManager : MonoSingleton<SoundManager>
         }
     }
 
-    public void PlayBGM(string name)
+    public void PlayBGM(string name, float fadeDuration = 1.0f)
     {
         if(bgmClipDict.ContainsKey(name) == false)
         {
             return;
         }
 
-        bgmSource.clip = bgmClipDict[name];
-        bgmSource.Play();
+        if(currentBGMCoroutine != null)
+        {
+            StopCoroutine(currentBGMCoroutine);
+            currentBGMCoroutine = null;
+        }
+
+        StartCoroutine(FadeOutBGMCo(fadeDuration, () =>
+        {
+            bgmSource.clip = bgmClipDict[name]; 
+            bgmSource.Play();
+            currentBGMCoroutine = StartCoroutine(FadeInBGMCo(fadeDuration));
+        }));
     }
+    //@tk : 이거 UI 효과음 하면 좋을 듯
     public void PlaySFX(string name)
     {
         if (sfxClipDict.ContainsKey(name) == false)
@@ -60,6 +71,15 @@ public class SoundManager : MonoSingleton<SoundManager>
         }
 
         sfxSource.PlayOneShot(sfxClipDict[name]);
+    }
+    public void PlaySFX(string name, Vector3 position)
+    {
+        if (sfxClipDict.ContainsKey(name) == false)
+        {
+            return;
+        }
+
+        AudioSource.PlayClipAtPoint(sfxClipDict[name], position);
     }
     public void PauseBGM()
     {

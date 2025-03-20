@@ -70,7 +70,6 @@ public class PlayerManager : MonoBehaviour
     private BucketManager bucket;
 
     //@tk particle
-    public ParticleSystem DamageFX;
     private GameObject flashLight;
 
     public bool IsFirstPerson {  get { return isFirstPerson; } }
@@ -133,6 +132,8 @@ public class PlayerManager : MonoBehaviour
 
         moveSpeed = walkSpeed;
         bucket.InitBucket();
+
+        flashLight.SetActive(false);
     }
 
     private void Update()
@@ -306,6 +307,11 @@ public class PlayerManager : MonoBehaviour
                 SetTargetDistance(zoomValue);
                 zoomCoroutine = StartCoroutine(ZoomCameraCo(targetDistance));
             }
+
+            if(flashLight.activeSelf == false)
+            {
+                flashLight.SetActive(true);
+            }
         }
 
         if (Input.GetMouseButtonUp(1) == true)
@@ -333,6 +339,11 @@ public class PlayerManager : MonoBehaviour
                 float zoomValue = (isImmersion == false) ? thirdPersonDistance : immersionDistance;
                 SetTargetDistance(zoomValue);
                 zoomCoroutine = StartCoroutine(ZoomCameraCo(targetDistance));
+            }
+
+            if(flashLight.activeSelf == true)
+            {
+                flashLight.SetActive(false);
             }
         }
     }
@@ -474,7 +485,7 @@ public class PlayerManager : MonoBehaviour
             anim.ResetTrigger("IsShot");
             anim.SetTrigger("IsShot");
             bucket.CurrentWeapon.OnShot();
-            SoundManager.Instance.PlaySFX("SFX_Weapon_Rifle");
+            SoundManager.Instance.PlaySFX("SFX_Weapon_Rifle", transform.position);
             StartCoroutine(ShotDelayCo(bucket.CurrentWeapon.CurrentGunData.shotDelay));
 
             float gunMaxRange = CurrentWeapon.CurrentGunData.gunMaxRange;
@@ -488,9 +499,8 @@ public class PlayerManager : MonoBehaviour
                     if (zombie != null)
                     {
                         zombie.OnDamage(bucket.CurrentWeapon.CurrentGunData.gunDamage);
-                        ParticleSystem fx = Instantiate<ParticleSystem>(DamageFX, hit.point, Quaternion.identity);
-                        DamageFX.Play();
-                        SoundManager.Instance.PlaySFX("SFX_Zombie_Damaged");
+                        PoolManager.Instance.SpawnObjectInWorld<FX_RiflingMark_SoftBody>(hit.point);
+                        SoundManager.Instance.PlaySFX("SFX_Zombie_Damaged", zombie.transform.position);
                         Debug.DrawLine(ray.origin, hit.point, Color.red);
 
                     }
@@ -502,8 +512,7 @@ public class PlayerManager : MonoBehaviour
                 else if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Environment"))
                 {
                     //@tk 이거 환경 재질 마다 차이 주기
-                    ParticleSystem fx = Instantiate<ParticleSystem>(DamageFX, hit.point, Quaternion.identity);
-                    DamageFX.Play();
+                    PoolManager.Instance.SpawnObjectInWorld<FX_RiflingMark_Concrete>(hit.point);
                 }
 
             }
@@ -515,12 +524,8 @@ public class PlayerManager : MonoBehaviour
 
     }
 
-    /// <summary>
-    /// Ray : 
-    /// </summary>
     private void OnShotgunShot()
-    {
-        
+    {   
         if (Input.GetMouseButtonDown(0) == true)
         {
             if (bucket.CurrentWeapon.CurrentBulletCount <= 0)
@@ -531,19 +536,23 @@ public class PlayerManager : MonoBehaviour
             isShot = true;
             anim.SetTrigger("IsShot");
             bucket.CurrentWeapon.OnShot();
-            SoundManager.Instance.PlaySFX("SFX_Weapon_Shotgun");
+            SoundManager.Instance.PlaySFX("SFX_Weapon_Shotgun", transform.position);
             StartCoroutine(ShotDelayCo(bucket.CurrentWeapon.CurrentGunData.shotDelay));
 
+            //@tk : shotgun (한번에 5탄 Ray로 Random하게 쏴서 중복 데미지 적용)
+            int shotCount = 5;
+            float spreadAngle = 15f;
             float gunMaxRange = CurrentWeapon.CurrentGunData.gunMaxRange;
-            //Ray ray = new Ray(mainCam.transform.position, mainCam.transform.forward);
-            //@tk : TODO 이거 shotgun은 범위로 쏘자 ray가 아니라
-            //RaycastHit[] hits = Physics.RaycastAll(ray, gunMaxRange, targetMask);
-            Vector3 areaOrigin = (transform.position + transform.forward * 5.0f);
-            RaycastHit[] hits = Physics.SphereCastAll((transform.position + transform.forward * 5.0f), 5.0f, Vector3.up, 0f, targetMask);
-            
-            if (hits.Length > 0)
+
+            for (int i = 0; i < shotCount; i++)
             {
-                foreach (RaycastHit hit in hits)
+                float randomX = Random.Range(-spreadAngle, spreadAngle);
+                float randomY = Random.Range(-spreadAngle, spreadAngle);
+                Vector3 randDirection = (new Vector3(randomX, randomY, 0f).normalized * 0.1f) + mainCam.transform.forward;
+                Ray ray = new Ray(mainCam.transform.position, randDirection);
+                RaycastHit hit;
+
+                if (Physics.Raycast(ray, out hit, gunMaxRange, targetMask))
                 {
                     if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Enemy"))
                     {
@@ -551,27 +560,23 @@ public class PlayerManager : MonoBehaviour
                         if (zombie != null)
                         {
                             zombie.OnDamage(bucket.CurrentWeapon.CurrentGunData.gunDamage);
-                            //ParticleSystem fx = Instantiate<ParticleSystem>(DamageFX, hit.point, Quaternion.identity);
-                            //DamageFX.Play();
-                            SoundManager.Instance.PlaySFX("SFX_Zombie_Damaged");
-                            //Debug.DrawLine(ray.origin, hit.point, Color.red);
+                            PoolManager.Instance.SpawnObjectInWorld<FX_RiflingMark_SoftBody>(hit.point);
+                            SoundManager.Instance.PlaySFX("SFX_Zombie_Damaged", zombie.transform.position);
+                            Debug.DrawLine(ray.origin, hit.point, Color.red);
+
                         }
                         else
                         {
-                            //Debug.DrawLine(ray.origin, ray.origin + ray.direction * gunMaxRange, Color.green);
+                            Debug.DrawLine(ray.origin, ray.origin + ray.direction * gunMaxRange, Color.green);
                         }
                     }
                     else if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Environment"))
                     {
                         //@tk 이거 환경 재질 마다 차이 주기
-                        //ParticleSystem fx = Instantiate<ParticleSystem>(DamageFX, hit.point, Quaternion.identity);
-                        //DamageFX.Play();
+                        PoolManager.Instance.SpawnObjectInWorld<FX_RiflingMark_Concrete>(hit.point);
                     }
+
                 }
-            }
-            else
-            {
-                //Debug.DrawLine(ray.origin, ray.origin + ray.direction * gunMaxRange, Color.green);
             }
         }
     }
@@ -631,7 +636,7 @@ public class PlayerManager : MonoBehaviour
     }
     public void OnAnimEventWeaponChangeSound()
     {
-        SoundManager.Instance.PlaySFX("SFX_Weapon_Equipped");
+        SoundManager.Instance.PlaySFX("SFX_Weapon_Equipped", transform.position);
     }
 
     public void OnAnimEventOneShotSound()

@@ -14,11 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CodeName: BenelliM4
   GunType: 2
-  ShotSfx: {fileID: 0}
   magazineCount: 5
   bulletCount: 5
   gunDamage: 25
   gunMaxRange: 100
   shotDelay: 1
+  shakeDuration: 0.25
+  shakeMagnitude: 0.01
   recoilDuration: 0.25
-  recoilMagnitude: 0.005
+  recoilMagnitude: 0.01

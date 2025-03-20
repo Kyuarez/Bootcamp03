@@ -49,6 +49,19 @@ public class ObjectPool : IPool
         obj.SetActive(true);
         return obj;
     }
+    public GameObject SpawnObjectInWorld(Vector3 position)
+    {
+        if (pools.Count == 0)
+        {
+            return null;
+        }
+
+        GameObject obj = pools.Dequeue();
+        obj.transform.SetParent(null);
+        obj.transform.position = position;
+        obj.SetActive(true);
+        return obj;
+    }
 
     public void DeSpawnObject(GameObject prefab)
     {
@@ -57,4 +70,5 @@ public class ObjectPool : IPool
         prefab.transform.position = Vector3.zero;
         pools.Enqueue(prefab);
     }
+
 }

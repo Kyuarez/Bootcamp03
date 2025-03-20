@@ -14,11 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CodeName: AK_47
   GunType: 0
-  ShotSfx: {fileID: 0}
   magazineCount: 6
   bulletCount: 50
   gunDamage: 10
   gunMaxRange: 500
   shotDelay: 0.2
+  shakeDuration: 0.25
+  shakeMagnitude: 0.005
   recoilDuration: 0.25
   recoilMagnitude: 0.005

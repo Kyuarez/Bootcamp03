@@ -14,11 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CodeName: CS2_M4
   GunType: 0
-  ShotSfx: {fileID: 0}
   magazineCount: 10
   bulletCount: 200
   gunDamage: 5
   gunMaxRange: 500
   shotDelay: 0.1
+  shakeDuration: 0.25
+  shakeMagnitude: 0.0025
   recoilDuration: 0.25
   recoilMagnitude: 0.0025

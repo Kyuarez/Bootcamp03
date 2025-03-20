@@ -38,7 +38,7 @@ public class ZombieManager : MonoBehaviour, IPoolable
     protected float attackDelay = 1.0f;
     protected float nextAttackTime = 0.0f;
     protected float moveSpeed = 1.0f;
-    protected float chaseSpeed = 2.0f;
+    protected float chaseSpeed = 4.0f;
     protected float evadeSpeed = 3.0f;
     protected float trackingRange = 10.0f;
     protected float evadeRange = 5.0f;
@@ -168,7 +168,6 @@ public class ZombieManager : MonoBehaviour, IPoolable
                 ChangeState(ZombieState.Chase); 
             }
         }
-        
         else
         {
             if (patrolPoints == null || patrolPoints.Count <= 0) 
@@ -203,6 +202,8 @@ public class ZombieManager : MonoBehaviour, IPoolable
     {
         anim.SetBool("IsWalk", true);
         anim.SetBool("IsRun", false);
+       
+
         while (currentState == ZombieState.Patrol) 
         {
             SetStateByDistance();
@@ -323,7 +324,10 @@ public class ZombieManager : MonoBehaviour, IPoolable
     {
         //TODO : 계속 못 맞게 무적
         zombieHP -= damage;
-        if(zombieHP <= 0)
+        agent.speed = 0f;
+        agent.isStopped = true;
+
+        if (zombieHP <= 0)
         {
             ChangeState(ZombieState.Die);
         }
@@ -331,18 +335,7 @@ public class ZombieManager : MonoBehaviour, IPoolable
         {
             anim.SetTrigger("OnDamaged");
             Debug.LogFormat($"zombie HP : {zombieHP}");
-            agent.speed = 0f;
-            agent.isStopped = true;
-
-            if (distanceToTarget < trackingRange)
-            {
-                ChangeState(ZombieState.Chase); 
-            }
-            else
-            {
-                //@tk: Evade는 나중에 다른 로직으로
-                ChangeState(ZombieState.Patrol);
-            }
+            SetStateByDistance();
         }
         yield return null;
     }
@@ -420,7 +413,7 @@ public class ZombieManager : MonoBehaviour, IPoolable
             case ZombieState.Attack:
                 if(distanceToTarget < attackRange)
                 {
-                    SoundManager.Instance.PlaySFX("SFX_Zombie_Attack_s");
+                    SoundManager.Instance.PlaySFX("SFX_Zombie_Attack_s", transform.position);
                 }
                 break;
             case ZombieState.Evade:
