@@ -13,6 +13,7 @@ public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     private Vector3 targetScale;
     private bool isAnim = false;
     private float animDuration = 0.3f;
+    private Coroutine currentCoroutine;
     private Button button;
 
     private void Awake()
@@ -29,11 +30,14 @@ public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             return;
         }
 
-        if (!isAnim) 
+        
+        if(currentCoroutine != null)
         {
-            StopAllCoroutines();
-            StartCoroutine(AnimateScale(targetScale, true));
+            StopCoroutine(currentCoroutine);
+            currentCoroutine = null;
         }
+        currentCoroutine = StartCoroutine(AnimateScale(targetScale, true));
+        
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -43,16 +47,16 @@ public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             return;
         }
 
-        if (!isAnim)
+        if (currentCoroutine != null)
         {
-            StopAllCoroutines();
-            StartCoroutine(AnimateScale(originScale, false));
+            StopCoroutine(currentCoroutine);
+            currentCoroutine = null;
         }
+        currentCoroutine = StartCoroutine(AnimateScale(originScale, false));
     }
 
     private IEnumerator AnimateScale(Vector3 target, bool isEnter)
     {
-        isAnim = true;
         float elapsedTime = 0f;
 
         while (elapsedTime < animDuration)
@@ -66,6 +70,5 @@ public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         }
 
         transform.localScale = target;
-        isAnim = false;
     }
 }

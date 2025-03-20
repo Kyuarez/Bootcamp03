@@ -157,6 +157,16 @@ public class ZombieManager : MonoBehaviour, IPoolable
 
     private void SetStateByDistance()
     {
+        if (currentState == ZombieState.Die)
+        {
+            return;
+        }
+        if (zombieHP <= 0)
+        {
+            ChangeState(ZombieState.Die);
+            return;
+        }
+        
         if (distanceToTarget < trackingRange)
         {
             if (distanceToTarget < attackRange)
@@ -322,6 +332,11 @@ public class ZombieManager : MonoBehaviour, IPoolable
     //@tk 외부에서 호출
     public IEnumerator Damaged(float damage)
     {
+        if(currentState == ZombieState.Die)
+        {
+            yield break;
+        }
+
         //TODO : 계속 못 맞게 무적
         zombieHP -= damage;
         agent.speed = 0f;
