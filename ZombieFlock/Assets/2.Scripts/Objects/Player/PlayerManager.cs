@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using TKCamera;
 using UnityEngine.Animations.Rigging;
+using static UnityEngine.UI.Image;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -67,13 +68,6 @@ public class PlayerManager : MonoBehaviour
 
     private bool isShot = false;
     private BucketManager bucket;
-
-    //@tk : temp
-    //sound
-    public AudioClip audioClipFire;
-    public AudioClip audioClipWeaponChange;
-    public AudioClip audioClipDamage;
-    public AudioSource audioSource;
 
     //@tk particle
     public ParticleSystem DamageFX;
@@ -480,7 +474,7 @@ public class PlayerManager : MonoBehaviour
             anim.ResetTrigger("IsShot");
             anim.SetTrigger("IsShot");
             bucket.CurrentWeapon.OnShot();
-            audioSource.PlayOneShot(audioClipFire);
+            SoundManager.Instance.PlaySFX("SFX_Weapon_Rifle");
             StartCoroutine(ShotDelayCo(bucket.CurrentWeapon.CurrentGunData.shotDelay));
 
             float gunMaxRange = CurrentWeapon.CurrentGunData.gunMaxRange;
@@ -496,7 +490,7 @@ public class PlayerManager : MonoBehaviour
                         zombie.OnDamage(bucket.CurrentWeapon.CurrentGunData.gunDamage);
                         ParticleSystem fx = Instantiate<ParticleSystem>(DamageFX, hit.point, Quaternion.identity);
                         DamageFX.Play();
-                        audioSource.PlayOneShot(audioClipDamage);
+                        SoundManager.Instance.PlaySFX("SFX_Zombie_Damaged");
                         Debug.DrawLine(ray.origin, hit.point, Color.red);
 
                     }
@@ -521,9 +515,12 @@ public class PlayerManager : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Ray : 
+    /// </summary>
     private void OnShotgunShot()
     {
-        //@tk : 이거 무기 별로 다르게 적용 : 현재 총 쏘는 것을 샷건, 스나이퍼로 하고 라이플은 꾹 누르면 연사
+        
         if (Input.GetMouseButtonDown(0) == true)
         {
             if (bucket.CurrentWeapon.CurrentBulletCount <= 0)
@@ -534,13 +531,16 @@ public class PlayerManager : MonoBehaviour
             isShot = true;
             anim.SetTrigger("IsShot");
             bucket.CurrentWeapon.OnShot();
-            audioSource.PlayOneShot(audioClipFire);
+            SoundManager.Instance.PlaySFX("SFX_Weapon_Shotgun");
             StartCoroutine(ShotDelayCo(bucket.CurrentWeapon.CurrentGunData.shotDelay));
 
             float gunMaxRange = CurrentWeapon.CurrentGunData.gunMaxRange;
-            Ray ray = new Ray(mainCam.transform.position, mainCam.transform.forward);
+            //Ray ray = new Ray(mainCam.transform.position, mainCam.transform.forward);
             //@tk : TODO 이거 shotgun은 범위로 쏘자 ray가 아니라
-            RaycastHit[] hits = Physics.RaycastAll(ray, gunMaxRange, targetMask);
+            //RaycastHit[] hits = Physics.RaycastAll(ray, gunMaxRange, targetMask);
+            Vector3 areaOrigin = (transform.position + transform.forward * 5.0f);
+            RaycastHit[] hits = Physics.SphereCastAll((transform.position + transform.forward * 5.0f), 5.0f, Vector3.up, 0f, targetMask);
+            
             if (hits.Length > 0)
             {
                 foreach (RaycastHit hit in hits)
@@ -551,27 +551,27 @@ public class PlayerManager : MonoBehaviour
                         if (zombie != null)
                         {
                             zombie.OnDamage(bucket.CurrentWeapon.CurrentGunData.gunDamage);
-                            ParticleSystem fx = Instantiate<ParticleSystem>(DamageFX, hit.point, Quaternion.identity);
-                            DamageFX.Play();
-                            audioSource.PlayOneShot(audioClipDamage);
-                            Debug.DrawLine(ray.origin, hit.point, Color.red);
+                            //ParticleSystem fx = Instantiate<ParticleSystem>(DamageFX, hit.point, Quaternion.identity);
+                            //DamageFX.Play();
+                            SoundManager.Instance.PlaySFX("SFX_Zombie_Damaged");
+                            //Debug.DrawLine(ray.origin, hit.point, Color.red);
                         }
                         else
                         {
-                            Debug.DrawLine(ray.origin, ray.origin + ray.direction * gunMaxRange, Color.green);
+                            //Debug.DrawLine(ray.origin, ray.origin + ray.direction * gunMaxRange, Color.green);
                         }
                     }
                     else if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Environment"))
                     {
                         //@tk 이거 환경 재질 마다 차이 주기
-                        ParticleSystem fx = Instantiate<ParticleSystem>(DamageFX, hit.point, Quaternion.identity);
-                        DamageFX.Play();
+                        //ParticleSystem fx = Instantiate<ParticleSystem>(DamageFX, hit.point, Quaternion.identity);
+                        //DamageFX.Play();
                     }
                 }
             }
             else
             {
-                Debug.DrawLine(ray.origin, ray.origin + ray.direction * gunMaxRange, Color.green);
+                //Debug.DrawLine(ray.origin, ray.origin + ray.direction * gunMaxRange, Color.green);
             }
         }
     }
@@ -627,12 +627,11 @@ public class PlayerManager : MonoBehaviour
     #region On Animation Event
     public void OnAnimEventFootSound()
     {
-        //@tk : 지면 Raycast해서 발소리 변경
-        //audioSource.PlayOneShot(audioClipFire);
+
     }
     public void OnAnimEventWeaponChangeSound()
     {
-        audioSource.PlayOneShot(audioClipWeaponChange);
+        SoundManager.Instance.PlaySFX("SFX_Weapon_Equipped");
     }
 
     public void OnAnimEventOneShotSound()
@@ -681,8 +680,8 @@ public class PlayerManager : MonoBehaviour
     }
     #endregion
 
-    #region Test
-
+    #region Gizmos
+    
 
 
     #endregion

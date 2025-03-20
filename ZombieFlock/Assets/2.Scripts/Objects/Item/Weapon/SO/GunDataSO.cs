@@ -8,7 +8,6 @@ public class GunDataSO : ScriptableObject
     [Header("Base Data")]
     public string CodeName;
     public GunType GunType;
-    public AudioClip ShotSfx;
     public int magazineCount; //ÅºÃ¢ ¼ö
     public int bulletCount; //Åº¾Ë ¼ö
 

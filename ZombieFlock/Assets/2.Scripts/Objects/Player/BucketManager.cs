@@ -53,7 +53,8 @@ public class BucketManager : MonoBehaviour
             obj.transform.localPosition = Define.Rifle_Pos;
             obj.transform.localRotation = Quaternion.Euler(Define.Rifle_Rotate);
             obj.transform.localScale = Vector3.one;
-            obj.SetActive(true);    
+            obj.SetActive(true);
+            UIManager.CrossHair.SetCrossHairByWeapon();
             return;
         }
 
@@ -70,6 +71,7 @@ public class BucketManager : MonoBehaviour
         weapon.transform.localPosition = Define.Rifle_Pos;
         weapon.transform.localRotation = Quaternion.Euler(Define.Rifle_Rotate);
         weapon.transform.localScale = Vector3.one;
+        UIManager.CrossHair.SetCrossHairByWeapon();
         weapon.SetActive(true);
     }
 

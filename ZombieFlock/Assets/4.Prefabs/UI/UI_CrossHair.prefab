@@ -87,6 +87,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: {fileID: 893220917243108382}
   crossHairImage: {fileID: 572100345947115818}
+  crossHairRifle: {fileID: 21300000, guid: 8c89ed5746a4faa48bb97701cc2f2e35, type: 3}
+  crossHairShotgun: {fileID: 21300000, guid: 3e60add3ecb1915459d46e3b3a0287f8, type: 3}
+  crossHairSniper: {fileID: 21300000, guid: e0428471d821e3148a5f4f772643269a, type: 3}
 --- !u!1 &3246501216846910388
 GameObject:
   m_ObjectHideFlags: 0
@@ -152,7 +155,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: cb3a1cec13f16b34f969c2e735dd51c8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8c89ed5746a4faa48bb97701cc2f2e35, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

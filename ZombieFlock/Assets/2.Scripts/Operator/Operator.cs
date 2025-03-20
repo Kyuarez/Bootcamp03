@@ -6,6 +6,7 @@ public class Operator : MonoSingleton<Operator>
     [SerializeField] private bool isDevMode;
 
     private PlayerManager ingamePlayer;
+    private UIManager uiManager;
     private PoolManager poolManager;
     private PatrolPointManager patrolManager;
     private CameraShake cameraShake;
@@ -58,10 +59,18 @@ public class Operator : MonoSingleton<Operator>
         }
     }
 
+    public UIManager UIManager
+    {
+        get { return uiManager; }
+    }
+
     protected override void Awake()
     {
+        //TODO : 이거 이제 Awake 할 때랑 Scene에서 받을 것이랑 구분해야 함.
         //Bind
         poolManager = Object.FindAnyObjectByType<PoolManager>();
+        uiManager = Object.FindAnyObjectByType<UIManager>();
+
         cameraShake = Camera.main.GetComponent<CameraShake>();
 
         
@@ -69,9 +78,10 @@ public class Operator : MonoSingleton<Operator>
 
     private void Update()
     {
-        //if(Input.GetKeyDown(KeyCode.Q) == true)
-        //{
-
-        //}
+        if (Input.GetKeyDown(KeyCode.Escape) == true)
+        {
+            bool isPause = UIManager.InGameMenu.OnIngameMenu();
+            Time.timeScale = (isPause == true) ? 0 : 1;
+        }
     }
 }

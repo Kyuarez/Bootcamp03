@@ -6,7 +6,6 @@ public class GunData : MonoBehaviour
 {
     public string CodeName;
     public GunType GunType;
-    public AudioClip ShotSfx;
     public int magazineMaxCount; //ÅºÃ¢ ¼ö
     public int bulletMaxCount; //Åº¾Ë ¼ö
 
@@ -34,7 +33,6 @@ public class GunData : MonoBehaviour
     {
         this.CodeName = dataSO.CodeName;
         this.GunType = dataSO.GunType;
-        this.ShotSfx = dataSO.ShotSfx;
         this.magazineMaxCount = dataSO.magazineCount;
         this.bulletMaxCount = dataSO.bulletCount;
 

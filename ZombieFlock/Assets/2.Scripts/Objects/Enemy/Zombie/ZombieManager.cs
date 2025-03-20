@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+using Unity.AI.Navigation;
+using System;
 
 public class ZombieManager : MonoBehaviour, IPoolable
 {
@@ -27,6 +29,7 @@ public class ZombieManager : MonoBehaviour, IPoolable
 
     protected Transform target;
     protected CapsuleCollider col;
+    protected Rigidbody rigid;
     protected Animator anim;
     protected NavMeshAgent agent;
     protected Coroutine stateRoutine;
@@ -41,6 +44,12 @@ public class ZombieManager : MonoBehaviour, IPoolable
     protected float evadeRange = 5.0f;
     protected float distanceToTarget;
 
+    //jump
+    protected bool isJumping = false;
+    protected float jumpHeight = 2.0f;
+    protected float jumpDuration = 1.0f;
+    protected NavMeshLink[] navMeshLinks;
+
     protected bool isAttack = false;
     protected bool isWaiting = false; //@tk 상태 전환 후 대기 상태
     protected float idleTime = 2.0f; //@tk 상태 전환 후 대기 시간
@@ -49,15 +58,6 @@ public class ZombieManager : MonoBehaviour, IPoolable
 
     //Health
     protected float zombieHP = 100.0f;
-
-    //Sound : 나중엔 매니저에서 일괄 처리 클립 가지고 있는거 불편함
-    [Header("Sound")]
-    protected AudioSource audioSource;
-    [SerializeField] protected AudioClip sfx_attack_s;
-    [SerializeField] protected AudioClip sfx_attack_b;
-    [SerializeField] protected AudioClip sfx_dead;
-    [SerializeField] protected AudioClip sfx_scream;
-
 
     public ZombieState CurrentState
     {
@@ -85,8 +85,9 @@ public class ZombieManager : MonoBehaviour, IPoolable
     {
         anim = GetComponent<Animator>();
         col = GetComponent<CapsuleCollider>();
-        audioSource = GetComponent<AudioSource>();
         agent = GetComponent<NavMeshAgent>();
+        rigid = GetComponent<Rigidbody>();
+
         handAttackArea = transform.FindRecursiveChild(Name_Z_AttackArea).gameObject;
 
         anim.applyRootMotion = false;
@@ -98,6 +99,8 @@ public class ZombieManager : MonoBehaviour, IPoolable
         {
             col.enabled = true;
         }
+
+        navMeshLinks = FindObjectsOfType<NavMeshLink>();
 
         distanceToTarget = Vector3.Distance(transform.position, Target.position);
         CurrentState = ZombieState.Idle;
@@ -120,12 +123,25 @@ public class ZombieManager : MonoBehaviour, IPoolable
             return;
         }
 
+        if(isJumping == true)
+        {
+            return;
+        }
+
         distanceToTarget = Vector3.Distance(transform.position, Target.position);
     }
 
     public void ChangeState(ZombieState state)
     {
-        if(currentState == state)
+        if (currentState == ZombieState.Die)
+        {
+            return;
+        }
+        if (isJumping == true)
+        {
+            return;
+        }
+        if (currentState == state)
         {
             return;
         }
@@ -197,6 +213,13 @@ public class ZombieManager : MonoBehaviour, IPoolable
             agent.speed = moveSpeed;
             agent.isStopped = false;
             agent.destination = targetPoint.position;
+
+            if (agent.isOnOffMeshLink == true)
+            {
+                //TODO
+                StartCoroutine(JumpAcrossLink());
+            }
+
 
             if (Vector3.Distance(transform.position, targetPoint.position) < 0.3f)
             {
@@ -351,6 +374,41 @@ public class ZombieManager : MonoBehaviour, IPoolable
         ChangeState(ZombieState.Idle);
     }
 
+    //@tk : NavMeshLink 이동
+    //@Patrol 중에 행동 코루틴이라서 상태 아님.
+    /*
+    해당 코드 발전 방향
+    -> 애니메이션 싱크 맞추기
+    -> 혹은, 기어가는 애니메이션 맞추기
+     */
+    public IEnumerator JumpAcrossLink()
+    {
+        Debug.Log($"{gameObject.name} : 점프");
+        isJumping = true;
+        agent.isStopped = true;
+
+        OffMeshLinkData linkData = agent.currentOffMeshLinkData;
+        Vector3 startPos = linkData.startPos;
+        Vector3 endPos = linkData.endPos;
+
+        float elapsedTime = 0f;
+        while(elapsedTime < jumpDuration)
+        {
+            float t = elapsedTime / jumpDuration;
+            Vector3 currentPos = Vector3.Lerp(startPos, endPos, t);
+            currentPos.y += Mathf.Sin(t * Mathf.PI) * jumpHeight;
+            transform.position = currentPos;
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.position = endPos;
+        agent.CompleteOffMeshLink();
+        agent.isStopped = false;
+        isJumping = false;
+    }
+
     public void OnSfxByState(ZombieState state)
     {
         switch (state)
@@ -362,7 +420,7 @@ public class ZombieManager : MonoBehaviour, IPoolable
             case ZombieState.Attack:
                 if(distanceToTarget < attackRange)
                 {
-                    audioSource.PlayOneShot(sfx_attack_s);
+                    SoundManager.Instance.PlaySFX("SFX_Zombie_Attack_s");
                 }
                 break;
             case ZombieState.Evade:

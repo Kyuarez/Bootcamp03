@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.Video;
 
@@ -21,6 +22,12 @@ public class UIMainMenu : MonoBehaviour
 
     [Header("MainMenu")]
     [SerializeField] private GameObject mainmenuPanel;
+    [SerializeField] private Button btn_newGame;
+    [SerializeField] private Button btn_chapter;
+    [SerializeField] private Button btn_multigame;
+    [SerializeField] private Button btn_setting;
+    [SerializeField] private Button btn_exit;
+
 
     private Coroutine OnTitleCoroutine;
     
@@ -38,12 +45,19 @@ public class UIMainMenu : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
 
         titleTouchArea.onClick.AddListener(OnClickTitleToMainMenu);
+        btn_newGame.onClick.AddListener(OnClickOnNewGame);
+        btn_chapter.onClick.AddListener(OnClickOnChapter);
+        btn_multigame.onClick.AddListener(OnClickOnMultiGame);
+        btn_setting.onClick.AddListener(OnClickOnSettings);
+        btn_exit.onClick.AddListener(OnClickOnExit);
 
         ResetUITitle();
     }
 
     private void Start()
     {
+        SoundManager.Instance.PlayBGM("BGM_TitleScene");
+
         if(OnTitleCoroutine != null)
         {
             StopCoroutine(OnTitleCoroutine);
@@ -76,6 +90,7 @@ public class UIMainMenu : MonoBehaviour
         titleTouchArea.interactable = false;
     }
 
+    #region Coroutine
     private IEnumerator OnTitleCo()
     {
         //Title
@@ -124,6 +139,7 @@ public class UIMainMenu : MonoBehaviour
         }
         text.color = new Color(1, 1, 1, 1);
     }
+    #endregion
 
     #region OnClick
     public void OnClickTitleToMainMenu()
@@ -134,5 +150,30 @@ public class UIMainMenu : MonoBehaviour
         mainmenuPanel.SetActive(true);
     }
 
+    public void OnClickOnNewGame()
+    {
+        //TODO : SceneManager를 통해서 씬 이동
+        SceneTransitionManager.Instance.LoadScene("Level0306");
+    }
+
+    public void OnClickOnChapter()
+    {
+
+    }
+
+    public void OnClickOnMultiGame()    
+    {
+
+    }
+
+    public void OnClickOnSettings()
+    {
+
+    }
+
+    public void OnClickOnExit()
+    {
+        Application.Quit();
+    }
     #endregion
 }
