@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20f398175d36927479a27c7dc52bf2fb, type: 3}
   m_Name: Weapon_FA_MAS
   m_EditorClassIdentifier: 
+  ItemData:
+    CodeName: FA_MAS
+    ItemID: 8
+    Description: 
   CodeName: FA_MAS
   GunType: 0
   magazineCount: 6
@@ -23,3 +27,4 @@ MonoBehaviour:
   shakeMagnitude: 0.0005
   recoilDuration: 0.25
   recoilMagnitude: 0.0005
+  recoilAngle: 0

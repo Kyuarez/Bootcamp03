@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Net.Sockets;
 using UnityEngine;
 
+/// <summary>
+/// @tk : 나중에 클래스 명 변경 필요 (좀 더 직관적으로 WeaponManager 이런걸로)
+/// </summary>
 public class BucketManager : MonoBehaviour
 {
     [SerializeField] private Transform bucketTransform;

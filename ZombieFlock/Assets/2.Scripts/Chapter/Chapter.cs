@@ -10,6 +10,13 @@ public class Chapter
 {
     public int ChapterID;
     public string sceneName;
+    public bool isClearChapter;
 
-    public List<Quest> QuestBundle;
+    public List<Quest> QuestBundle = new List<Quest>();
+
+    public void LoadQuestBundle(List<Quest> questBundle)
+    {
+        this.QuestBundle = questBundle;
+        Operator.Instance.QuestManager.LoadQuestData(this);
+    }
 }

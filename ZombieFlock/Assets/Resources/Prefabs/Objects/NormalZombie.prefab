@@ -2397,6 +2397,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b879d179703926842bdf73f2135c9d2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ObjectData:
+    CodeName: Normal Zombie
+    ObjectID: 1
+    Description: 
   currentState: 5
 --- !u!54 &3446600762408841132
 Rigidbody:

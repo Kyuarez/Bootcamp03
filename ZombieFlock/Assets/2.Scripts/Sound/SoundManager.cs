@@ -33,7 +33,7 @@ public class SoundManager : MonoSingleton<SoundManager>
         }
         foreach (var sfx in sfxClipList)
         {
-            if (bgmClipDict.ContainsKey(sfx.name) == true)
+            if (sfxClipDict.ContainsKey(sfx.name) == true)
             {
                 continue;
             }

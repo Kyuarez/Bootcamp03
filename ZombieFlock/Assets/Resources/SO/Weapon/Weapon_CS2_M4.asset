@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20f398175d36927479a27c7dc52bf2fb, type: 3}
   m_Name: Weapon_CS2_M4
   m_EditorClassIdentifier: 
+  ItemData:
+    CodeName: CS2_M4
+    ItemID: 6
+    Description: 
   CodeName: CS2_M4
   GunType: 0
   magazineCount: 10
@@ -23,3 +27,4 @@ MonoBehaviour:
   shakeMagnitude: 0.0025
   recoilDuration: 0.25
   recoilMagnitude: 0.0025
+  recoilAngle: 0

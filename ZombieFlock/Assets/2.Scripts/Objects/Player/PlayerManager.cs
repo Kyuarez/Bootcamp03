@@ -200,6 +200,7 @@ public class PlayerManager : MonoBehaviour
 
     private void PostPickupItem()
     {
+        //TODO 나중엔 공용으로 아이템 접근 필요, 일단 급해서 무기 데이터 내부에 ItemData접근
         if (isPickup == true)
         {
             AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
@@ -210,9 +211,12 @@ public class PlayerManager : MonoBehaviour
                     return;
                 }
 
-                if (adjacentItem.GetComponent<GunData>() != null)
+                GunData gun = adjacentItem.GetComponent<GunData>();
+                if (gun != null)
                 {
-                    bucket.OnRegisterGun(adjacentItem.GetComponent<GunData>());
+                    int itemID = gun.ItemData.ItemID;
+                    Operator.Instance.QuestManager.UpdateCurrentQuestGetItem(itemID);
+                    bucket.OnRegisterGun(gun);
                 }
                 adjacentItem.SetActive(false);
                 adjacentItem = null;

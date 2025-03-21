@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20f398175d36927479a27c7dc52bf2fb, type: 3}
   m_Name: Weapon_BenelliM4
   m_EditorClassIdentifier: 
+  ItemData:
+    CodeName: BenelliM4
+    ItemID: 10
+    Description: 
   CodeName: BenelliM4
   GunType: 2
   magazineCount: 5
@@ -23,3 +27,4 @@ MonoBehaviour:
   shakeMagnitude: 0.01
   recoilDuration: 0.25
   recoilMagnitude: 0.01
+  recoilAngle: 0

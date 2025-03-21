@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20f398175d36927479a27c7dc52bf2fb, type: 3}
   m_Name: Weapon_AK_47
   m_EditorClassIdentifier: 
+  ItemData:
+    CodeName: AK_47
+    ItemID: 5
+    Description: 
   CodeName: AK_47
   GunType: 0
   magazineCount: 6
@@ -23,3 +27,4 @@ MonoBehaviour:
   shakeMagnitude: 0.005
   recoilDuration: 0.25
   recoilMagnitude: 0.005
+  recoilAngle: 0

@@ -6,6 +6,7 @@ using UnityEngine;
 public class GunDataSO : ScriptableObject
 {
     [Header("Base Data")]
+    public ItemData ItemData;
     public string CodeName;
     public GunType GunType;
     public int magazineCount; //ÅºÃ¢ ¼ö

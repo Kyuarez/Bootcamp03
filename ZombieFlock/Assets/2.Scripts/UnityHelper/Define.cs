@@ -44,4 +44,11 @@ public enum EffectType
     FX_RiflingMark_SoftBody,
     FX_RiflingMark_Concrete,
 }
+
+public enum QuestConditionType
+{
+    GetItem,
+    Kill,
+    ActiveEvent,
+}
 #endregion

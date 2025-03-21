@@ -4,6 +4,7 @@ using UnityEngine;
 [Serializable]
 public class GunData : MonoBehaviour
 {
+    public ItemData ItemData;
     public string CodeName;
     public GunType GunType;
     public int magazineMaxCount; //ÅºÃ¢ ¼ö
@@ -33,6 +34,7 @@ public class GunData : MonoBehaviour
 
     public void InitGunData(GunDataSO dataSO)
     {
+        this.ItemData = dataSO.ItemData;
         this.CodeName = dataSO.CodeName;
         this.GunType = dataSO.GunType;
         this.magazineMaxCount = dataSO.magazineCount;

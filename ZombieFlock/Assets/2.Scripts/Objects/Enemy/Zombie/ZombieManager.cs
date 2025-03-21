@@ -7,6 +7,11 @@ using System;
 
 public class ZombieManager : MonoBehaviour, IPoolable
 {
+    #region Test
+    //@tk : 25.03.21 : 나중엔, ZombieManager(움직임 및 기능 동작)과 Zombie(데이터 정보)로 나눠서 관리
+    public ObjectData ObjectData;
+    #endregion
+
     public string PoolPath
     {
         get
@@ -59,12 +64,13 @@ public class ZombieManager : MonoBehaviour, IPoolable
     //Health
     protected float zombieHP = 100.0f;
 
+
     public ZombieState CurrentState
     {
         get { return currentState; }
         set
         {
-            Debug.LogFormat($"{gameObject.name} : {value} 상태");
+            //Debug.LogFormat($"{gameObject.name} : {value} 상태");
             currentState = value;   
         }
     }
@@ -243,6 +249,7 @@ public class ZombieManager : MonoBehaviour, IPoolable
     public IEnumerator Chase()
     {
         anim.SetBool("IsRun", true);
+        
         while (currentState == ZombieState.Chase)
         {
             //transform.LookAt(Target.position);
@@ -309,13 +316,14 @@ public class ZombieManager : MonoBehaviour, IPoolable
             col.enabled = false;
         }
 
+        Operator.Instance.QuestManager.UpdateCurrentQuestKill(ObjectData.ObjectID);
+
         agent.speed = 0f;
         agent.isStopped = true;
-        
-        
 
         yield return new WaitForSeconds(2.0f);
         PoolManager.Instance.DeSpawnObject(this);
+       
     }
     //@tk 외부에서 호출
     public IEnumerator Damaged(float damage)
