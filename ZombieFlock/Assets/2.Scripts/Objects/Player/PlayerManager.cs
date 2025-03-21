@@ -11,6 +11,7 @@ public class PlayerManager : MonoBehaviour
     public float runSpeed = 5.0f;
     public float mouseSensitivity = 100.0f; //마우스 감도
     private float moveSpeed;
+    private float currentRecoil;
     public LayerMask targetMask;
 
     private Transform camTransform;
@@ -153,6 +154,16 @@ public class PlayerManager : MonoBehaviour
         OnReload();
         PickupItem();
         PostPickupItem();
+
+        //recoil
+        if (currentRecoil > 0f)
+        {
+            currentRecoil -= bucket.CurrentWeapon.CurrentGunData.recoilMagnitude * Time.deltaTime;
+            currentRecoil = Mathf.Clamp(currentRecoil, 0, bucket.CurrentWeapon.CurrentGunData.recoilAngle);
+            Quaternion currentRotation = Camera.main.transform.rotation;
+            Quaternion recoliRotation = Quaternion.Euler(-currentRecoil, 0, 0);
+            Camera.main.transform.rotation = currentRotation * recoliRotation;
+        }
     }
 
     private GameObject adjacentItem;
@@ -499,7 +510,8 @@ public class PlayerManager : MonoBehaviour
                     if (zombie != null)
                     {
                         zombie.OnDamage(bucket.CurrentWeapon.CurrentGunData.gunDamage);
-                        PoolManager.Instance.SpawnObjectInWorld<FX_RiflingMark_SoftBody>(hit.point);
+                        ParticleManager.Instance.PlayFX(EffectType.FX_RiflingMark_SoftBody, hit.point);
+                        //PoolManager.Instance.SpawnObjectInWorld<FX_RiflingMark_SoftBody>(hit.point);
                         SoundManager.Instance.PlaySFX("SFX_Zombie_Damaged", zombie.transform.position);
                         Debug.DrawLine(ray.origin, hit.point, Color.red);
 
@@ -512,7 +524,8 @@ public class PlayerManager : MonoBehaviour
                 else if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Environment"))
                 {
                     //@tk 이거 환경 재질 마다 차이 주기
-                    PoolManager.Instance.SpawnObjectInWorld<FX_RiflingMark_Concrete>(hit.point);
+                    ParticleManager.Instance.PlayFX(EffectType.FX_RiflingMark_Concrete, hit.point);
+                    //PoolManager.Instance.SpawnObjectInWorld<FX_RiflingMark_Concrete>(hit.point);
                 }
 
             }
@@ -539,6 +552,7 @@ public class PlayerManager : MonoBehaviour
             SoundManager.Instance.PlaySFX("SFX_Weapon_Shotgun", transform.position);
             StartCoroutine(ShotDelayCo(bucket.CurrentWeapon.CurrentGunData.shotDelay));
 
+
             //@tk : shotgun (한번에 5탄 Ray로 Random하게 쏴서 중복 데미지 적용)
             int shotCount = 5;
             float spreadAngle = 15f;
@@ -560,7 +574,8 @@ public class PlayerManager : MonoBehaviour
                         if (zombie != null)
                         {
                             zombie.OnDamage(bucket.CurrentWeapon.CurrentGunData.gunDamage);
-                            PoolManager.Instance.SpawnObjectInWorld<FX_RiflingMark_SoftBody>(hit.point);
+                            ParticleManager.Instance.PlayFX(EffectType.FX_RiflingMark_SoftBody, hit.point);
+                            //PoolManager.Instance.SpawnObjectInWorld<FX_RiflingMark_SoftBody>(hit.point);
                             SoundManager.Instance.PlaySFX("SFX_Zombie_Damaged", zombie.transform.position);
                             Debug.DrawLine(ray.origin, hit.point, Color.red);
 
@@ -573,12 +588,22 @@ public class PlayerManager : MonoBehaviour
                     else if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Environment"))
                     {
                         //@tk 이거 환경 재질 마다 차이 주기
-                        PoolManager.Instance.SpawnObjectInWorld<FX_RiflingMark_Concrete>(hit.point);
+                        ParticleManager.Instance.PlayFX(EffectType.FX_RiflingMark_Concrete, hit.point);
+                        //PoolManager.Instance.SpawnObjectInWorld<FX_RiflingMark_Concrete>(hit.point);
                     }
 
                 }
             }
         }
+    }
+
+    private void ApplyRecoil()
+    {
+        Quaternion currentRotation = Camera.main.transform.rotation;
+        Quaternion recoilRotation = Quaternion.Euler(-currentRecoil, 0, 0);
+        Camera.main.transform.rotation = currentRotation * recoilRotation;
+        currentRecoil += bucket.CurrentWeapon.CurrentGunData.recoilMagnitude;
+        currentRecoil = Mathf.Clamp(currentRecoil, 0, bucket.CurrentWeapon.CurrentGunData.recoilAngle);
     }
 
     private void EquippedWeapon()

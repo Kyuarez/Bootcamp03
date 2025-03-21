@@ -14,6 +14,8 @@ public class GunData : MonoBehaviour
     public float shotDelay;
     public float recoilDuration;
     public float recoilMagnitude;
+    public float recoilAngle;
+
 
     private void OnEnable()
     {
@@ -41,6 +43,7 @@ public class GunData : MonoBehaviour
         this.shotDelay = dataSO.shotDelay;
         this.recoilDuration = dataSO.recoilDuration;
         this.recoilMagnitude = dataSO.recoilMagnitude;
+        this.recoilAngle = dataSO.recoilAngle;
     }
 
 

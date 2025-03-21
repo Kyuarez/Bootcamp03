@@ -38,4 +38,10 @@ public enum ZombieState
     Idle,
     Die,
 }
+
+public enum EffectType
+{
+    FX_RiflingMark_SoftBody,
+    FX_RiflingMark_Concrete,
+}
 #endregion

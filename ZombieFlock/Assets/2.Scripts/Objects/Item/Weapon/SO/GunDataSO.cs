@@ -19,4 +19,5 @@ public class GunDataSO : ScriptableObject
     public float shakeMagnitude;
     public float recoilDuration; //camera ¹Ýµ¿(pitch)
     public float recoilMagnitude;
+    public float recoilAngle;
 }

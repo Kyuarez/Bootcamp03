@@ -49,6 +49,7 @@ public class ObjectPool : IPool
         obj.SetActive(true);
         return obj;
     }
+    //@tk : fx 할 때 사용하면 좋음
     public GameObject SpawnObjectInWorld(Vector3 position)
     {
         if (pools.Count == 0)
@@ -59,6 +60,7 @@ public class ObjectPool : IPool
         GameObject obj = pools.Dequeue();
         obj.transform.SetParent(null);
         obj.transform.position = position;
+        obj.transform.rotation = Quaternion.identity;
         obj.SetActive(true);
         return obj;
     }

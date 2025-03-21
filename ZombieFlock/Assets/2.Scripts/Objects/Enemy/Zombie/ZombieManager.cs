@@ -64,7 +64,7 @@ public class ZombieManager : MonoBehaviour, IPoolable
         get { return currentState; }
         set
         {
-            //Debug.LogFormat($"{gameObject.name} : {value} 상태");
+            Debug.LogFormat($"{gameObject.name} : {value} 상태");
             currentState = value;   
         }
     }
@@ -249,19 +249,7 @@ public class ZombieManager : MonoBehaviour, IPoolable
             SetStateByDistance();
             
             AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
-            if(stateInfo.IsName("Z_Scream") && stateInfo.normalizedTime < 1.0f)
-            {
-                //TODO
-            }
-            else if (stateInfo.IsName("Z_Attack_s") && stateInfo.normalizedTime < 1.0f)
-            {
-                //TODO
-            }
-            else if(stateInfo.IsName("Z_Damaged") && stateInfo.normalizedTime < 1.0f)
-            {
-                //TODO
-            }
-            else
+            if(stateInfo.IsName("Z_Run") == true)
             {
                 Vector3 direction = (Target.position - transform.position).normalized;
                 agent.speed = chaseSpeed;

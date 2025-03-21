@@ -1,33 +1,39 @@
+using System;
 using System.Collections;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SceneTransitionManager : MonoSingleton<SceneTransitionManager>
 {
-    public void LoadScene(int sceneNum)
+    public void LoadScene(int sceneNum, Action action = null)
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(sceneNum);
+        action?.Invoke();
     }
-    public void LoadScene(string sceneName)
+    public void LoadScene(string sceneName, Action action = null)
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(sceneName);
-        SoundManager.Instance.PlayBGM($"BGM_{sceneName}");
+        action?.Invoke();
 
+        SoundManager.Instance.PlayBGM($"BGM_{sceneName}");
     }
-    public void LoadSceneAsync(int sceneNum)
+    public void LoadSceneAsync(int sceneNum, Action action = null)
     {
         Time.timeScale = 1f;
-        StartCoroutine(CoLoadSceneWithLoading(SceneManager.LoadSceneAsync(sceneNum)));
+        AsyncOperation ao = SceneManager.LoadSceneAsync(sceneNum);
+        StartCoroutine(CoLoadSceneWithLoading(ao));
+        action?.Invoke();
     }
-    public void LoadSceneAsync(string sceneName)
+    public void LoadSceneAsync(string sceneName, Action action = null)
     {
         Time.timeScale = 1f;
-        StartCoroutine(CoLoadSceneWithLoading(SceneManager.LoadSceneAsync(sceneName)));
-        SoundManager.Instance.PlayBGM($"BGM_{sceneName}");
+        AsyncOperation ao = SceneManager.LoadSceneAsync(sceneName);
+        StartCoroutine(CoLoadSceneWithLoading(ao));
+        action?.Invoke();
 
+        SoundManager.Instance.PlayBGM($"BGM_{sceneName}");
     }
 
     IEnumerator CoLoadSceneWithLoading(AsyncOperation ao)

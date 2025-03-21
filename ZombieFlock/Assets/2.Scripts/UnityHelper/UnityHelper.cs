@@ -5,14 +5,18 @@ public static class UnityHelper
 {
     public static bool IsTargetInFront(this Transform caller, Transform target)
     {
-        Vector3 playerForward = caller.forward.normalized;
-        Vector3 toTarget = (target.position - caller.position).normalized;
-
+        Vector3 playerForward = new Vector3(caller.forward.x, 0f, caller.forward.z).normalized;
+        Vector3 toTarget = new Vector3((target.position.x - caller.position.x), 0, (target.position.z - caller.position.z)).normalized;
         float dot = Vector3.Dot(playerForward, toTarget);
-
         return dot > 0;
     }
-
+    public static bool IsTargetInBack(this Transform caller, Transform target)
+    {
+        Vector3 playerBack = new Vector3(caller.forward.x, 0f, caller.forward.z).normalized * -1f;
+        Vector3 toTarget = new Vector3((target.position.x - caller.position.x), 0, (target.position.z - caller.position.z)).normalized;
+        float dot = Vector3.Dot(playerBack, toTarget);
+        return dot > 0;
+    }
     public static List<T> Shuffle<T>(List<T> originalList)
     {
         List<T> list = new List<T>(originalList);

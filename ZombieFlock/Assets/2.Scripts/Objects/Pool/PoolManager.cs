@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEditor.Recorder.OutputPath;
 
 //@tk : 
 public class PoolManager : MonoSingleton<PoolManager>
 {
     [SerializeField] private int poolMaxCount = 20;
 
+    //GameObject에 클래스하고 IPoolable 해서 관리하기
     private Dictionary<string, IPool> poolDict = new Dictionary<string, IPool>();
 
     protected override void Awake()
@@ -42,7 +43,7 @@ public class PoolManager : MonoSingleton<PoolManager>
 
     private void AddPool(IPool pool)
     {
-        if(poolDict.ContainsKey(pool.Model.PoolPath) == true)
+        if (poolDict.ContainsKey(pool.Model.PoolPath) == true)
         {
             return;
         }
@@ -52,7 +53,7 @@ public class PoolManager : MonoSingleton<PoolManager>
 
     public GameObject SpawnObject(string path, Transform Root = null)
     {
-        if(poolDict.ContainsKey(path) == false)
+        if (poolDict.ContainsKey(path) == false)
         {
             return null;
         }
@@ -69,6 +70,16 @@ public class PoolManager : MonoSingleton<PoolManager>
 
         var pool = poolDict[typeof(T).Name];
         return pool.SpawnObject(Root);
+    }
+    public GameObject SpawnObjectInWorld(string path, Vector3 position)
+    {
+        if (poolDict.ContainsKey(path) == false)
+        {
+            return null;
+        }
+
+        var pool = poolDict[path];
+        return pool.SpawnObjectInWorld(position);
     }
     public GameObject SpawnObjectInWorld<T>(Vector3 position)
     {
@@ -93,7 +104,7 @@ public class PoolManager : MonoSingleton<PoolManager>
 
     public void DeSpawnObject(IPoolable poolObj)
     {
-        if(poolDict.ContainsKey(poolObj.PoolPath) == false)
+        if (poolDict.ContainsKey(poolObj.PoolPath) == false)
         {
             Destroy(poolObj.Prefab);
             return;
@@ -101,5 +112,21 @@ public class PoolManager : MonoSingleton<PoolManager>
 
         var pool = poolDict[poolObj.PoolPath];
         pool.DeSpawnObject(poolObj.Prefab);
+    }
+    public void DeSpawnObjectDelay(IPoolable poolObj)
+    {
+        if (poolDict.ContainsKey(poolObj.PoolPath) == false)
+        {
+            Destroy(poolObj.Prefab);
+            return;
+        }
+
+        var pool = poolDict[poolObj.PoolPath];
+        pool.DeSpawnObject(poolObj.Prefab);
+    }
+
+    public bool IsExistPool(string poolObject)
+    {
+        return poolDict.ContainsKey(poolObject);
     }
 }
