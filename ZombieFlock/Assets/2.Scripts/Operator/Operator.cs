@@ -122,10 +122,12 @@ public class Operator : MonoSingleton<Operator>
         }
 
         //TODO : QuestCheck(나중엔 챕터 매니저에서 구현)
-        if(questManager.IsCompletedCurrentQuest == true)
+        if(questManager.IsCompletedChapterQuest == true)
         {
             Debug.Log("챕터 클리어");
         }
+
+        questManager.CheckCurrentQuestProgress();
 
     }
 }

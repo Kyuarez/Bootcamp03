@@ -11,6 +11,8 @@ public class Quest
     public int QuestID;
     public string QuestTitle;
     public string QuestDescription;
+    //퀘스트 조건 자료구조 가지게 하기
+    public List<QuestCondition> Conditions;
 
     private bool isCompleted;
     public bool IsCompleted
@@ -30,8 +32,7 @@ public class Quest
         }
     }
 
-    //퀘스트 조건 자료구조 가지게 하기
-    public List<QuestCondition> Conditions;
+
 
     public Quest(int questID, string questTitle, string questDescription)
     {

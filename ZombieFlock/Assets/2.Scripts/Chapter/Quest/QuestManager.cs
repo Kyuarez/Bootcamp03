@@ -10,7 +10,10 @@ public class QuestManager
     public int currentIndex;
     public List<Quest> QuestData = new List<Quest>();
 
-    public bool IsCompletedCurrentQuest
+    /// <summary>
+    /// 챕터에 있는 모든 퀘스트 클리어
+    /// </summary>
+    public bool IsCompletedChapterQuest
     {
         get
         {
@@ -87,13 +90,29 @@ public class QuestManager
         }
     }
 
+    public void CheckCurrentQuestProgress()
+    {
+        if(currentQuest == null)
+        {
+            return;
+        }
+
+        if(currentQuest.IsCompleted == false)
+        {
+            return;
+        }
+
+        SetNextQuest();
+    }
+
     public void SetNextQuest()
     {
         currentIndex++;
 
-        if (currentIndex == QuestData.Count)
+        if (currentIndex >= QuestData.Count)
         {
             //TODO : Chapter Clear
+            Debug.Log("챕터 모든 퀘스트 클리어!");
             return;
         }
 

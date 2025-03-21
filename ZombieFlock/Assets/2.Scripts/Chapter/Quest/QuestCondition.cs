@@ -33,7 +33,7 @@ public class QuestConditionGetItem : QuestCondition
 
     public void UpdateCurrentAmount(int amount)
     {
-        CurrentAmount = Mathf.Max(CurrentAmount + amount, RequiredAmount);
+        CurrentAmount = Mathf.Clamp(CurrentAmount + amount, 0, RequiredAmount);
         Debug.Log(GetDescription());
     } 
 }
@@ -55,7 +55,7 @@ public class QuestConditionKill : QuestCondition
 
     public override bool CheckCondition()
     {
-        return TargetId >= RequiredKills;
+        return CurrentKills >= RequiredKills;
     }
 
     public override string GetDescription()
@@ -65,7 +65,7 @@ public class QuestConditionKill : QuestCondition
 
     public void UpdateCurrentAmount(int amount)
     {
-        CurrentKills = Mathf.Max(CurrentKills + amount, RequiredKills);
+        CurrentKills = Mathf.Clamp(CurrentKills + amount, 0, RequiredKills);
         Debug.Log(GetDescription());
     }
 }
