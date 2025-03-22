@@ -1973,6 +1973,63 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InGameUI: {fileID: 1467373834}
+--- !u!1001 &1115081690
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 316354639059514104, guid: ae1f51108786dd143968bab9be727d3d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 316354639059514104, guid: ae1f51108786dd143968bab9be727d3d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 316354639059514104, guid: ae1f51108786dd143968bab9be727d3d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 316354639059514104, guid: ae1f51108786dd143968bab9be727d3d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 316354639059514104, guid: ae1f51108786dd143968bab9be727d3d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 316354639059514104, guid: ae1f51108786dd143968bab9be727d3d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 316354639059514104, guid: ae1f51108786dd143968bab9be727d3d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 316354639059514104, guid: ae1f51108786dd143968bab9be727d3d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 316354639059514104, guid: ae1f51108786dd143968bab9be727d3d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 316354639059514104, guid: ae1f51108786dd143968bab9be727d3d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8239551186883730214, guid: ae1f51108786dd143968bab9be727d3d, type: 3}
+      propertyPath: m_Name
+      value: ParticleManager
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ae1f51108786dd143968bab9be727d3d, type: 3}
 --- !u!1 &1168551107
 GameObject:
   m_ObjectHideFlags: 0
@@ -3208,7 +3265,9 @@ MonoBehaviour:
   bgmClipList:
   - name: BGM_TitleScene
     clip: {fileID: 8300000, guid: ee403a3067a0c476dbd3e34a5f69c4a3, type: 3}
-  - name: BGM_Level0306
+  - name: BGM_Ingame_0
+    clip: {fileID: 8300000, guid: 74aec4606952f4af1ba8d3c7d9581b43, type: 3}
+  - name: BGM_Ingame_1
     clip: {fileID: 8300000, guid: 6f8ac1fb6c4da43309fc6f2608f82ab6, type: 3}
   sfxClipList:
   - name: SFX_Weapon_Rifle
@@ -4080,7 +4139,7 @@ AudioSource:
   m_PlayOnAwake: 0
   m_Volume: 0.5
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -4438,8 +4497,9 @@ SceneRoots:
   - {fileID: 588294614}
   - {fileID: 856501959}
   - {fileID: 187117432}
-  - {fileID: 1168551108}
+  - {fileID: 1115081690}
   - {fileID: 1634670301}
+  - {fileID: 1168551108}
   - {fileID: 762798202}
   - {fileID: 777970602}
   - {fileID: 1538982058}

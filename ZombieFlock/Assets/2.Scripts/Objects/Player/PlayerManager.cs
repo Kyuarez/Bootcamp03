@@ -4,6 +4,7 @@ using UnityEngine;
 using TKCamera;
 using UnityEngine.Animations.Rigging;
 using static UnityEngine.UI.Image;
+using UnityEngine.InputSystem.XR;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -47,6 +48,7 @@ public class PlayerManager : MonoBehaviour
     public float gravity = -9.81f;
     public float jump = 2.0f;
     private Vector3 velocity;
+    private bool isJump = false;
     private bool isGround;
 
     //Anim
@@ -140,7 +142,7 @@ public class PlayerManager : MonoBehaviour
     private void Update()
     {
         UpdateMouseSet();
-        CheckIsGrounded();
+        UpdateGravity();
 
         EquippedWeapon();
 
@@ -247,13 +249,20 @@ public class PlayerManager : MonoBehaviour
         pitch = Mathf.Clamp(pitch, -45, 45);
     }
 
-    private void CheckIsGrounded()
+    private void UpdateGravity()
     {
         isGround = characterController.isGrounded;
-        if (isGround == true && velocity.y < 0)
+
+        if (isGround == true)
         {
             velocity.y = -2.0f;
         }
+        else 
+        {
+            velocity.y = Mathf.Clamp((velocity.y + gravity * Time.deltaTime), -50f, -2f);
+        }
+
+        characterController.Move(velocity * Time.deltaTime);
     }
 
     private void UpdateSight()
