@@ -56,6 +56,7 @@ public class ChapterManager
     {
         Operator.Instance.QuestManager.LoadQuestData(currentChapter);
         Operator.Instance.SetPostLoadScene();
+        UIManager.Chapter.PreSetUIChpater(currentChapterID, currentChapter.ChapterTitle);
     }
     
     public Chapter GetChapter(int chapterID)

@@ -79,6 +79,8 @@ public class Operator : MonoSingleton<Operator>
 
     protected override void Awake()
     {
+        base.Awake();
+
         //TODO : 이거 이제 Awake 할 때랑 Scene에서 받을 것이랑 구분해야 함.
         //Bind
         poolManager = UnityEngine.Object.FindAnyObjectByType<PoolManager>();
@@ -88,6 +90,7 @@ public class Operator : MonoSingleton<Operator>
 
         playerObj = Resources.Load<GameObject>("Prefabs/Objects/Player");
         cameraObj = Resources.Load<GameObject>("Prefabs/Camera/CameraManager");
+        
         #region Test
         //=======================Quest=========================================
         QuestConditionGetItem chapter0_condition1 = new QuestConditionGetItem(10, 1); //Shotgun = 10
@@ -117,14 +120,15 @@ public class Operator : MonoSingleton<Operator>
         chapter1_questList.Add(quest2);
         //=======================Chapter=========================================
         List<Chapter> chapterData = new List<Chapter>();
-        Chapter chapter0 = new Chapter(0, new Vector3(-3.45f, 4.72f, 1.22f));
-        Chapter chapter1 = new Chapter(1, new Vector3(193f, 0f, -95.1f));
+        Chapter chapter0 = new Chapter(0, "Wake up" , new Vector3(-3.45f, 4.72f, 1.22f));
+        Chapter chapter1 = new Chapter(1, "First Mission", new Vector3(193f, 0f, -95.1f));
         chapter0.LoadQuestBundle(chapter0_questList);
         chapter1.LoadQuestBundle(chapter1_questList);
         chapterData.Add(chapter0);
         chapterData.Add(chapter1);
         chapterManager = new ChapterManager(chapterData);
         #endregion
+
     }
 
     private void Start()
