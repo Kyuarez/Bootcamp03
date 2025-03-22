@@ -79,6 +79,11 @@ public class ZombieManager : MonoBehaviour, IPoolable
     {
         get 
         {
+            if(Operator.Instance.PlayerManager == null)
+            {
+                return null;
+            }
+
             if(target == null || target.gameObject != Operator.Instance.PlayerManager)
             {
                 target = Operator.Instance.PlayerManager.transform;
@@ -107,6 +112,11 @@ public class ZombieManager : MonoBehaviour, IPoolable
         }
 
         navMeshLinks = FindObjectsOfType<NavMeshLink>();
+        
+        if(Target == null)
+        {
+            return;
+        }
 
         distanceToTarget = Vector3.Distance(transform.position, Target.position);
         CurrentState = ZombieState.Idle;
@@ -124,6 +134,11 @@ public class ZombieManager : MonoBehaviour, IPoolable
 
     private void Update()
     {
+        if(Target == null)
+        {
+            return;
+        }
+
         if (currentState == ZombieState.Die) 
         {
             return;

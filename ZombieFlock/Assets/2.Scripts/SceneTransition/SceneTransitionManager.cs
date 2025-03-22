@@ -23,28 +23,25 @@ public class SceneTransitionManager : MonoSingleton<SceneTransitionManager>
     {
         Time.timeScale = 1f;
         AsyncOperation ao = SceneManager.LoadSceneAsync(sceneNum);
-        StartCoroutine(CoLoadSceneWithLoading(ao));
-        action?.Invoke();
+        StartCoroutine(CoLoadSceneWithLoading(ao, action));
     }
     public void LoadSceneAsync(string sceneName, Action action = null)
     {
         Time.timeScale = 1f;
         AsyncOperation ao = SceneManager.LoadSceneAsync(sceneName);
-        StartCoroutine(CoLoadSceneWithLoading(ao));
-        action?.Invoke();
-
+        StartCoroutine(CoLoadSceneWithLoading(ao, action));
         SoundManager.Instance.PlayBGM($"BGM_{sceneName}");
     }
 
-    IEnumerator CoLoadSceneWithLoading(AsyncOperation ao)
+    IEnumerator CoLoadSceneWithLoading(AsyncOperation ao, Action action = null)
     {
-        ao.allowSceneActivation = false;
-        //uiLoading.OnLoadingUI();
-        //yield return new WaitForSeconds(loadingTime);
-        ao.allowSceneActivation = true;
-        //yield return new WaitForSeconds(loadingTime);
-        //yield return StartCoroutine(uiLoading.FadeOut());
-        //uiLoading.ResetLoadingUI();
-        yield return null;
+        //TODO
+        //Loading UI Control
+        while(ao.isDone == false)
+        {
+            yield return null;
+        }
+
+        action?.Invoke();
     }
 }

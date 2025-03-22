@@ -152,13 +152,13 @@ public class UIMainMenu : MonoBehaviour
 
     public void OnClickOnNewGame()
     {
-        //TODO : SceneManager를 통해서 씬 이동
-        SceneTransitionManager.Instance.LoadScene("Level0306");
+        Operator.Instance.ChangeGameState(GameState.InGame);
     }
 
     public void OnClickOnChapter()
     {
-
+        //TODO : 로컬 데이터를 통해서 현재 챕터 반영
+        Operator.Instance.ChangeGameState(GameState.InGame);
     }
 
     public void OnClickOnMultiGame()    

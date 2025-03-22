@@ -7,10 +7,10 @@ using static UnityEngine.UI.Image;
 
 public class PlayerManager : MonoBehaviour
 {
-    public float walkSpeed = 2.5f;
-    public float runSpeed = 5.0f;
-    public float mouseSensitivity = 100.0f; //마우스 감도
-    private float moveSpeed;
+    private float walkSpeed = 2.5f;
+    private float runSpeed = 5.0f;
+    private float mouseSensitivity = 100.0f; //마우스 감도
+    private float moveSpeed; //@tk : 현재 속도
     private float currentRecoil;
     public LayerMask targetMask;
 

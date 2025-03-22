@@ -15,6 +15,12 @@ public static class Define
 }
 
 #region Enum
+public enum GameState
+{
+    Title,
+    InGame,
+}
+
 public enum GunType
 {
     Rifle,

@@ -4196,9 +4196,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c52161125b64184d9558be397c99d87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 5
-  runSpeed: 12
-  mouseSensitivity: 100
   targetMask:
     serializedVersion: 2
     m_Bits: 192
@@ -4216,7 +4213,6 @@ MonoBehaviour:
   pickupMask:
     serializedVersion: 2
     m_Bits: 256
-  DamageFX: {fileID: 19800002, guid: 3b1513bcb86426b4795879be6a128ed7, type: 3}
 --- !u!114 &6748273487277140945
 MonoBehaviour:
   m_ObjectHideFlags: 0

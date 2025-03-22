@@ -107,7 +107,7 @@ public class QuestManager
 
     public void SetNextQuest()
     {
-        currentIndex++;
+        currentIndex = Mathf.Clamp(currentIndex + 1, 0, QuestData.Count);
 
         if (currentIndex >= QuestData.Count)
         {
