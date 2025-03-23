@@ -9,40 +9,25 @@ public class UIHUD : MonoBehaviour
 {
     [SerializeField] private GameObject panel;
 
-    [SerializeField] private TextMeshProUGUI bulletText;
-    [SerializeField] private TextMeshProUGUI magazineText;
-    [SerializeField] private TextMeshProUGUI weaponNameText;
+    [SerializeField] private UIHUDState HUDState;
+    [SerializeField] private UIHUDWeapon HUDWeapon;
+    [SerializeField] private UIHUDQuest HUDQuest;
+
 
     private void Awake()
     {
-        ResetWeaponHUD();
+        HUDWeapon.ResetWeaponHUD();
+        HUDQuest.ResetQuestHUD();
     }
 
     private void Update()
     {
-        UpdateWeaponHUD();
+
     }
 
-
-    //@tk : 나중엔 업데이트 문에서 매 프레임마다 체크가 아니라, 옵저버 패턴 등으로...
-    private void UpdateWeaponHUD()
+    public void OnChangeQuestHUD(Quest quest)
     {
-        if(Operator.Instance.PlayerManager.CurrentWeapon == null)
-        {
-            ResetWeaponHUD();
-            return;
-        }
-
-        Gun gun = Operator.Instance.PlayerManager.CurrentWeapon;
-        bulletText.text = $"{gun.CurrentBulletCount}/{gun.MaxBulletCount}";
-        magazineText.text = $"{gun.CurrentMagazineCount}/{gun.MaxMagazineCount}";
-        weaponNameText.text = $"Current : {gun.GunName}";
+        HUDQuest.OnQuestHUD(quest);
     }
-
-    private void ResetWeaponHUD()
-    {
-        bulletText.text = string.Empty;
-        magazineText.text = string.Empty;
-        weaponNameText.text = string.Empty;
-    }
+    
 }

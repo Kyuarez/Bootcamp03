@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,6 +11,8 @@ public class QuestManager
     public int currentIndex;
     public List<Quest> QuestData = new List<Quest>();
 
+    public event Action<Quest> OnChangeQuest;   //@tk : current Quest Change Action
+
     public Quest CurrentQuest
     {
         get { return currentQuest; }
@@ -17,6 +20,7 @@ public class QuestManager
         {
             currentQuest = value;
             UpdateQuestEventHandlers(currentQuest);
+            OnChangeQuest?.Invoke(currentQuest);
         }
     }
 
@@ -155,6 +159,8 @@ public class QuestManager
         {
             //TODO : Chapter Clear
             Debug.Log("Ã©ÅÍ ¸ðµç Äù½ºÆ® Å¬¸®¾î!");
+            CurrentQuest = null;
+
             return;
         }
 

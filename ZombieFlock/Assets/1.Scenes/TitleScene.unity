@@ -2809,6 +2809,7 @@ RectTransform:
   - {fileID: 1734270224}
   - {fileID: 1801019670}
   - {fileID: 637587569}
+  - {fileID: 1668793790}
   m_Father: {fileID: 856501959}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -3288,6 +3289,41 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: ea244dfd762ff314187efab367683654, type: 3}
   - name: SFX_Zombie_Dead
     clip: {fileID: 8300000, guid: 0c0e94d4014a4154184fe1d4a78610e9, type: 3}
+--- !u!1 &1668793789
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1668793790}
+  m_Layer: 5
+  m_Name: UIQuest
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1668793790
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1668793789}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1467373835}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &1734270224 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4819671546974506421, guid: 936c1f126be56054b8d4a5c318412aac, type: 3}

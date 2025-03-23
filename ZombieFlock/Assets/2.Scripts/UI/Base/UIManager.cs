@@ -1,4 +1,4 @@
-using UnityEditor.EditorTools;
+using System;
 using UnityEngine;
 
 public class UIManager : MonoSingleton<UIManager>
@@ -8,6 +8,7 @@ public class UIManager : MonoSingleton<UIManager>
     public static UIIngameMenu InGameMenu;
     public static UICrossHair CrossHair;
     public static UIChapter Chapter;
+    public static UIHUD HUD;
 
     protected override void Awake()
     {
@@ -16,11 +17,14 @@ public class UIManager : MonoSingleton<UIManager>
         InGameMenu = GetComponentInChildren<UIIngameMenu>();
         CrossHair = GetComponentInChildren<UICrossHair>();
         Chapter = GetComponentInChildren<UIChapter>();
+        HUD = GetComponentInChildren<UIHUD>();
 
         Operator.OnPreTitle += OnTitle;
-
         Operator.OnPostInGame += OnInGame;
         Operator.OnPostInGame += Chapter.OnUIChapter;
+
+        //@Quest UI
+        Operator.Instance.QuestManager.OnChangeQuest += HUD.OnChangeQuestHUD;
     }
 
     public void OnInGame()

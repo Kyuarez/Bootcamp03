@@ -100,8 +100,8 @@ public class Operator : MonoSingleton<Operator>
         chapter0_conditionList1.Add(chapter0_condition1);
         List<QuestCondition> chapter0_conditionList2 = new List<QuestCondition>();
         chapter0_conditionList2.Add(chapter0_condtion2);
-        Quest chapter0_quest1 = new Quest(1, "[AK-47 ¸Ô±â]", "AK-47 1È¸ ¸Ô±â", chapter0_conditionList1);
-        Quest chapter0_quest2 = new Quest(2, "[Á»ºñ Á×ÀÌ±â]", "ÀÏ¹Ý Á»ºñ 1¸¶¸® Á×ÀÌ±â", chapter0_conditionList2);
+        Quest chapter0_quest1 = new Quest(1, "[Tutorial Quest 1]", "Acquire 1 AK47", chapter0_conditionList1);
+        Quest chapter0_quest2 = new Quest(2, "[Tutorial Quest 2]", "Kill a single normal zombie", chapter0_conditionList2);
         List<Quest> chapter0_questList = new List<Quest>();
         chapter0_questList.Add(chapter0_quest1);
         chapter0_questList.Add(chapter0_quest2);
@@ -113,8 +113,8 @@ public class Operator : MonoSingleton<Operator>
         chapter01_conditionList1.Add(chapter01_condition1);
         List<QuestCondition> chapter01_conditionList2 = new List<QuestCondition>();
         chapter01_conditionList2.Add(chapter01_condtion2);
-        Quest quest1 = new Quest(1, "[¼¦°Ç ¸Ô±â]", "¼¦°Ç 1È¸ ¸Ô±â", chapter01_conditionList1);
-        Quest quest2 = new Quest(2, "[Á»ºñ Á×ÀÌ±â]", "ÀÏ¹Ý Á»ºñ 10¸¶¸® Á×ÀÌ±â", chapter01_conditionList2);
+        Quest quest1 = new Quest(1, "[Chapter 1 Quest 1]", "Acquire 1 Shotgun", chapter01_conditionList1);
+        Quest quest2 = new Quest(2, "[Chapter 1 Quest 2]", "Kill 10 normal zombies", chapter01_conditionList2);
         List<Quest> chapter1_questList = new List<Quest>();
         chapter1_questList.Add(quest1);
         chapter1_questList.Add(quest2);
@@ -149,12 +149,6 @@ public class Operator : MonoSingleton<Operator>
             {
                 bool isPause = UIManager.InGameMenu.OnIngameMenu();
                 Time.timeScale = (isPause == true) ? 0 : 1;
-            }
-
-            //TODO : QuestCheck(³ªÁß¿£ Ã©ÅÍ ¸Å´ÏÀú¿¡¼­ ±¸Çö)
-            if(questManager.IsCompletedChapterQuest == true)
-            {
-                Debug.Log("Ã©ÅÍ Å¬¸®¾î");
             }
 
             questManager.CheckCurrentQuestProgress();
