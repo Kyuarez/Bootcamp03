@@ -5,6 +5,7 @@ using TKCamera;
 using UnityEngine.Animations.Rigging;
 using static UnityEngine.UI.Image;
 using UnityEngine.InputSystem.XR;
+using System;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -74,6 +75,9 @@ public class PlayerManager : MonoBehaviour
 
     //@tk particle
     private GameObject flashLight;
+
+    //@tk : QuestEvent
+    public event Action<int, int> OnGetItem; 
 
     public bool IsFirstPerson {  get { return isFirstPerson; } }
     public bool IsImersion {  get { return isImmersion; } }
@@ -217,7 +221,7 @@ public class PlayerManager : MonoBehaviour
                 if (gun != null)
                 {
                     int itemID = gun.ItemData.ItemID;
-                    Operator.Instance.QuestManager.UpdateCurrentQuestGetItem(itemID);
+                    OnGetItem?.Invoke(itemID, 1);
                     bucket.OnRegisterGun(gun);
                 }
                 adjacentItem.SetActive(false);
@@ -573,8 +577,8 @@ public class PlayerManager : MonoBehaviour
 
             for (int i = 0; i < shotCount; i++)
             {
-                float randomX = Random.Range(-spreadAngle, spreadAngle);
-                float randomY = Random.Range(-spreadAngle, spreadAngle);
+                float randomX = UnityEngine.Random.Range(-spreadAngle, spreadAngle);
+                float randomY = UnityEngine.Random.Range(-spreadAngle, spreadAngle);
                 Vector3 randDirection = (new Vector3(randomX, randomY, 0f).normalized * 0.1f) + mainCam.transform.forward;
                 Ray ray = new Ray(mainCam.transform.position, randDirection);
                 RaycastHit hit;

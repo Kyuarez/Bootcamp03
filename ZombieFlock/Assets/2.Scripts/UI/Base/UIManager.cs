@@ -1,3 +1,4 @@
+using UnityEditor.EditorTools;
 using UnityEngine;
 
 public class UIManager : MonoSingleton<UIManager>
@@ -16,10 +17,10 @@ public class UIManager : MonoSingleton<UIManager>
         CrossHair = GetComponentInChildren<UICrossHair>();
         Chapter = GetComponentInChildren<UIChapter>();
 
-        Operator.Instance.OnPreTitle += OnTitle;
-        
-        Operator.Instance.OnPostInGame += OnInGame;
-        Operator.Instance.OnPostInGame += Chapter.OnUIChapter;
+        Operator.OnPreTitle += OnTitle;
+
+        Operator.OnPostInGame += OnInGame;
+        Operator.OnPostInGame += Chapter.OnUIChapter;
     }
 
     public void OnInGame()

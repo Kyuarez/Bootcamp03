@@ -8,9 +8,9 @@ public class Operator : MonoSingleton<Operator>
 {
     [SerializeField] private bool isDevMode;
     private GameState gameState;
-    public event Action OnPostInGame;
-    public event Action OnPreTitle;
-
+    public static event Action OnPostInGame;
+    public static event Action OnPreTitle;
+    
     private UIManager uiManager;
     private PoolManager poolManager;
     private PatrolPointManager patrolManager;
@@ -93,15 +93,15 @@ public class Operator : MonoSingleton<Operator>
         
         #region Test
         //=======================Quest=========================================
-        QuestConditionGetItem chapter0_condition1 = new QuestConditionGetItem(10, 1); //Shotgun = 10
-        QuestConditionKill chapter0_condtion2 = new QuestConditionKill(1, 5); //NormalZombie = 1
+        QuestConditionGetItem chapter0_condition1 = new QuestConditionGetItem(5, 1); //AK-47 = 10
+        QuestConditionKill chapter0_condtion2 = new QuestConditionKill(1, 1); //NormalZombie = 1
 
         List<QuestCondition> chapter0_conditionList1 = new List<QuestCondition>();
         chapter0_conditionList1.Add(chapter0_condition1);
         List<QuestCondition> chapter0_conditionList2 = new List<QuestCondition>();
         chapter0_conditionList2.Add(chapter0_condtion2);
-        Quest chapter0_quest1 = new Quest(1, "[¼¦°Ç ¸Ô±â]", "¼¦°Ç 1È¸ ¸Ô±â", chapter0_conditionList1);
-        Quest chapter0_quest2 = new Quest(2, "[Á»ºñ Á×ÀÌ±â]", "Á»ºñ 10¸¶¸® Á×ÀÌ±â", chapter0_conditionList2);
+        Quest chapter0_quest1 = new Quest(1, "[AK-47 ¸Ô±â]", "AK-47 1È¸ ¸Ô±â", chapter0_conditionList1);
+        Quest chapter0_quest2 = new Quest(2, "[Á»ºñ Á×ÀÌ±â]", "ÀÏ¹Ý Á»ºñ 1¸¶¸® Á×ÀÌ±â", chapter0_conditionList2);
         List<Quest> chapter0_questList = new List<Quest>();
         chapter0_questList.Add(chapter0_quest1);
         chapter0_questList.Add(chapter0_quest2);
@@ -114,7 +114,7 @@ public class Operator : MonoSingleton<Operator>
         List<QuestCondition> chapter01_conditionList2 = new List<QuestCondition>();
         chapter01_conditionList2.Add(chapter01_condtion2);
         Quest quest1 = new Quest(1, "[¼¦°Ç ¸Ô±â]", "¼¦°Ç 1È¸ ¸Ô±â", chapter01_conditionList1);
-        Quest quest2 = new Quest(2, "[Á»ºñ Á×ÀÌ±â]", "Á»ºñ 10¸¶¸® Á×ÀÌ±â", chapter01_conditionList2);
+        Quest quest2 = new Quest(2, "[Á»ºñ Á×ÀÌ±â]", "ÀÏ¹Ý Á»ºñ 10¸¶¸® Á×ÀÌ±â", chapter01_conditionList2);
         List<Quest> chapter1_questList = new List<Quest>();
         chapter1_questList.Add(quest1);
         chapter1_questList.Add(quest2);
@@ -164,8 +164,20 @@ public class Operator : MonoSingleton<Operator>
 
     public void ChangeGameState(GameState state)
     {
+        if(gameState == state)
+        {
+            return;
+        }
+
         gameState = state;
-        chapterManager.OnLoadChapterLinear();
+        if(state == GameState.InGame)
+        {
+            chapterManager.OnLoadChapterLinear();  
+        }
+        else if(state == GameState.Title)
+        {
+            //TODO
+        }        
     }
 
     public void SetPostLoadScene()

@@ -54,8 +54,9 @@ public class ChapterManager
     //@tk scene Load 후에 세팅할 것들
     public void OnPostSettingChapter()
     {
-        Operator.Instance.QuestManager.LoadQuestData(currentChapter);
+        //@tk scene setting -> quest setting -> ui setting
         Operator.Instance.SetPostLoadScene();
+        Operator.Instance.QuestManager.LoadQuestData(currentChapter);
         UIManager.Chapter.PreSetUIChpater(currentChapterID, currentChapter.ChapterTitle);
     }
     

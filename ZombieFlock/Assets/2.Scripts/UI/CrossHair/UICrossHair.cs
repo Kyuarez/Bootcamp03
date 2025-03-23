@@ -19,9 +19,6 @@ public class UICrossHair : MonoBehaviour
             panel.SetActive(true);
         
             //TODO : 사정거리 안에 적이 있으면 붉은 색으로 
-
-            //TODO : 총 타입 별로 다른 크로스 헤어
-
         }
         else
         {

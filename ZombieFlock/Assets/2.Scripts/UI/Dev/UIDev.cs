@@ -10,7 +10,7 @@ public class UIDev : MonoBehaviour
     private bool OnDevUI = false;
     private float deltaTime = 0.0f;
 
-    private void Awake()
+    private void Start()
     {
         OnDevUI = Operator.Instance.IsDevMode;
 

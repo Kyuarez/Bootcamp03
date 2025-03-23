@@ -57,4 +57,9 @@ public enum QuestConditionType
     Kill,
     ActiveEvent,
 }
+
+public enum ActiveEventType //Quest 조건 : 특정 이벤트 발동
+{
+    
+}
 #endregion

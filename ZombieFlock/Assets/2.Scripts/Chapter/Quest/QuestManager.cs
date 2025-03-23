@@ -6,9 +6,19 @@ using UnityEngine;
  */
 public class QuestManager
 {
-    public Quest currentQuest;
+    private Quest currentQuest;
     public int currentIndex;
     public List<Quest> QuestData = new List<Quest>();
+
+    public Quest CurrentQuest
+    {
+        get { return currentQuest; }
+        set
+        {
+            currentQuest = value;
+            UpdateQuestEventHandlers(currentQuest);
+        }
+    }
 
     /// <summary>
     /// 챕터에 있는 모든 퀘스트 클리어
@@ -17,11 +27,16 @@ public class QuestManager
     {
         get
         {
+            if(QuestData == null || QuestData.Count == 0)
+            {
+                return false;
+            }
+
             foreach (Quest quest in QuestData) 
             {
                 if(quest.IsCompleted == false)
                 {
-                    return false;
+                    return false;   
                 }
             }
 
@@ -32,7 +47,7 @@ public class QuestManager
     public void LoadQuestData(Chapter chapter)
     {
         QuestData.Clear();
-        currentQuest = null;
+        CurrentQuest = null;
         currentIndex = 0;
 
         QuestData = chapter.QuestBundle;
@@ -44,7 +59,34 @@ public class QuestManager
         }
 
         currentIndex = 0;
-        currentQuest = QuestData[currentIndex];
+        CurrentQuest = QuestData[currentIndex];
+    }
+
+    public void UpdateQuestEventHandlers(Quest currentQuest)
+    {
+        Operator.Instance.PlayerManager.OnGetItem -= UpdateCurrentQuestGetItem;
+        ZombieManager.OnDie -= UpdateCurrentQuestKill;
+        
+        if (currentQuest == null || currentQuest.Conditions == null || currentQuest.Conditions.Count == 0)
+        {
+            return;
+        }
+
+        foreach (QuestCondition condition in currentQuest.Conditions)
+        {
+            if(condition.ConditionType == QuestConditionType.GetItem)
+            {
+                Operator.Instance.PlayerManager.OnGetItem += UpdateCurrentQuestGetItem;
+            }
+            if (condition.ConditionType == QuestConditionType.Kill)
+            {
+                ZombieManager.OnDie += UpdateCurrentQuestKill;
+            }
+            if (condition.ConditionType == QuestConditionType.ActiveEvent)
+            {
+
+            }
+        }
     }
 
     public void UpdateCurrentQuestGetItem(int itemID, int amount = 1)
@@ -122,6 +164,6 @@ public class QuestManager
             return;
         }
 
-        currentQuest = QuestData[currentIndex];
+        CurrentQuest = QuestData[currentIndex];
     }
-}
+}   
