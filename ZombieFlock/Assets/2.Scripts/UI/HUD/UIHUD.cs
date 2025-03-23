@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem.HID;
 
 /* HUD
  좌측 패널 : 현재 플레이어에 대한 상태 (Health 등)
@@ -20,14 +21,14 @@ public class UIHUD : MonoBehaviour
         HUDQuest.ResetQuestHUD();
     }
 
-    private void Update()
-    {
-
-    }
-
     public void OnChangeQuestHUD(Quest quest)
     {
         HUDQuest.OnQuestHUD(quest);
+    }
+
+    public void OnUpdateWeaponHUD(Gun gun)
+    {
+        HUDWeapon.UpdateWeaponHUD(gun);
     }
     
 }

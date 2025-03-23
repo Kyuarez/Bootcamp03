@@ -120,9 +120,9 @@ public class ZombieManager : MonoBehaviour, IPoolable
             return;
         }
 
-        distanceToTarget = Vector3.Distance(transform.position, Target.position);
         CurrentState = ZombieState.Idle;
         stateRoutine = StartCoroutine(currentState.ToString());
+        distanceToTarget = Vector3.Distance(transform.position, Target.position);
     }
 
     private void Start()

@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class UIManager : MonoSingleton<UIManager>
@@ -23,13 +22,12 @@ public class UIManager : MonoSingleton<UIManager>
         Operator.OnPostInGame += OnInGame;
         Operator.OnPostInGame += Chapter.OnUIChapter;
 
-        //@Quest UI
         Operator.Instance.QuestManager.OnChangeQuest += HUD.OnChangeQuestHUD;
     }
 
     public void OnInGame()
     {
-        if(InGameUI.activeSelf == false)
+        if (InGameUI.activeSelf == false)
         {
             InGameUI.SetActive(true);
         }

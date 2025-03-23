@@ -76,8 +76,9 @@ public class PlayerManager : MonoBehaviour
     //@tk particle
     private GameObject flashLight;
 
-    //@tk : QuestEvent
-    public event Action<int, int> OnGetItem; 
+    //OnEvent
+    public event Action<int, int> OnGetItem;
+    public event Action<Gun> OnUpdateWeapon;
 
     public bool IsFirstPerson {  get { return isFirstPerson; } }
     public bool IsImersion {  get { return isImmersion; } }
@@ -430,7 +431,6 @@ public class PlayerManager : MonoBehaviour
             characterController.Move(direction * moveSpeed * Time.deltaTime);
         }
 
-
         UpdateCameraPosition();
     }
 
@@ -515,6 +515,7 @@ public class PlayerManager : MonoBehaviour
             bucket.CurrentWeapon.OnShot();
             SoundManager.Instance.PlaySFX("SFX_Weapon_Rifle", transform.position);
             StartCoroutine(ShotDelayCo(bucket.CurrentWeapon.CurrentGunData.shotDelay));
+            OnUpdateWeapon?.Invoke(bucket.CurrentWeapon);
 
             float gunMaxRange = CurrentWeapon.CurrentGunData.gunMaxRange;
             RaycastHit hit;
@@ -568,7 +569,7 @@ public class PlayerManager : MonoBehaviour
             bucket.CurrentWeapon.OnShot();
             SoundManager.Instance.PlaySFX("SFX_Weapon_Shotgun", transform.position);
             StartCoroutine(ShotDelayCo(bucket.CurrentWeapon.CurrentGunData.shotDelay));
-
+            OnUpdateWeapon?.Invoke(bucket.CurrentWeapon);
 
             //@tk : shotgun (한번에 5탄 Ray로 Random하게 쏴서 중복 데미지 적용)
             int shotCount = 5;
@@ -639,6 +640,7 @@ public class PlayerManager : MonoBehaviour
         {
             bucket.EquippedWeapon();
             anim.SetTrigger("IsWeaponChange");
+            OnUpdateWeapon?.Invoke(bucket.CurrentWeapon);
         }
     }
 
@@ -657,6 +659,7 @@ public class PlayerManager : MonoBehaviour
             if (bucket.CurrentWeapon.OnReloading() == true)
             {
                 anim.SetTrigger("IsWeaponChange");
+                OnUpdateWeapon?.Invoke(bucket.CurrentWeapon);
             }
         }
     }

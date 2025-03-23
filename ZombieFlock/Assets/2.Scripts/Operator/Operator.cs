@@ -92,20 +92,28 @@ public class Operator : MonoSingleton<Operator>
         cameraObj = Resources.Load<GameObject>("Prefabs/Camera/CameraManager");
         
         #region Test
+        //TODO : 이거 Json으로 로드되게 전환
         //=======================Quest=========================================
+        //Chapter0 : Tutorial
         QuestConditionGetItem chapter0_condition1 = new QuestConditionGetItem(5, 1); //AK-47 = 10
-        QuestConditionKill chapter0_condtion2 = new QuestConditionKill(1, 1); //NormalZombie = 1
+        QuestConditionGetItem chapter0_condition2 = new QuestConditionGetItem(10, 1); //Shotgun = 10
+        QuestConditionKill chapter0_condition3 = new QuestConditionKill(1, 1); //NormalZombie = 1
 
         List<QuestCondition> chapter0_conditionList1 = new List<QuestCondition>();
         chapter0_conditionList1.Add(chapter0_condition1);
         List<QuestCondition> chapter0_conditionList2 = new List<QuestCondition>();
-        chapter0_conditionList2.Add(chapter0_condtion2);
+        chapter0_conditionList2.Add(chapter0_condition2);
+        List<QuestCondition> chapter0_conditionList3 = new List<QuestCondition>();
+        chapter0_conditionList3.Add(chapter0_condition3);
         Quest chapter0_quest1 = new Quest(1, "[Tutorial Quest 1]", "Acquire 1 AK47", chapter0_conditionList1);
-        Quest chapter0_quest2 = new Quest(2, "[Tutorial Quest 2]", "Kill a single normal zombie", chapter0_conditionList2);
+        Quest chapter0_quest2 = new Quest(2, "[Tutorial Quest 2]", "Acquire 1 Shotgun", chapter0_conditionList2);
+        Quest chapter0_quest3 = new Quest(3, "[Tutorial Quest 3]", "Kill a single normal zombie", chapter0_conditionList3);
         List<Quest> chapter0_questList = new List<Quest>();
         chapter0_questList.Add(chapter0_quest1);
         chapter0_questList.Add(chapter0_quest2);
+        chapter0_questList.Add(chapter0_quest3);
 
+        //Chapter1 : 
         QuestConditionGetItem chapter01_condition1 = new QuestConditionGetItem(10, 1); //Shotgun = 10
         QuestConditionKill chapter01_condtion2 = new QuestConditionKill(1, 5); //NormalZombie = 1
 
@@ -176,10 +184,13 @@ public class Operator : MonoSingleton<Operator>
 
     public void SetPostLoadScene()
     {
+        //Player Setting
         Vector3 spawnPos = chapterManager.CurrentChapter.playerSpawnPosition;
         Instantiate(cameraObj, spawnPos, Quaternion.identity);
         ingamePlayer = Instantiate(playerObj, spawnPos, Quaternion.identity).GetComponent<PlayerManager>();
-        
+        ingamePlayer.OnUpdateWeapon += UIManager.HUD.OnUpdateWeaponHUD;
+
+        //UI Setting
         OnPostInGame?.Invoke();
     }
 }
