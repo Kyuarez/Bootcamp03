@@ -9,9 +9,9 @@ public class UIChapter : MonoBehaviour
     [SerializeField] private TextMeshProUGUI chapterTitle;
 
     [Header("factor")]
-    [SerializeField] private float waitTime = 1.0f;
-    [SerializeField] private float fadeTime = 2.0f;
-    [SerializeField] private float duration = 2.0f;
+    [SerializeField] private float waitTime = 0.5f;
+    [SerializeField] private float fadeTime = 1.0f;
+    [SerializeField] private float duration = 1.0f;
 
     private Coroutine coroutine;
 
