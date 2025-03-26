@@ -123,9 +123,11 @@ public class PlayerManager : MonoBehaviour
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
-        
-        currentDistance = thirdPersonDistance;
+
+        isImmersion = true;
+        currentDistance = immersionDistance;
         targetDistance = thirdPersonDistance;
+        isRotaterAroundPlayer = false;
         targetFov = defaultFov;
         camTransform = Camera.main.transform;
         mainCam = camTransform.GetComponent<Camera>();
