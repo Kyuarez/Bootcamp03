@@ -1,12 +1,19 @@
+using System;
 using UnityEngine;
 
 public class SpawnTrigger : MonoBehaviour
 {
+    [SerializeField] private int codeID;
     [SerializeField] private int spawnObjectID; //@tk 지금은 좀비로 고정(25.03.26)
     
     private Vector3 spawnPos;
     private SphereCollider col;
     private GameObject spawnObj;
+
+    public event Action OnPostSpawn;
+
+    public int CodeID => codeID;
+
 
     public void InitSpawnTrigger()
     {
@@ -23,6 +30,7 @@ public class SpawnTrigger : MonoBehaviour
         {
             spawnObj = PoolManager.Instance.SpawnObjectInWorld<ZombieManager>(spawnPos);
             col.enabled = false;
+            OnPostSpawn?.Invoke();
         }
     }
 

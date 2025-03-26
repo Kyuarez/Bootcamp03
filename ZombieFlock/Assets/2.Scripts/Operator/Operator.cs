@@ -116,21 +116,23 @@ public class Operator : MonoSingleton<Operator>
 
         //Chapter1 : 
         QuestConditionGetItem chapter01_condition1 = new QuestConditionGetItem(10, 1); //Shotgun = 10
-        QuestConditionKill chapter01_condtion2 = new QuestConditionKill(1, 5); //NormalZombie = 1
+        QuestConditionKill chapter01_condtion2 = new QuestConditionKill(90, 1); //BossZombie = 90
 
         List<QuestCondition> chapter01_conditionList1 = new List<QuestCondition>();
         chapter01_conditionList1.Add(chapter01_condition1);
         List<QuestCondition> chapter01_conditionList2 = new List<QuestCondition>();
         chapter01_conditionList2.Add(chapter01_condtion2);
         Quest quest1 = new Quest(1, "[Chapter 1 Quest 1]", "Acquire 1 Shotgun", chapter01_conditionList1);
-        Quest quest2 = new Quest(2, "[Chapter 1 Quest 2]", "Kill 10 normal zombies", chapter01_conditionList2);
+        Quest quest2 = new Quest(2, "[Chapter 1 Quest 2]", "Kill Black Bull", chapter01_conditionList2);
         List<Quest> chapter1_questList = new List<Quest>();
         chapter1_questList.Add(quest1);
         chapter1_questList.Add(quest2);
         //=======================Chapter=========================================
         List<Chapter> chapterData = new List<Chapter>();
         Chapter chapter0 = new Chapter(0, "Wake up", "welcome! tutorial!", new Vector3(-3.45f, 4.72f, 1.22f));
-        Chapter chapter1 = new Chapter(1, "First Mission", "heavy zombie's rush is hazard.", new Vector3(193f, 0f, -95.1f));
+        Chapter chapter1 = new Chapter(1, "CodeName : Black Bull",
+            "\"Code-named Black Bull.\" To secure the abandoned Nellis Air Force Base, the most important thing is to eliminate the mutant zombie ¡°Black Bull¡±.", 
+            new Vector3(193f, 0f, -95.1f));
         chapter0.LoadQuestBundle(chapter0_questList);
         chapter1.LoadQuestBundle(chapter1_questList);
         chapterData.Add(chapter0);

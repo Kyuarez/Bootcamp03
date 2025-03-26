@@ -240,6 +240,13 @@ public class ZombieManager : MonoBehaviour, IPoolable
         while (currentState == ZombieState.Patrol) 
         {
             SetStateByDistance();
+            AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
+
+            if(info.IsName("Z_Idle") == true)
+            {
+                continue;
+            }
+
             Transform targetPoint = patrolPoints[currentPointIndex];
             Vector3 direction = (targetPoint.position - transform.position).normalized;
             //transform.position += direction * moveSpeed * Time.deltaTime;
