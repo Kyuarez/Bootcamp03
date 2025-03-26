@@ -32,6 +32,11 @@ public class UIDev : MonoBehaviour
 
         //player
         PlayerManager player = Operator.Instance.PlayerManager;
+        if(player == null)
+        {
+            return;
+        }
+
         UpdatePlayerSightText(player);
     }
 

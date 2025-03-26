@@ -160,7 +160,7 @@ public class QuestManager
             //TODO : Chapter Clear
             Debug.Log("챕터 모든 퀘스트 클리어!");
             CurrentQuest = null;
-            
+            Operator.Instance.OnUpdateChapter();
             return;
         }
 

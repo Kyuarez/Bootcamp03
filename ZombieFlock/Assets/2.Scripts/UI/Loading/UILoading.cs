@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,20 +7,37 @@ public class UILoading : MonoBehaviour
 {
     [SerializeField] private GameObject panel;
     [SerializeField] private Image coverImage;
+    [SerializeField] private Image backgroundImage;
+    [SerializeField] private TextMeshProUGUI chapterHeaderText;
+    [SerializeField] private TextMeshProUGUI chapterDescText;
+
+    [SerializeField] private Camera uiCam;
 
     private float fadeDuration = 0.5f;
     private bool isFading = false;
 
     public void ResetUILoading() 
     {
-        if(panel.activeSelf == true)
+        
+        if(backgroundImage.gameObject.activeSelf == true)
         {
-            panel.SetActive(false);
+            backgroundImage.gameObject.SetActive(false);
         }
+
+        chapterHeaderText.text = string.Empty;
+        chapterDescText.text = string.Empty;
 
         coverImage.color = new Color(0, 0, 0, 0);
     }
 
+    public void OnLoadingPage(Chapter chapter)
+    {
+        chapterHeaderText.text = chapter.ChapterTitle;
+        chapterDescText.text = chapter.ChapterDesc;
+
+        backgroundImage.gameObject.SetActive(true);
+        //TODO. On Loading Anim
+    }
 
     public IEnumerator FadeInAndLoadSceneCo(float delay)
     {

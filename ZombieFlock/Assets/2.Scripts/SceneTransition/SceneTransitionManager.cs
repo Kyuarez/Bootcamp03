@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI;
 
 public class SceneTransitionManager : MonoSingleton<SceneTransitionManager>
 {
@@ -14,31 +15,20 @@ public class SceneTransitionManager : MonoSingleton<SceneTransitionManager>
         uiLoading = GetComponentInChildren<UILoading>();
         uiLoading.ResetUILoading();
     }
-    public void LoadScene(string sceneName, Action action = null)
+    public void LoadSceneAsync(Chapter chapter, Action action = null)
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene(sceneName);
-        action?.Invoke();
-        SoundManager.Instance.PlayBGM($"BGM_{sceneName}");
-    }
-    public void LoadSceneAsync(string sceneName, Action action = null)
-    {
-        Time.timeScale = 1f;
-        StartCoroutine(CoLoadSceneWithLoading(sceneName, action));
-        SoundManager.Instance.PlayBGM($"BGM_{sceneName}");
+        StartCoroutine(CoLoadSceneWithLoading(chapter, action));
+        SoundManager.Instance.PlayBGM($"BGM_{chapter.sceneName}");
     }
 
-    public void LoadSceneWithLoadingScene(string sceneName, Action action = null)
+    IEnumerator CoLoadSceneWithLoading(Chapter chapter, Action action = null)
     {
-        Time.timeScale = 1f; 
-        StartCoroutine(LoadLoadingSceneAndNextScene(sceneName, action));
-    }
-
-    IEnumerator CoLoadSceneWithLoading(string sceneName, Action action = null)
-    {
-        //TODO
-        yield return StartCoroutine(uiLoading.FadeCover(1f, 0f, 0.5f));
-        AsyncOperation ao = SceneManager.LoadSceneAsync(sceneName);
+        //@tk : 실제 씬 로드랑 별개로 로딩 씬 하기 (고정 값 2~3초)
+        yield return StartCoroutine(uiLoading.FadeCover(0f, 1f, 0.5f));
+        uiLoading.OnLoadingPage(chapter);
+        //sceneLogic
+        AsyncOperation ao = SceneManager.LoadSceneAsync(chapter.sceneName);
         ao.allowSceneActivation = false;
         //Loading UI Control
         while(ao.isDone == false)
@@ -49,9 +39,17 @@ public class SceneTransitionManager : MonoSingleton<SceneTransitionManager>
             }
             yield return null;
         }
-        yield return StartCoroutine(uiLoading.FadeCover(0f, 1f, 0.5f));
-        uiLoading.ResetUILoading();
         action?.Invoke();
+        yield return new WaitForSeconds(2f);
+        yield return StartCoroutine(uiLoading.FadeCover(1f, 0f, 0.5f));
+        uiLoading.ResetUILoading();
+    }
+
+    #region NotUse
+    public void LoadSceneWithLoadingScene(string sceneName, Action action = null)
+    {
+        Time.timeScale = 1f; 
+        StartCoroutine(LoadLoadingSceneAndNextScene(sceneName, action));
     }
 
     public IEnumerator LoadLoadingSceneAndNextScene(string nextScene, Action action = null)
@@ -82,4 +80,5 @@ public class SceneTransitionManager : MonoSingleton<SceneTransitionManager>
         SceneManager.UnloadSceneAsync("LoadingScene");
         yield return null;
     }
+    #endregion
 }

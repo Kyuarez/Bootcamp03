@@ -11,16 +11,18 @@ public class Chapter
     public int ChapterID;
     public string sceneName;
     public string ChapterTitle;
+    public string ChapterDesc;
     public bool isClearChapter;
     public Vector3 playerSpawnPosition; //@tk 플레이어 시작 위치
 
     public List<Quest> QuestBundle = new List<Quest>();
 
-    public Chapter(int chapterID, string chapterTitle, Vector3 playerSpawnPos)
+    public Chapter(int chapterID, string chapterTitle, string chapterDesc, Vector3 playerSpawnPos)
     {
         this.ChapterID = chapterID;
         this.sceneName = "Ingame_" + ChapterID.ToString();
         this.ChapterTitle = chapterTitle;
+        this.ChapterDesc = chapterDesc;
         this.playerSpawnPosition = playerSpawnPos;
         this.isClearChapter = false;
     }

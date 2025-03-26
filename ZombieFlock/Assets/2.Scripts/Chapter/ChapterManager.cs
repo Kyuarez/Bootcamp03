@@ -60,7 +60,7 @@ public class ChapterManager
 
     public void OnLoadChapterLinear()   
     {
-        SceneTransitionManager.Instance.LoadSceneAsync(currentChapter.sceneName, OnPostSettingChapter);
+        SceneTransitionManager.Instance.LoadSceneAsync(currentChapter, OnPostSettingChapter);
     }
 
     //@tk scene Load 후에 세팅할 것들

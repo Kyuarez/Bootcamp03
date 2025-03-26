@@ -14,6 +14,11 @@ public class UICrossHair : MonoBehaviour
 
     private void Update()
     {
+        if(Operator.Instance.PlayerManager == null)
+        {
+            return;
+        }
+
         if(Operator.Instance.PlayerManager.IsAim == true)
         {
             panel.SetActive(true);

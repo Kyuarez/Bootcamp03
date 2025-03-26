@@ -128,8 +128,8 @@ public class Operator : MonoSingleton<Operator>
         chapter1_questList.Add(quest2);
         //=======================Chapter=========================================
         List<Chapter> chapterData = new List<Chapter>();
-        Chapter chapter0 = new Chapter(0, "Wake up" , new Vector3(-3.45f, 4.72f, 1.22f));
-        Chapter chapter1 = new Chapter(1, "First Mission", new Vector3(193f, 0f, -95.1f));
+        Chapter chapter0 = new Chapter(0, "Wake up", "welcome! tutorial!", new Vector3(-3.45f, 4.72f, 1.22f));
+        Chapter chapter1 = new Chapter(1, "First Mission", "heavy zombie's rush is hazard.", new Vector3(193f, 0f, -95.1f));
         chapter0.LoadQuestBundle(chapter0_questList);
         chapter1.LoadQuestBundle(chapter1_questList);
         chapterData.Add(chapter0);
@@ -182,6 +182,7 @@ public class Operator : MonoSingleton<Operator>
         }        
     }
 
+    //@tk 다른 방법 강구
     public  void OnUpdateChapter()
     {
         chapterManager.CurrentChapterID = chapterManager.CurrentChapterID + 1;
