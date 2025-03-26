@@ -2,7 +2,7 @@ using TKCamera;
 using UnityEngine;
 using System.Collections.Generic;
 using System;
-using Mono.Cecil;
+
 
 public class Operator : MonoSingleton<Operator>
 {
@@ -194,6 +194,16 @@ public class Operator : MonoSingleton<Operator>
         Instantiate(cameraObj, spawnPos, Quaternion.identity);
         ingamePlayer = Instantiate(playerObj, spawnPos, Quaternion.identity).GetComponent<PlayerManager>();
         ingamePlayer.OnUpdateWeapon += UIManager.HUD.OnUpdateWeaponHUD;
+
+        //Monster Trigger Setting
+        SpawnTrigger[] spawnTriggers = FindObjectsByType<SpawnTrigger>(FindObjectsSortMode.None);
+        if (spawnTriggers != null && spawnTriggers.Length > 0)
+        {
+            foreach (var trigger in spawnTriggers)
+            {
+                trigger.InitSpawnTrigger();
+            }
+        }
 
         //UI Setting
         OnPostInGame?.Invoke();
