@@ -95,8 +95,9 @@ public class Operator : MonoSingleton<Operator>
         //TODO : 이거 Json으로 로드되게 전환
         //=======================Quest=========================================
         //Chapter0 : Tutorial
-        QuestConditionGetItem chapter0_condition1 = new QuestConditionGetItem(5, 1); //AK-47 = 10
-        QuestConditionGetItem chapter0_condition2 = new QuestConditionGetItem(10, 1); //Shotgun = 10
+        //todo : 이거 타겟 위치들 다 데이터 화 하고 스폰하도록 하자.
+        QuestConditionGetItem chapter0_condition1 = new QuestConditionGetItem(5, 1, new Vector3(-1.49f, 4.776f, 3.82f)); //AK-47 = 10
+        QuestConditionGetItem chapter0_condition2 = new QuestConditionGetItem(10, 1, new Vector3(-5.024f, 4.864f, 11.2588f)); //Shotgun = 10
         QuestConditionKill chapter0_condition3 = new QuestConditionKill(1, 1); //NormalZombie = 1
 
         List<QuestCondition> chapter0_conditionList1 = new List<QuestCondition>();

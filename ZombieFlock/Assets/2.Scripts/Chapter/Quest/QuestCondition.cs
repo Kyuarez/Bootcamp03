@@ -3,6 +3,7 @@ using UnityEngine;
 public abstract class QuestCondition 
 {
     public QuestConditionType ConditionType { get; protected set; }
+    public Vector3 TargetPosition { get; protected set; }
     public abstract bool CheckCondition();
     public abstract string GetDescription();
 }
@@ -13,12 +14,13 @@ public class QuestConditionGetItem : QuestCondition
     public int RequiredAmount {  get; set; }
     public int CurrentAmount {  get; set; }
 
-    public QuestConditionGetItem(int ItemID, int RequiredAmount)
+    public QuestConditionGetItem(int ItemID, int RequiredAmount, Vector3 targetPosition = default(Vector3))
     {
+        this.ConditionType = QuestConditionType.GetItem;
         this.ItemID = ItemID;
         this.RequiredAmount = RequiredAmount;
         this.CurrentAmount = 0;
-        ConditionType = QuestConditionType.GetItem;
+        this.TargetPosition = targetPosition;
     }
 
     public override bool CheckCondition()
@@ -44,13 +46,13 @@ public class QuestConditionKill : QuestCondition
     public int RequiredKills { get; set; }
     public int CurrentKills { get; set; }
 
-    public QuestConditionKill(int TargetId, int RequiredKills)
+    public QuestConditionKill(int TargetId, int RequiredKills, Vector3 targetPosition = default(Vector3))
     {
+        this.ConditionType = QuestConditionType.Kill;
         this.TargetId = TargetId;
         this.RequiredKills = RequiredKills;
         this.CurrentKills = 0;
-        ConditionType = QuestConditionType.Kill;
-
+        this.TargetPosition = targetPosition;
     }
 
     public override bool CheckCondition()
@@ -75,11 +77,12 @@ public class QuestConditionActiveEvent : QuestCondition
     public string EventName { get; set; }
     public bool IsActive { get; set; }
 
-    public QuestConditionActiveEvent(string eventName)
+    public QuestConditionActiveEvent(string eventName, Vector3 targetPosition = default(Vector3))
     {
+        ConditionType = QuestConditionType.ActiveEvent;
         this.EventName = eventName;
         this.IsActive = false;
-        ConditionType = QuestConditionType.ActiveEvent;
+        this.TargetPosition = targetPosition;
     }
 
     public override bool CheckCondition()

@@ -12,6 +12,7 @@ public class QuestManager
     public List<Quest> QuestData = new List<Quest>();
 
     public event Action<Quest> OnChangeQuest;   //@tk : current Quest Change Action
+    //public event Action<QuestCondition> OnChangeQuestCondition;
 
     public Quest CurrentQuest
     {
