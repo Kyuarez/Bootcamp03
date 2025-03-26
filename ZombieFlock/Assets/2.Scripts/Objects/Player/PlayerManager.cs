@@ -3,8 +3,6 @@ using System.Collections;
 using UnityEngine;
 using TKCamera;
 using UnityEngine.Animations.Rigging;
-using static UnityEngine.UI.Image;
-using UnityEngine.InputSystem.XR;
 using System;
 
 public class PlayerManager : MonoBehaviour

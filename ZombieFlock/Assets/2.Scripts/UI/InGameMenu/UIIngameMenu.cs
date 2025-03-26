@@ -3,7 +3,9 @@ using UnityEngine;
 public class UIIngameMenu : MonoBehaviour
 {
     [SerializeField] private GameObject panel;
-
+    [SerializeField] private UIMenuPanel menuPanel;
+    [SerializeField] private UISettingPanel settingPanel;
+    
     private bool isOn = false;
 
     private void Awake()
@@ -13,7 +15,11 @@ public class UIIngameMenu : MonoBehaviour
             panel.SetActive(false);
         }    
         isOn = false;
-        
+
+        //@tk 나중에 수정
+        menuPanel.OffUIMenuPanel();
+        settingPanel.OnSettingPanel();
+        settingPanel.InitializeSettingPanel();
     }
 
     /// <summary>

@@ -26,11 +26,11 @@ public class Door : MonoBehaviour
             else
             {
                 doorCol.enabled = false;
-                if (transform.IsTargetInFront(Operator.Instance.PlayerManager.transform))
+                if (door.IsTargetInFront(Operator.Instance.PlayerManager.transform))
                 {
                     targetYaw = -135f;  
                 }
-                else if (transform.IsTargetInBack(Operator.Instance.PlayerManager.transform))
+                else if (door.IsTargetInBack(Operator.Instance.PlayerManager.transform))
                 {
                     targetYaw = 135f;
                 }

@@ -38,6 +38,7 @@ namespace TKCamera
 
         public void RecoilCameraShake(float duration, float magnitude)
         {
+
             if (recoilShakeCo != null)
             {
                 StopCoroutine(recoilShakeCo);

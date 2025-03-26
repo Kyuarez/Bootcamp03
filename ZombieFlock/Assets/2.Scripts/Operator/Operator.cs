@@ -182,10 +182,15 @@ public class Operator : MonoSingleton<Operator>
         }        
     }
 
-    public void SetPostLoadScene()
+    public  void OnUpdateChapter()
+    {
+        chapterManager.CurrentChapterID = chapterManager.CurrentChapterID + 1;
+    }
+
+    public void SetPostLoadScene(Chapter chapter)
     {
         //Player Setting
-        Vector3 spawnPos = chapterManager.CurrentChapter.playerSpawnPosition;
+        Vector3 spawnPos = chapter.playerSpawnPosition;
         Instantiate(cameraObj, spawnPos, Quaternion.identity);
         ingamePlayer = Instantiate(playerObj, spawnPos, Quaternion.identity).GetComponent<PlayerManager>();
         ingamePlayer.OnUpdateWeapon += UIManager.HUD.OnUpdateWeaponHUD;

@@ -7,9 +7,21 @@ public class ChapterManager
     private int currentChapterID;
     private Chapter currentChapter;
 
-    public Chapter CurrentChapter
+    public int CurrentChapterID
     {
-        get { return currentChapter; }
+        get { return currentChapterID; }
+        set 
+        {
+            if(currentChapterID >= chapterDict.Count)
+            {
+                //TODO : 모든 챕터 클리어 ; 엔딩
+                return;
+            }
+
+            currentChapter = GetChapter(value);
+            currentChapterID = value;
+            OnLoadChapterLinear();
+        }
     }
 
     public ChapterManager()
@@ -46,7 +58,7 @@ public class ChapterManager
         //Load하는 법(원래는 Json Data)
     }
 
-    public void OnLoadChapterLinear()
+    public void OnLoadChapterLinear()   
     {
         SceneTransitionManager.Instance.LoadSceneAsync(currentChapter.sceneName, OnPostSettingChapter);
     }
@@ -55,7 +67,7 @@ public class ChapterManager
     public void OnPostSettingChapter()
     {
         //@tk scene setting -> quest setting -> ui setting
-        Operator.Instance.SetPostLoadScene();
+        Operator.Instance.SetPostLoadScene(currentChapter);
         Operator.Instance.QuestManager.LoadQuestData(currentChapter);
         UIManager.Chapter.PreSetUIChpater(currentChapterID, currentChapter.ChapterTitle);
     }
