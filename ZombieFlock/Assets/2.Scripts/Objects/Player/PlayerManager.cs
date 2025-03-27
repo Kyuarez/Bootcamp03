@@ -146,6 +146,11 @@ public class PlayerManager : MonoBehaviour
 
     private void Update()
     {
+        if(Operator.Instance.IsOnCutscene == true)
+        {
+            return;
+        }
+
         UpdateMouseSet();
         UpdateGravity();
 
@@ -707,17 +712,13 @@ public class PlayerManager : MonoBehaviour
     #region On Animation Event
     public void OnAnimEventFootSound()
     {
-
+        SoundManager.Instance.PlaySFX("SFX_Player_Foot", transform.position);
     }
     public void OnAnimEventWeaponChangeSound()
     {
         SoundManager.Instance.PlaySFX("SFX_Weapon_Equipped", transform.position);
     }
 
-    public void OnAnimEventOneShotSound()
-    {
-        //
-    }
     #endregion
 
     #region Coroutine

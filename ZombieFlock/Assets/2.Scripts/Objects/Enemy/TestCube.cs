@@ -42,7 +42,6 @@ public class TestCube : MonoBehaviour, IPoolable
                 pManager.GetComponent<CharacterController>().enabled = true;
 
                 //pManager.TestCameraShake();
-                pManager.OnAnimEventOneShotSound();
             }
 
             DespawnCube();

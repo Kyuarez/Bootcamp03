@@ -35,5 +35,12 @@ public class UIHUD : MonoBehaviour
     {
         HUDWeapon.UpdateWeaponHUD(gun);
     }
+
+    //@TK 기능은 유지하되, 이미지만 잠시 안보이게
+    public void SetVisibleHUD(bool onCutscene)
+    {
+        HUDWeapon.SetVisibleHUD(!onCutscene);
+        HUDQuest.SetVisibleHUD(!onCutscene);
+    }
     
 }

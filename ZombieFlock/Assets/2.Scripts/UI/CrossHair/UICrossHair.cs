@@ -14,7 +14,7 @@ public class UICrossHair : MonoBehaviour
 
     private void Update()
     {
-        if(Operator.Instance.PlayerManager == null)
+        if(Operator.Instance.PlayerManager == null || Operator.Instance.IsOnCutscene == true)
         {
             return;
         }

@@ -6,13 +6,15 @@ using System;
 
 public class Operator : MonoSingleton<Operator>
 {
-    [SerializeField] private bool isDevMode;
     private GameState gameState;
+    
+    [SerializeField] private bool isDevMode;
+    private bool isOnCutscene;
+
+
     public static event Action OnPostInGame;
     public static event Action OnPreTitle;
     
-    private UIManager uiManager;
-    private PoolManager poolManager;
     private PatrolPointManager patrolManager;
     private CameraShake cameraShake;
 
@@ -25,7 +27,18 @@ public class Operator : MonoSingleton<Operator>
 
     public bool IsDevMode { get { return isDevMode; } }
 
-    public GameState GameState { get { return gameState; } }
+
+    public event Action<bool> OnPostCutscene;
+    public bool IsOnCutscene
+    {
+        get {  return isOnCutscene; }
+        set 
+        {
+            OnPostCutscene?.Invoke(value);
+            isOnCutscene = value; 
+        }
+    }
+
 
     public PlayerManager PlayerManager
     {
@@ -67,11 +80,6 @@ public class Operator : MonoSingleton<Operator>
         }
     }
 
-    public UIManager UIManager
-    {
-        get { return uiManager; }
-    }
-
     public QuestManager QuestManager
     {
         get { return questManager; }
@@ -80,11 +88,6 @@ public class Operator : MonoSingleton<Operator>
     protected override void Awake()
     {
         base.Awake();
-
-        //TODO : 이거 이제 Awake 할 때랑 Scene에서 받을 것이랑 구분해야 함.
-        //Bind
-        poolManager = UnityEngine.Object.FindAnyObjectByType<PoolManager>();
-        uiManager = UnityEngine.Object.FindAnyObjectByType<UIManager>();
 
         questManager = new QuestManager();
 
@@ -165,6 +168,7 @@ public class Operator : MonoSingleton<Operator>
 
     private void Start()
     {
+        IsOnCutscene = false;
         gameState = GameState.Title;
         OnPreTitle?.Invoke();
     }

@@ -40,11 +40,13 @@ public class CutSceneController : MonoBehaviour
             return;
         }
 
+        Operator.Instance.IsOnCutscene = true;
         cutscene.Play();
     }
 
     public void ExitCutScene(PlayableDirector timeline)
     {
+        Operator.Instance.IsOnCutscene = false;
         Destroy(gameObject, 1.0f);
     }
 }

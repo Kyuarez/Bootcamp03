@@ -25,6 +25,7 @@ public class UIManager : MonoSingleton<UIManager>
         Operator.OnPostInGame += Chapter.OnUIChapter;
 
         Operator.Instance.QuestManager.OnChangeQuest += HUD.OnChangeQuestHUD;
+        Operator.Instance.OnPostCutscene += HUD.SetVisibleHUD;
     }
 
     public void OnInGame()

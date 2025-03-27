@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.AI;
@@ -7,17 +8,18 @@ public class BossManager : MonoBehaviour
 {
     public ObjectData ObjectData;
     public NavMeshAgent agent;
+    public GameObject rushAttackArea;
 
     protected Transform target;
     protected CapsuleCollider col;
     protected Rigidbody rigid;
     protected Animator anim;
-    protected Coroutine stateRoutine;
+    protected Coroutine cutsceneCoroutine;
 
-    public float attackRange = 2.5f;
+    public float attackRange = 5.0f;
     public float moveSpeed = 1.0f;
     public float chaseSpeed = 5.0f;
-    public float rushSpeed = 10.0f;
+    public float rushSpeed = 20.0f;
     public float trackingRange = 10.0f;
     public float distanceToTarget;
 
@@ -75,8 +77,16 @@ public class BossManager : MonoBehaviour
         //CurrentState = ZombieState.Idle;
         //stateRoutine = StartCoroutine(currentState.ToString());
 
-        distanceToTarget = Vector3.Distance(transform.position, Target.position);
-        ChangeState(new BossIdleState());
+        if(cutsceneCoroutine != null)
+        {
+            StopCoroutine(cutsceneCoroutine);
+            cutsceneCoroutine = null;
+        }
+
+        agent.enabled = false;
+        transform.LookAt(Target);
+        agent.enabled = true;
+        cutsceneCoroutine = StartCoroutine(CutSceneCo());
     }
 
     protected void OnDisable()
@@ -97,10 +107,6 @@ public class BossManager : MonoBehaviour
         }
 
         distanceToTarget = Vector3.Distance(transform.position, Target.position);
-        agent.speed = chaseSpeed;
-        agent.isStopped = false;
-
-        agent.destination = target.position;
 
         if (currentState != null)
         {
@@ -141,5 +147,16 @@ public class BossManager : MonoBehaviour
             ChangeState(new BossDieState());
             OnDie?.Invoke(ObjectData.ObjectID, 1);
         }
+    }
+
+    protected IEnumerator CutSceneCo()
+    {
+        PlayAnimation("Idle");
+        yield return new WaitForSeconds(4f);
+        PlayAnimation("Roar");
+        SoundManager.Instance.PlaySFX("SFX_BlackBull_Grawl");
+        yield return new WaitForSeconds(1f);
+        distanceToTarget = Vector3.Distance(transform.position, Target.position);
+        ChangeState(new BossIdleState());
     }
 }

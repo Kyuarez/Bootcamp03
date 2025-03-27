@@ -185,6 +185,8 @@ MonoBehaviour:
   - name: BGM_Ingame_1
     clip: {fileID: 8300000, guid: 6f8ac1fb6c4da43309fc6f2608f82ab6, type: 3}
   sfxClipList:
+  - name: SFX_Player_Foot
+    clip: {fileID: 8300000, guid: 87e0f970f9004d149930586753829922, type: 3}
   - name: SFX_Weapon_Rifle
     clip: {fileID: 8300000, guid: 08e69622a48de234b9bc3193c1b079b9, type: 3}
   - name: SFX_Weapon_Shotgun
@@ -208,6 +210,8 @@ MonoBehaviour:
   - name: SFX_BlackBull_Hurt
     clip: {fileID: 8300000, guid: bc605487e998a4041b26883244368442, type: 3}
   - name: SFX_BlackBull_Die
+    clip: {fileID: 8300000, guid: 48f70eb439a5b8c44bf7371b01a3dff3, type: 3}
+  - name: SFX_BlackBull_JumpAttack
     clip: {fileID: 8300000, guid: 48f70eb439a5b8c44bf7371b01a3dff3, type: 3}
 --- !u!1 &6819531059860740959
 GameObject:

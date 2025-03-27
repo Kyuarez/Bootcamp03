@@ -34,4 +34,12 @@ public class UIHUDWeapon : MonoBehaviour
         magazineText.text = $"{gun.CurrentMagazineCount}/{gun.MaxMagazineCount}";
         weaponNameText.text = $"Current : {gun.GunName}";
     }
+
+    public void SetVisibleHUD(bool visible)
+    {
+        Color color = (visible == true) ? new Color(1f, 1f, 1f, 1f) : new Color(1f, 1f, 1f, 0f);
+        bulletText.color = color;
+        magazineText.color = color;
+        weaponNameText.color = color;
+    }
 }

@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class UIHUDQuest : MonoBehaviour
 {
+    [SerializeField] private GameObject icon;
     [SerializeField] private TextMeshProUGUI questTitleText;
     [SerializeField] private TextMeshProUGUI questDescriptionText;
 
@@ -32,5 +33,14 @@ public class UIHUDQuest : MonoBehaviour
         questTitleText.text = quest.QuestTitle;
         questDescriptionText.text = quest.QuestDescription;
         SetActiveState(true);
+    }
+
+    public void SetVisibleHUD(bool visible)
+    {
+        icon.SetActive(visible);
+
+        Color color = (visible == true) ? new Color(1f, 1f, 1f, 1f) : new Color(1f, 1f, 1f, 0f);
+        questTitleText.color = color;
+        questDescriptionText.color = color;
     }
 }

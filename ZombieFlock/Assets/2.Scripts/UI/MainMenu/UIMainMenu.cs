@@ -28,30 +28,32 @@ public class UIMainMenu : MonoBehaviour
     [SerializeField] private Button btn_setting;
     [SerializeField] private Button btn_exit;
 
+    [Header("ExitPopup")]
+    [SerializeField] private GameObject ExitPopup;
+    [SerializeField] private Button btn_Yes;
+    [SerializeField] private Button btn_No;
+
 
     private Coroutine OnTitleCoroutine;
-    
-    //@tk 나중에 SoundManager에서 처리
-    private AudioSource audioSource;
 
     private float coverFadeTime = 1.0f;
     private float titleFadeTime = 3.0f;
     private float titleInfoFadeTime = 1.0f;
     private float titleWaitTime = 1.0f;
 
-
-    private void Awake()
+    private void OnEnable()
     {
-        audioSource = GetComponent<AudioSource>();
+        ResetUITitle();
 
         titleTouchArea.onClick.AddListener(OnClickTitleToMainMenu);
         btn_newGame.onClick.AddListener(OnClickOnNewGame);
         btn_chapter.onClick.AddListener(OnClickOnChapter);
         btn_multigame.onClick.AddListener(OnClickOnMultiGame);
         btn_setting.onClick.AddListener(OnClickOnSettings);
-        btn_exit.onClick.AddListener(OnClickOnExit);
+        btn_exit.onClick.AddListener(OnClickOnExitPopup);
 
-        ResetUITitle();
+        btn_No.onClick.AddListener(OnClickExitNo);
+        btn_Yes.onClick.AddListener(OnClickExitYes);
     }
 
     private void Start()
@@ -81,6 +83,11 @@ public class UIMainMenu : MonoBehaviour
         if (mainmenuPanel.activeSelf == true)
         {
             mainmenuPanel.SetActive(false);
+        }
+
+        if (ExitPopup.activeSelf == true)
+        {
+            ExitPopup.SetActive(false);
         }
 
         titleCoverImage.color = new Color(0, 0, 0, 1);
@@ -155,25 +162,48 @@ public class UIMainMenu : MonoBehaviour
         Operator.Instance.ChangeGameState(GameState.InGame);
     }
 
+    //TODO
     public void OnClickOnChapter()
     {
         //TODO : 로컬 데이터를 통해서 현재 챕터 반영
         Operator.Instance.ChangeGameState(GameState.InGame);
     }
 
+    //TODO 
     public void OnClickOnMultiGame()    
     {
 
     }
 
+    //TODO
     public void OnClickOnSettings()
     {
 
     }
 
-    public void OnClickOnExit()
+    public void OnClickOnExitPopup()
     {
-        Application.Quit();
+        if(ExitPopup.activeSelf == false)
+        {
+            ExitPopup.SetActive(true);
+        }
+    }
+
+    public void OnClickExitNo()
+    {
+        if (ExitPopup.activeSelf == true)
+        {
+            ExitPopup.SetActive(false);
+        }
+    }
+
+    public void OnClickExitYes()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+    Application.Quit();
+#endif
     }
     #endregion
 }

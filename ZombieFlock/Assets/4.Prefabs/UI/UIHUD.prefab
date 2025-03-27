@@ -490,6 +490,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b76bbaaa621f5614a9aed5d0e4fbaeb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  icon: {fileID: 9030523211401765081}
   questTitleText: {fileID: 9220191642684873671}
   questDescriptionText: {fileID: 7249932151465865114}
 --- !u!1 &4517176620382965577
