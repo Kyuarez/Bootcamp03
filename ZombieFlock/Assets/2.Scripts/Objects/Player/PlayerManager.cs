@@ -225,6 +225,8 @@ public class PlayerManager : MonoBehaviour
                     return;
                 }
 
+                UIWorldspaceManager.Instance.ResetInteractionUI();
+
                 GunData gun = adjacentItem.GetComponent<GunData>();
                 if (gun != null)
                 {
