@@ -24,7 +24,9 @@ public class BossRoarState : IBossState
             int rndNum = UnityEngine.Random.Range(0, 10);
             if(rndNum <= 2) // 30%
             {
-                boss.ChangeState(new BossJumpAttackState());
+                boss.ChangeState(new BossRushState());
+
+                //boss.ChangeState(new BossJumpAttackState());
             }
             else
             {
