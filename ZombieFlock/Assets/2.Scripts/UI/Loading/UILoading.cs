@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -36,6 +37,14 @@ public class UILoading : MonoBehaviour
         coverImage.color = new Color(0, 0, 0, 0);
     }
 
+    public void OnLoadingPage()
+    {
+        chapterHeaderText.text = string.Empty;
+        chapterDescText.text = string.Empty;
+
+        backgroundImage.gameObject.SetActive(true);
+        //TODO. On Loading Anim
+    }
     public void OnLoadingPage(Chapter chapter)
     {
         chapterHeaderText.text = chapter.ChapterTitle;

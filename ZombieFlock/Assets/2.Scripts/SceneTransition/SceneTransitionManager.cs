@@ -15,6 +15,12 @@ public class SceneTransitionManager : MonoSingleton<SceneTransitionManager>
         uiLoading = GetComponentInChildren<UILoading>();
         uiLoading.ResetUILoading();
     }
+    public void LoadSceneTitleAsync()
+    {
+        Time.timeScale = 1f;
+        StartCoroutine(CoLoadSceneTitle());
+        SoundManager.Instance.PlayBGM($"BGM_TitleScene");
+    }
     public void LoadSceneAsync(Chapter chapter, Action action = null)
     {
         Time.timeScale = 1f;
@@ -47,7 +53,31 @@ public class SceneTransitionManager : MonoSingleton<SceneTransitionManager>
         yield return StartCoroutine(uiLoading.FadeCover(1f, 0f, 0.5f));
         uiLoading.ResetUILoading();
     }
+    IEnumerator CoLoadSceneTitle(Action action = null)
+    {
+        //@tk : 실제 씬 로드랑 별개로 로딩 씬 하기 (고정 값 2~3초)
+        yield return StartCoroutine(uiLoading.FadeCover(0f, 1f, 0.5f));
+        uiLoading.OnLoadingPage();
+        yield return StartCoroutine(uiLoading.PreparedVideoCo());
+        //sceneLogic
+        AsyncOperation ao = SceneManager.LoadSceneAsync("TitleScene");
+        ao.allowSceneActivation = false;
+        //Loading UI Control
+        while (ao.isDone == false)
+        {
+            if (ao.progress >= 0.9f)
+            {
+                ao.allowSceneActivation = true;
+            }
+            yield return null;
+        }
 
+        //TODO : 스페이스 누르면 시작으로 변경
+        action?.Invoke();
+        yield return new WaitForSeconds(2f);
+        yield return StartCoroutine(uiLoading.FadeCover(1f, 0f, 0.5f));
+        uiLoading.ResetUILoading();
+    }
 
 
     #region NotUse

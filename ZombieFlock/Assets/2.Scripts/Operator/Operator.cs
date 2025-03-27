@@ -102,6 +102,7 @@ public class Operator : MonoSingleton<Operator>
         QuestConditionActiveEvent chapter0_condition4 = new QuestConditionActiveEvent(QuestEventType.Tutorial_Aim);
         QuestConditionActiveEvent chapter0_condition5 = new QuestConditionActiveEvent(QuestEventType.Tutorial_Shot);
         QuestConditionKill chapter0_condition6 = new QuestConditionKill(1, 1); //NormalZombie = 1
+        QuestConditionActiveEvent chapter0_condition7 = new QuestConditionActiveEvent(QuestEventType.EnterEndPoint, new Vector3(24.87f, 12.96f, 41.17f));
 
         List<QuestCondition> chapter0_conditionList1 = new List<QuestCondition>();
         chapter0_conditionList1.Add(chapter0_condition1);
@@ -115,12 +116,15 @@ public class Operator : MonoSingleton<Operator>
         chapter0_conditionList5.Add(chapter0_condition5);
         List<QuestCondition> chapter0_conditionList6 = new List<QuestCondition>();
         chapter0_conditionList6.Add(chapter0_condition6);
+        List<QuestCondition> chapter0_conditionList7 = new List<QuestCondition>();
+        chapter0_conditionList6.Add(chapter0_condition7);
         Quest chapter0_quest1 = new Quest(1, "[Tutorial Quest 1]", "Acquire 1 AK47", chapter0_conditionList1);
         Quest chapter0_quest2 = new Quest(2, "[Tutorial Quest 2]", "Acquire 1 Shotgun", chapter0_conditionList2);
         Quest chapter0_quest3 = new Quest(3, "[Tutorial Quest 3]", "Equipped Gun", chapter0_conditionList3);
         Quest chapter0_quest4 = new Quest(4, "[Tutorial Quest 4]", "On Aim", chapter0_conditionList4);
         Quest chapter0_quest5 = new Quest(5, "[Tutorial Quest 5]", "On Shot", chapter0_conditionList5);
         Quest chapter0_quest6 = new Quest(6, "[Tutorial Quest 6]", "Kill a single normal zombie", chapter0_conditionList6);
+        Quest chapter0_quest7 = new Quest(7, "[Tutorial Quest 7]", "Enter End Point", chapter0_conditionList7);
         List<Quest> chapter0_questList = new List<Quest>();
         chapter0_questList.Add(chapter0_quest1);
         chapter0_questList.Add(chapter0_quest2);
@@ -128,6 +132,7 @@ public class Operator : MonoSingleton<Operator>
         chapter0_questList.Add(chapter0_quest4);
         chapter0_questList.Add(chapter0_quest5);
         chapter0_questList.Add(chapter0_quest6);
+        chapter0_questList.Add(chapter0_quest7);
 
 
         //Chapter1 : 

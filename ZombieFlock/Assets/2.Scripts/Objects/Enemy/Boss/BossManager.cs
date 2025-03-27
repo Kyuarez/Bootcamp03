@@ -1,3 +1,4 @@
+using System;
 using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.AI;
@@ -26,6 +27,9 @@ public class BossManager : MonoBehaviour
     protected float zombieHP = 1000.0f;
 
     protected IBossState currentState;
+
+    public static event Action<int, int> OnDie; //@tk 모든 몬스터 공유
+
 
     public Transform Target
     {
@@ -72,7 +76,7 @@ public class BossManager : MonoBehaviour
         //stateRoutine = StartCoroutine(currentState.ToString());
         distanceToTarget = Vector3.Distance(transform.position, Target.position);
 
-        ChangeState(new BossIdleState());
+        //ChangeState(new BossIdleState());
     }
 
     protected void OnDisable()
@@ -87,16 +91,16 @@ public class BossManager : MonoBehaviour
             return;
         }
 
-        //distanceToTarget = Vector3.Distance(transform.position, Target.position);
-        //agent.speed = chaseSpeed;
-        //agent.isStopped = false;
+        distanceToTarget = Vector3.Distance(transform.position, Target.position);
+        agent.speed = chaseSpeed;
+        agent.isStopped = false;
 
-        //agent.destination = target.position;
+        agent.destination = target.position;
 
-        if(currentState != null)
-        {
-            currentState.UpdateState(this);
-        }
+        //if (currentState != null)
+        //{
+        //    currentState.UpdateState(this);
+        //}
 
     }
 
@@ -118,8 +122,16 @@ public class BossManager : MonoBehaviour
 
     public void OnDamaged(float damage)
     {
-        zombieHP -= damage;
+        zombieHP = Mathf.Clamp(zombieHP - damage, 0, zombieHP);
         Debug.Log($"{ObjectData.CodeName}'s  HP : {zombieHP}");
         //TODO : 0 이하면 죽는 State
+        if(zombieHP <= 0)
+        {
+            //TODO.
+            string sfxString = $"sfx_{ObjectData.CodeName}_Die";
+            SoundManager.Instance.PlaySFX(sfxString, transform.position);
+            OnDie?.Invoke(ObjectData.ObjectID, 1);
+            Destroy(gameObject ,1.0f);
+        }
     }
 }

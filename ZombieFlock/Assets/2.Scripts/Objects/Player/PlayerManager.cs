@@ -553,6 +553,8 @@ public class PlayerManager : MonoBehaviour
                     {
                         boss.OnDamaged(bucket.CurrentWeapon.CurrentGunData.gunDamage);
                         ParticleManager.Instance.PlayFX(EffectType.FX_RiflingMark_SoftBody, hit.point);
+                        string sfxName = $"SFX_{boss.ObjectData.CodeName}_Hurt";
+                        SoundManager.Instance.PlaySFX(sfxName, boss.transform.position);
 
                     }
 
@@ -623,6 +625,8 @@ public class PlayerManager : MonoBehaviour
                         {
                             boss.OnDamaged(bucket.CurrentWeapon.CurrentGunData.gunDamage);
                             ParticleManager.Instance.PlayFX(EffectType.FX_RiflingMark_SoftBody, hit.point);
+                            string sfxName = $"SFX_{boss.ObjectData.CodeName}_Hurt";
+                            SoundManager.Instance.PlaySFX(sfxName, boss.transform.position); 
                             continue;
                         }
 

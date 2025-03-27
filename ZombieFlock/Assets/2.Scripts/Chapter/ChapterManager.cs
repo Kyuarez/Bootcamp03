@@ -12,9 +12,10 @@ public class ChapterManager
         get { return currentChapterID; }
         set 
         {
-            if(currentChapterID >= chapterDict.Count)
+            if(value >= chapterDict.Count)
             {
-                //TODO : 모든 챕터 클리어 ; 엔딩
+                Debug.Log("모든 챕터 클리어");
+                UIManager.Ending.OnEndingCredit();
                 return;
             }
 

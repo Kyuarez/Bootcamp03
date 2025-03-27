@@ -71,7 +71,9 @@ public class QuestManager
     {
         Operator.Instance.PlayerManager.OnGetItem -= UpdateCurrentQuestGetItem;
         ZombieManager.OnDie -= UpdateCurrentQuestKill;
+        BossManager.OnDie -= UpdateCurrentQuestKill;
         QuestEventManager.OnEventTriggered -= UpdateCurrentQuestActiveEvent;
+        
         
         if (currentQuest == null || currentQuest.Conditions == null || currentQuest.Conditions.Count == 0)
         {
@@ -87,6 +89,7 @@ public class QuestManager
             if (condition.ConditionType == QuestConditionType.Kill)
             {
                 ZombieManager.OnDie += UpdateCurrentQuestKill;
+                BossManager.OnDie += UpdateCurrentQuestKill;
             }
             if (condition.ConditionType == QuestConditionType.ActiveEvent)
             {

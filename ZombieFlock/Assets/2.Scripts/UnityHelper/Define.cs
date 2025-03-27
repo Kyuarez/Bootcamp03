@@ -65,7 +65,6 @@ public enum QuestEventType //Quest 조건 : 특정 이벤트 발동
     Tutorial_Run,
     Tutorial_Aim,
     Tutorial_Shot,
-
-
+    EnterEndPoint,
 }
 #endregion

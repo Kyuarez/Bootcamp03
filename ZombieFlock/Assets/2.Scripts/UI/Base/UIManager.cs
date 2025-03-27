@@ -8,6 +8,7 @@ public class UIManager : MonoSingleton<UIManager>
     public static UICrossHair CrossHair;
     public static UIChapter Chapter;
     public static UIHUD HUD;
+    public static UIEnding Ending;
 
     protected override void Awake()
     {
@@ -17,6 +18,7 @@ public class UIManager : MonoSingleton<UIManager>
         CrossHair = GetComponentInChildren<UICrossHair>();
         Chapter = GetComponentInChildren<UIChapter>();
         HUD = GetComponentInChildren<UIHUD>();
+        Ending = GetComponentInChildren<UIEnding>();
 
         Operator.OnPreTitle += OnTitle;
         Operator.OnPostInGame += OnInGame;
