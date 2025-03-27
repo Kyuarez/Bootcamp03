@@ -176,27 +176,34 @@ public class PlayerManager : MonoBehaviour
     private GameObject adjacentItem;
     private void PickupItem()
     {
+        if (isPickup == true)
+        {
+            return;
+        }
+
+        //TODO : 아이템 체킹해서 예외 처리
+        Vector3 origin = itemGetPos.position;
+        Vector3 direction = itemGetPos.forward;
+        RaycastHit[] hits;
+        hits = Physics.BoxCastAll(origin, pickupBoxSize / 2, direction, Quaternion.identity, castDistance, pickupMask);
+        if(hits.Length <= 0)
+        {
+            UIWorldspaceManager.Instance.ResetInteractionUI();
+            return;
+        }
+
+        foreach (RaycastHit hit in hits) 
+        {
+            //TODO : 거리 계산해서 가장 가까운 아이템으로 세팅
+            adjacentItem = hit.collider.gameObject;
+            UIWorldspaceManager.Instance.OnInteractionUI(KeyCode.E, adjacentItem.transform.position);
+        }
+
         if (Input.GetKeyDown(KeyCode.E) == true)
         {
             if (isPickup == true)
             {
                 return;
-            }
-
-            //TODO : 아이템 체킹해서 예외 처리
-            Vector3 origin = itemGetPos.position;
-            Vector3 direction = itemGetPos.forward;
-            RaycastHit[] hits;
-            hits = Physics.BoxCastAll(origin, pickupBoxSize / 2, direction, Quaternion.identity, castDistance, pickupMask);
-            if(hits.Length <= 0)
-            {
-                return;
-            }
-
-            foreach (RaycastHit hit in hits) 
-            {
-                //TODO : 거리 계산해서 가장 가까운 아이템으로 세팅
-                adjacentItem = hit.collider.gameObject;
             }
 
             bucket.OnHideWeapon();

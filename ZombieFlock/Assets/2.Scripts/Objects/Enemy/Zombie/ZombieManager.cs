@@ -235,39 +235,44 @@ public class ZombieManager : MonoBehaviour, IPoolable
     {
         anim.SetBool("IsWalk", true);
         anim.SetBool("IsRun", false);
-       
 
-        while (currentState == ZombieState.Patrol) 
+
+        while (currentState == ZombieState.Patrol)
         {
             SetStateByDistance();
             AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
-
-            if(info.IsName("Z_Idle") == true)
+            if (info.IsName("Z_Idle") == true)
             {
-                continue;
+                agent.speed = 0f;
+                agent.isStopped = true;
             }
 
-            Transform targetPoint = patrolPoints[currentPointIndex];
-            Vector3 direction = (targetPoint.position - transform.position).normalized;
-            //transform.position += direction * moveSpeed * Time.deltaTime;
-            //transform.LookAt(targetPoint.position);
-            agent.speed = moveSpeed;
-            agent.isStopped = false;
-            agent.destination = targetPoint.position;
-
-            if (agent.isOnOffMeshLink == true)
+            if(info.IsName("Z_Walk") == true)
             {
-                //TODO
-                StartCoroutine(JumpAcrossLink());
-            }
+                Transform targetPoint = patrolPoints[currentPointIndex];
+                Vector3 direction = (targetPoint.position - transform.position).normalized;
+                //transform.position += direction * moveSpeed * Time.deltaTime;
+                //transform.LookAt(targetPoint.position);
+                agent.speed = moveSpeed;
+                agent.isStopped = false;
+                agent.destination = targetPoint.position;
+
+                if (agent.isOnOffMeshLink == true)
+                {
+                    //TODO
+                    StartCoroutine(JumpAcrossLink());
+                }
 
 
-            if (Vector3.Distance(transform.position, targetPoint.position) < 0.3f)
-            {
-                currentPointIndex = (currentPointIndex + 1) % patrolPoints.Count;
+                if (Vector3.Distance(transform.position, targetPoint.position) < 0.3f)
+                {
+                    currentPointIndex = (currentPointIndex + 1) % patrolPoints.Count;
+                }
+
             }
 
             yield return null;
+
         }
     }
     public IEnumerator Chase()

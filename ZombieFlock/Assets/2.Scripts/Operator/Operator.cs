@@ -197,6 +197,7 @@ public class Operator : MonoSingleton<Operator>
         Vector3 spawnPos = chapter.playerSpawnPosition;
         Instantiate(cameraObj, spawnPos, Quaternion.identity);
         ingamePlayer = Instantiate(playerObj, spawnPos, Quaternion.identity).GetComponent<PlayerManager>();
+        UIManager.HUD.ResetWeaponHUD();
         ingamePlayer.OnUpdateWeapon += UIManager.HUD.OnUpdateWeaponHUD;
 
         //Monster Trigger Setting

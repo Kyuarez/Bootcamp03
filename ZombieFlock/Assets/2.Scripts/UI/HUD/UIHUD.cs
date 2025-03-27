@@ -26,6 +26,11 @@ public class UIHUD : MonoBehaviour
         HUDQuest.OnQuestHUD(quest);
     }
 
+    public void ResetWeaponHUD()
+    {
+        HUDWeapon.ResetWeaponHUD();
+    }
+    
     public void OnUpdateWeaponHUD(Gun gun)
     {
         HUDWeapon.UpdateWeaponHUD(gun);
