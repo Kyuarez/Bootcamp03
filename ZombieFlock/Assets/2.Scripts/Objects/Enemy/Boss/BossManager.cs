@@ -14,11 +14,10 @@ public class BossManager : MonoBehaviour
     protected Animator anim;
     protected Coroutine stateRoutine;
 
-    public float attackRange = 1.0f;
-    public float attackDelay = 1.0f;
-    public float nextAttackTime = 0.0f;
+    public float attackRange = 2.5f;
     public float moveSpeed = 1.0f;
     public float chaseSpeed = 5.0f;
+    public float rushSpeed = 10.0f;
     public float trackingRange = 10.0f;
     public float distanceToTarget;
 
@@ -30,6 +29,7 @@ public class BossManager : MonoBehaviour
 
     public static event Action<int, int> OnDie; //@tk 모든 몬스터 공유
 
+    public bool isDie = false;
 
     public Transform Target
     {
@@ -74,9 +74,9 @@ public class BossManager : MonoBehaviour
 
         //CurrentState = ZombieState.Idle;
         //stateRoutine = StartCoroutine(currentState.ToString());
-        distanceToTarget = Vector3.Distance(transform.position, Target.position);
 
-        //ChangeState(new BossIdleState());
+        distanceToTarget = Vector3.Distance(transform.position, Target.position);
+        ChangeState(new BossIdleState());
     }
 
     protected void OnDisable()
@@ -86,6 +86,11 @@ public class BossManager : MonoBehaviour
 
     private void Update()
     {
+        if(isDie == true)
+        {
+            return;
+        }
+
         if (Target == null)
         {
             return;
@@ -97,10 +102,10 @@ public class BossManager : MonoBehaviour
 
         agent.destination = target.position;
 
-        //if (currentState != null)
-        //{
-        //    currentState.UpdateState(this);
-        //}
+        if (currentState != null)
+        {
+            currentState.UpdateState(this);
+        }
 
     }
 
@@ -117,9 +122,14 @@ public class BossManager : MonoBehaviour
 
     public void PlayAnimation(string state)
     {
-        anim.Play(ObjectData.CodeName + "_" + state.ToString());
+        string animName = ObjectData.CodeName + "_" + state;
+        anim.Play(animName);
     }
 
+    public AnimatorStateInfo GetBossAnimStateInfo(int layer = 0)
+    {
+        return anim.GetCurrentAnimatorStateInfo(layer);
+    }
     public void OnDamaged(float damage)
     {
         zombieHP = Mathf.Clamp(zombieHP - damage, 0, zombieHP);
@@ -128,10 +138,8 @@ public class BossManager : MonoBehaviour
         if(zombieHP <= 0)
         {
             //TODO.
-            string sfxString = $"sfx_{ObjectData.CodeName}_Die";
-            SoundManager.Instance.PlaySFX(sfxString, transform.position);
+            ChangeState(new BossDieState());
             OnDie?.Invoke(ObjectData.ObjectID, 1);
-            Destroy(gameObject ,1.0f);
         }
     }
 }

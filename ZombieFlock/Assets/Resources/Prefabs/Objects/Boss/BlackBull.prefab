@@ -1095,15 +1095,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ObjectData:
-    CodeName: Blackbull
+    CodeName: BlackBull
     ObjectID: 90
-    Description: Chapter 1 Boss
+    Description: Chapter1 Boss
   agent: {fileID: 0}
-  attackRange: 1
-  attackDelay: 1
-  nextAttackTime: 0
+  attackRange: 2.5
   moveSpeed: 1
   chaseSpeed: 5
+  rushSpeed: 10
   trackingRange: 10
   distanceToTarget: 0
 --- !u!95 &4767966585771135565

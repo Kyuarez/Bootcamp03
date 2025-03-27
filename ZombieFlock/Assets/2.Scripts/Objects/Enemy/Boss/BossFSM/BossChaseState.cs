@@ -2,25 +2,25 @@ using UnityEngine;
 
 public class BossChaseState : IBossState
 {
-    protected float chaseSpeed = 5.0f;
-
     public void EnterState(BossManager boss)
     {
         boss.PlayAnimation("Run");
+        boss.agent.isStopped = false;
+        boss.agent.speed = boss.chaseSpeed;
     }
 
     public void UpdateState(BossManager boss)
     {
         if (boss.Target == null)
-            return;
-
-        boss.agent.destination = boss.Target.position;
-
-        float distance = Vector3.Distance(boss.transform.position, boss.Target.position);
-
-        if (distance < boss.attackRange)
         {
-            boss.ChangeState(new BossJumpAttackState());
+            boss.ChangeState(new BossIdleState());
+            return;
+        }
+        
+        boss.agent.destination = boss.Target.position;
+        if (boss.distanceToTarget < boss.attackRange)
+        {
+            boss.ChangeState(new BossRoarState());
         }
     }
 
