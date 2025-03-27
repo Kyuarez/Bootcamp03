@@ -5,10 +5,10 @@ public class SpawnTrigger : MonoBehaviour
 {
     [SerializeField] private int codeID;
     [SerializeField] private int spawnObjectID; //@tk 지금은 좀비로 고정(25.03.26)
+    [SerializeField] private GameObject spawnObj;
     
     private Vector3 spawnPos;
     private SphereCollider col;
-    private GameObject spawnObj;
 
     public event Action OnPostSpawn;
 
@@ -28,7 +28,15 @@ public class SpawnTrigger : MonoBehaviour
     {
         if(other.gameObject.CompareTag("Player") == true)
         {
-            spawnObj = PoolManager.Instance.SpawnObjectInWorld<ZombieManager>(spawnPos);
+            if(spawnObjectID == 1)
+            {
+                PoolManager.Instance.SpawnObjectInWorld<ZombieManager>(spawnPos);
+            }
+            else if(spawnObjectID == 90)
+            {
+                Instantiate(spawnObj, spawnPos, Quaternion.identity);
+            }
+
             col.enabled = false;
             OnPostSpawn?.Invoke();
         }

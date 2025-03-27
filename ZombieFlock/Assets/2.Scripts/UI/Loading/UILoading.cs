@@ -2,12 +2,18 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 public class UILoading : MonoBehaviour
 {
     [SerializeField] private GameObject panel;
+
+    [SerializeField] private GameObject loadingPanel;
+    [SerializeField] private GameObject onLoadChapterPanel;
+
     [SerializeField] private Image coverImage;
     [SerializeField] private Image backgroundImage;
+    [SerializeField] private VideoPlayer loadingVideo;
     [SerializeField] private TextMeshProUGUI chapterHeaderText;
     [SerializeField] private TextMeshProUGUI chapterDescText;
 
@@ -39,15 +45,6 @@ public class UILoading : MonoBehaviour
         //TODO. On Loading Anim
     }
 
-    public IEnumerator FadeInAndLoadSceneCo(float delay)
-    {
-        isFading = true;
-        yield return StartCoroutine(FadeCover(0, 1, fadeDuration));
-        yield return new WaitForSeconds(delay);
-        yield return StartCoroutine(FadeCover(1, 0, fadeDuration));
-        isFading = false;
-    }
-
     public IEnumerator FadeCover(float startAlpha, float endAlpha, float duration)
     {
         if (panel.activeSelf == false)
@@ -71,4 +68,20 @@ public class UILoading : MonoBehaviour
         coverImage.color = coverColor;
     }
 
+    public IEnumerator PreparedVideoCo()
+    {
+        loadingVideo.Prepare();
+
+        while (loadingVideo.isPrepared == false)
+        {
+            yield return null;
+        }
+
+        loadingVideo.Play();
+    }
+
+    public void OnClickOnLoadChapter()
+    {
+
+    }
 }

@@ -133,6 +133,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3239184372414753248, guid: b84054cfdb5245e42a6e0ad0193d332a, type: 3}
+      propertyPath: m_Looping
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6196927408399259668, guid: b84054cfdb5245e42a6e0ad0193d332a, type: 3}
       propertyPath: m_Name
       value: LoadingCanvas

@@ -27,6 +27,7 @@ public class SceneTransitionManager : MonoSingleton<SceneTransitionManager>
         //@tk : 실제 씬 로드랑 별개로 로딩 씬 하기 (고정 값 2~3초)
         yield return StartCoroutine(uiLoading.FadeCover(0f, 1f, 0.5f));
         uiLoading.OnLoadingPage(chapter);
+        yield return StartCoroutine(uiLoading.PreparedVideoCo());
         //sceneLogic
         AsyncOperation ao = SceneManager.LoadSceneAsync(chapter.sceneName);
         ao.allowSceneActivation = false;
@@ -39,11 +40,15 @@ public class SceneTransitionManager : MonoSingleton<SceneTransitionManager>
             }
             yield return null;
         }
+
+        //TODO : 스페이스 누르면 시작으로 변경
         action?.Invoke();
         yield return new WaitForSeconds(2f);
         yield return StartCoroutine(uiLoading.FadeCover(1f, 0f, 0.5f));
         uiLoading.ResetUILoading();
     }
+
+
 
     #region NotUse
     public void LoadSceneWithLoadingScene(string sceneName, Action action = null)

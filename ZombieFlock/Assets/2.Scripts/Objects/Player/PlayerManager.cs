@@ -545,11 +545,17 @@ public class PlayerManager : MonoBehaviour
                         SoundManager.Instance.PlaySFX("SFX_Zombie_Damaged", zombie.transform.position);
                         Debug.DrawLine(ray.origin, hit.point, Color.red);
 
+                        return;
                     }
-                    else
+                    
+                    BossManager boss = hit.collider.GetComponent<BossManager>();
+                    if(boss != null)
                     {
-                        Debug.DrawLine(ray.origin, ray.origin + ray.direction * gunMaxRange, Color.green);
+                        boss.OnDamaged(bucket.CurrentWeapon.CurrentGunData.gunDamage);
+                        ParticleManager.Instance.PlayFX(EffectType.FX_RiflingMark_SoftBody, hit.point);
+
                     }
+
                 }
                 else if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Environment"))
                 {
@@ -580,6 +586,8 @@ public class PlayerManager : MonoBehaviour
             anim.SetTrigger("IsShot");
             bucket.CurrentWeapon.OnShot();
             SoundManager.Instance.PlaySFX("SFX_Weapon_Shotgun", transform.position);
+            QuestEventManager.TriggerEvent(QuestEventType.Tutorial_Shot);
+
             StartCoroutine(ShotDelayCo(bucket.CurrentWeapon.CurrentGunData.shotDelay));
             OnUpdateWeapon?.Invoke(bucket.CurrentWeapon);
 
@@ -607,13 +615,17 @@ public class PlayerManager : MonoBehaviour
                             ParticleManager.Instance.PlayFX(EffectType.FX_RiflingMark_SoftBody, hit.point);
                             //PoolManager.Instance.SpawnObjectInWorld<FX_RiflingMark_SoftBody>(hit.point);
                             SoundManager.Instance.PlaySFX("SFX_Zombie_Damaged", zombie.transform.position);
-                            Debug.DrawLine(ray.origin, hit.point, Color.red);
+                            continue;
+                        }
 
-                        }
-                        else
+                        BossManager boss = hit.collider.GetComponent<BossManager>();
+                        if (boss != null)
                         {
-                            Debug.DrawLine(ray.origin, ray.origin + ray.direction * gunMaxRange, Color.green);
+                            boss.OnDamaged(bucket.CurrentWeapon.CurrentGunData.gunDamage);
+                            ParticleManager.Instance.PlayFX(EffectType.FX_RiflingMark_SoftBody, hit.point);
+                            continue;
                         }
+
                     }
                     else if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Environment"))
                     {
