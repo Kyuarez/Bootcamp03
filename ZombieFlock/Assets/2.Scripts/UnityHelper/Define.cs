@@ -58,8 +58,14 @@ public enum QuestConditionType
     ActiveEvent,
 }
 
-public enum ActiveEventType //Quest 조건 : 특정 이벤트 발동
+public enum QuestEventType //Quest 조건 : 특정 이벤트 발동
 {
-    
+    //Tutorial
+    Tutorial_Equipped,
+    Tutorial_Run,
+    Tutorial_Aim,
+    Tutorial_Shot,
+
+
 }
 #endregion

@@ -71,6 +71,7 @@ public class QuestManager
     {
         Operator.Instance.PlayerManager.OnGetItem -= UpdateCurrentQuestGetItem;
         ZombieManager.OnDie -= UpdateCurrentQuestKill;
+        QuestEventManager.OnEventTriggered -= UpdateCurrentQuestActiveEvent;
         
         if (currentQuest == null || currentQuest.Conditions == null || currentQuest.Conditions.Count == 0)
         {
@@ -89,7 +90,7 @@ public class QuestManager
             }
             if (condition.ConditionType == QuestConditionType.ActiveEvent)
             {
-
+                QuestEventManager.OnEventTriggered += UpdateCurrentQuestActiveEvent;
             }
         }
     }
@@ -125,14 +126,18 @@ public class QuestManager
             }
         }
     }
-    public void UpdateCurrentQuestActiveEvent(string eventName)
+    public void UpdateCurrentQuestActiveEvent(QuestEventType eventType)
     {
         foreach (var questCondition in currentQuest.Conditions)
         {
             if (questCondition.ConditionType == QuestConditionType.ActiveEvent)
             {
                 QuestConditionActiveEvent condition = (QuestConditionActiveEvent)questCondition;
-                condition.IsActive = true;
+
+                if (condition.EventType == eventType)
+                {
+                    condition.IsActive = true;
+                }
             }
         }
     }

@@ -74,17 +74,24 @@ public class QuestConditionKill : QuestCondition
 
 public class QuestConditionActiveEvent : QuestCondition
 {
-    public string EventName { get; set; }
+    public QuestEventType EventType { get; set; }
     public bool IsActive { get; set; }
 
-    public QuestConditionActiveEvent(string eventName, Vector3 targetPosition = default(Vector3))
+    public QuestConditionActiveEvent(QuestEventType eventType, Vector3 targetPosition = default(Vector3))
     {
         ConditionType = QuestConditionType.ActiveEvent;
-        this.EventName = eventName;
+        this.EventType = eventType;
         this.IsActive = false;
         this.TargetPosition = targetPosition;
     }
-
+    private void CheckEventTriggered(QuestEventType eventType)
+    {
+        if (EventType == eventType)
+        {
+            IsActive = true;
+            Debug.Log(GetDescription());
+        }
+    }
     public override bool CheckCondition()
     {
         return IsActive;

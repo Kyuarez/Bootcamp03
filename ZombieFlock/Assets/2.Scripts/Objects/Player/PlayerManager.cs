@@ -325,6 +325,7 @@ public class PlayerManager : MonoBehaviour
                 return;
             }
 
+            QuestEventManager.TriggerEvent(QuestEventType.Tutorial_Aim);
             IsAim = true;
             anim.SetLayerWeight(1, 1); //@tk : 레이어 1번 무게 1로 변경
 
@@ -523,6 +524,8 @@ public class PlayerManager : MonoBehaviour
             anim.SetTrigger("IsShot");
             bucket.CurrentWeapon.OnShot();
             SoundManager.Instance.PlaySFX("SFX_Weapon_Rifle", transform.position);
+            QuestEventManager.TriggerEvent(QuestEventType.Tutorial_Shot);
+
             StartCoroutine(ShotDelayCo(bucket.CurrentWeapon.CurrentGunData.shotDelay));
             OnUpdateWeapon?.Invoke(bucket.CurrentWeapon);
 
@@ -647,6 +650,8 @@ public class PlayerManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha1) == true)
         {
+            QuestEventManager.TriggerEvent(QuestEventType.Tutorial_Equipped);
+
             bucket.EquippedWeapon();
             anim.SetTrigger("IsWeaponChange");
             OnUpdateWeapon?.Invoke(bucket.CurrentWeapon);
