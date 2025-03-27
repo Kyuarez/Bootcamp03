@@ -20,6 +20,7 @@ public class SceneTransitionManager : MonoSingleton<SceneTransitionManager>
         Time.timeScale = 1f;
         StartCoroutine(CoLoadSceneTitle());
         SoundManager.Instance.PlayBGM($"BGM_TitleScene");
+        Cursor.lockState = CursorLockMode.None;
     }
     public void LoadSceneAsync(Chapter chapter, Action action = null)
     {

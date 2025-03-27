@@ -13,7 +13,7 @@ public class ChapterEndPoint : MonoBehaviour
     {
         if(other.gameObject.CompareTag("Player") == true)
         {
-            QuestEventManager.TriggerEvent(QuestEventType.Tutorial_Aim);
+            QuestEventManager.TriggerEvent(QuestEventType.EnterEndPoint);
             col.enabled = false;
         }
     }

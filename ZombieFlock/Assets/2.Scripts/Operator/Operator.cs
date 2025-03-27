@@ -117,7 +117,7 @@ public class Operator : MonoSingleton<Operator>
         List<QuestCondition> chapter0_conditionList6 = new List<QuestCondition>();
         chapter0_conditionList6.Add(chapter0_condition6);
         List<QuestCondition> chapter0_conditionList7 = new List<QuestCondition>();
-        chapter0_conditionList6.Add(chapter0_condition7);
+        chapter0_conditionList7.Add(chapter0_condition7);
         Quest chapter0_quest1 = new Quest(1, "[Tutorial Quest 1]", "Acquire 1 AK47", chapter0_conditionList1);
         Quest chapter0_quest2 = new Quest(2, "[Tutorial Quest 2]", "Acquire 1 Shotgun", chapter0_conditionList2);
         Quest chapter0_quest3 = new Quest(3, "[Tutorial Quest 3]", "Equipped Gun", chapter0_conditionList3);
