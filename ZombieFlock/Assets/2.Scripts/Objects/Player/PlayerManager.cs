@@ -264,7 +264,7 @@ public class PlayerManager : MonoBehaviour
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
         yaw += mouseX;
-        pitch += mouseY;
+        pitch -= mouseY;
         pitch = Mathf.Clamp(pitch, -45, 45);
     }
 
