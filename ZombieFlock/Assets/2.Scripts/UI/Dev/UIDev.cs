@@ -64,4 +64,15 @@ public class UIDev : MonoBehaviour
     }
 
     private const string TEXT_PlayerSight = "sight : {0}";
+
+
+    #region OnClick
+    public void OnClickConnectLocal()
+    {
+
+    }
+
+
+    #endregion
+
 }
