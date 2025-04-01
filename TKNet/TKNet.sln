@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35707.178 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csproj", "{1432A790-D116-408C-A1AA-35518EC4C01E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{2BB994B4-27BF-4455-97EB-9BF60E904103}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TKPacket", "TKPacket\TKPacket.csproj", "{AEECAA40-93DB-4BE2-AF23-0BAEBBB3DBB8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1432A790-D116-408C-A1AA-35518EC4C01E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1432A790-D116-408C-A1AA-35518EC4C01E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1432A790-D116-408C-A1AA-35518EC4C01E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1432A790-D116-408C-A1AA-35518EC4C01E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BB994B4-27BF-4455-97EB-9BF60E904103}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BB994B4-27BF-4455-97EB-9BF60E904103}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BB994B4-27BF-4455-97EB-9BF60E904103}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BB994B4-27BF-4455-97EB-9BF60E904103}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AEECAA40-93DB-4BE2-AF23-0BAEBBB3DBB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEECAA40-93DB-4BE2-AF23-0BAEBBB3DBB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEECAA40-93DB-4BE2-AF23-0BAEBBB3DBB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEECAA40-93DB-4BE2-AF23-0BAEBBB3DBB8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

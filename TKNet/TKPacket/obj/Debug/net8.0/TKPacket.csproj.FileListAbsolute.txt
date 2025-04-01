@@ -1,0 +1,6 @@
+C:\Users\user\Documents\GitHub\Bootcamp03\TKNet\TKPacket\obj\Debug\net8.0\TKPacket.csproj.AssemblyReference.cache
+C:\Users\user\Documents\GitHub\Bootcamp03\TKNet\TKPacket\obj\Debug\net8.0\TKPacket.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\user\Documents\GitHub\Bootcamp03\TKNet\TKPacket\obj\Debug\net8.0\TKPacket.AssemblyInfoInputs.cache
+C:\Users\user\Documents\GitHub\Bootcamp03\TKNet\TKPacket\obj\Debug\net8.0\TKPacket.AssemblyInfo.cs
+C:\Users\user\Documents\GitHub\Bootcamp03\TKNet\TKPacket\obj\Debug\net8.0\TKPacket.csproj.CoreCompileInputs.cache
+C:\Users\user\Documents\GitHub\Bootcamp03\TKNet\TKPacket\obj\Debug\net8.0\TKPacket.sourcelink.json

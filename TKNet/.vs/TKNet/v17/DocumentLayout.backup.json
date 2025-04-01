@@ -1,0 +1,99 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\user\\Documents\\GitHub\\Bootcamp03\\TKNet\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{1432A790-D116-408C-A1AA-35518EC4C01E}|Server\\Server.csproj|c:\\users\\user\\documents\\github\\bootcamp03\\tknet\\server\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1432A790-D116-408C-A1AA-35518EC4C01E}|Server\\Server.csproj|solutionrelative:server\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2BB994B4-27BF-4455-97EB-9BF60E904103}|Client\\Client.csproj|c:\\users\\user\\documents\\github\\bootcamp03\\tknet\\client\\client.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
+      "RelativeMoniker": "D:0:0:{2BB994B4-27BF-4455-97EB-9BF60E904103}|Client\\Client.csproj|solutionrelative:client\\client.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AEECAA40-93DB-4BE2-AF23-0BAEBBB3DBB8}|TKPacket\\TKPacket.csproj|c:\\users\\user\\documents\\github\\bootcamp03\\tknet\\tkpacket\\tkpacket.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AEECAA40-93DB-4BE2-AF23-0BAEBBB3DBB8}|TKPacket\\TKPacket.csproj|solutionrelative:tkpacket\\tkpacket.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1432A790-D116-408C-A1AA-35518EC4C01E}|Server\\Server.csproj|c:\\users\\user\\documents\\github\\bootcamp03\\tknet\\server\\server.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
+      "RelativeMoniker": "D:0:0:{1432A790-D116-408C-A1AA-35518EC4C01E}|Server\\Server.csproj|solutionrelative:server\\server.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2BB994B4-27BF-4455-97EB-9BF60E904103}|Client\\Client.csproj|c:\\users\\user\\documents\\github\\bootcamp03\\tknet\\client\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2BB994B4-27BF-4455-97EB-9BF60E904103}|Client\\Client.csproj|solutionrelative:client\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Client",
+              "DocumentMoniker": "C:\\Users\\user\\Documents\\GitHub\\Bootcamp03\\TKNet\\Client\\Client.csproj",
+              "RelativeDocumentMoniker": "Client\\Client.csproj",
+              "ToolTip": "C:\\Users\\user\\Documents\\GitHub\\Bootcamp03\\TKNet\\Client\\Client.csproj",
+              "RelativeToolTip": "Client\\Client.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-04-01T10:38:51.353Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Server",
+              "DocumentMoniker": "C:\\Users\\user\\Documents\\GitHub\\Bootcamp03\\TKNet\\Server\\Server.csproj",
+              "RelativeDocumentMoniker": "Server\\Server.csproj",
+              "ToolTip": "C:\\Users\\user\\Documents\\GitHub\\Bootcamp03\\TKNet\\Server\\Server.csproj",
+              "RelativeToolTip": "Server\\Server.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-04-01T10:35:36.28Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "TKPacket.cs",
+              "DocumentMoniker": "C:\\Users\\user\\Documents\\GitHub\\Bootcamp03\\TKNet\\TKPacket\\TKPacket.cs",
+              "RelativeDocumentMoniker": "TKPacket\\TKPacket.cs",
+              "ToolTip": "C:\\Users\\user\\Documents\\GitHub\\Bootcamp03\\TKNet\\TKPacket\\TKPacket.cs",
+              "RelativeToolTip": "TKPacket\\TKPacket.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-01T09:49:56.284Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\user\\Documents\\GitHub\\Bootcamp03\\TKNet\\Server\\Program.cs",
+              "RelativeDocumentMoniker": "Server\\Program.cs",
+              "ToolTip": "C:\\Users\\user\\Documents\\GitHub\\Bootcamp03\\TKNet\\Server\\Program.cs",
+              "RelativeToolTip": "Server\\Program.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAcAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-01T09:45:23.671Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\user\\Documents\\GitHub\\Bootcamp03\\TKNet\\Client\\Program.cs",
+              "RelativeDocumentMoniker": "Client\\Program.cs",
+              "ToolTip": "C:\\Users\\user\\Documents\\GitHub\\Bootcamp03\\TKNet\\Client\\Program.cs",
+              "RelativeToolTip": "Client\\Program.cs",
+              "ViewState": "AgIAADMAAAAAAAAAAAA7wB0AAABcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-01T09:46:32.939Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

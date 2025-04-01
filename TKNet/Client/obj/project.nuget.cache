@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "rwoE//ybrBM=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\user\\Documents\\GitHub\\Bootcamp03\\TKNet\\Client\\Client.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\user\\.nuget\\packages\\messagepack\\3.1.3\\messagepack.3.1.3.nupkg.sha512",
+    "C:\\Users\\user\\.nuget\\packages\\messagepack.annotations\\3.1.3\\messagepack.annotations.3.1.3.nupkg.sha512",
+    "C:\\Users\\user\\.nuget\\packages\\messagepackanalyzer\\3.1.3\\messagepackanalyzer.3.1.3.nupkg.sha512",
+    "C:\\Users\\user\\.nuget\\packages\\microsoft.net.stringtools\\17.11.4\\microsoft.net.stringtools.17.11.4.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -69,10 +69,13 @@ public class UIDev : MonoBehaviour
     #region OnClick
     public void OnClickConnectLocal()
     {
-
+        ClientPacketManager.Instance.IsConnected = true;
     }
 
-
+    public void OnClickDeConnectLocal()
+    {
+        ClientPacketManager.Instance.IsConnected = false;
+    }
     #endregion
 
 }
