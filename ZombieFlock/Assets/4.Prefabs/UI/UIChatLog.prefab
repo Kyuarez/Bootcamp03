@@ -50,6 +50,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b8d0e1cfaca4cc41b8fd480d5bdf88c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rect: {fileID: 6161128871095174913}
+  chatText: {fileID: 2737192645167295176}
 --- !u!222 &7737464369984391683
 CanvasRenderer:
   m_ObjectHideFlags: 0

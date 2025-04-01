@@ -17,7 +17,6 @@ namespace Server
         public static void Main(string[] args)
         {
             Console.Title = "Server";
-
             OnServer();
 
         }
@@ -26,6 +25,10 @@ namespace Server
         {
             byte[] tkpacket = MessagePackSerializer.Serialize(packet);
             ushort length = (ushort)tkpacket.Length;
+
+            byte[] header = BitConverter.GetBytes(IPAddress.HostToNetworkOrder((short)length));
+
+            toSocket.Send(header);
             int sendLength = toSocket.Send(tkpacket, 0, length, SocketFlags.None);
         }
 
@@ -39,7 +42,13 @@ namespace Server
                 {
                     clientSockets.Add(clientSocket);
                 }
+
                 Console.WriteLine($"Connect client : {clientSocket.RemoteEndPoint}");
+
+                // 클라이언트에게 User ID 전송
+                string guid = GenerateRandomUserId();
+                byte[] userIdBytes = Encoding.UTF8.GetBytes(guid);
+                clientSocket.Send(userIdBytes);
 
                 Thread workThread = new Thread(new ParameterizedThreadStart(WorkThread));
                 workThread.IsBackground = true;
@@ -59,11 +68,11 @@ namespace Server
                     int RecvLength = clientSocket.Receive(headerBuffer, 2, SocketFlags.None);
                     if (RecvLength > 0)
                     {
-                        short packetlength = BitConverter.ToInt16(headerBuffer, 0);
-                        packetlength = IPAddress.NetworkToHostOrder(packetlength);
+                        short packetLength = BitConverter.ToInt16(headerBuffer, 0);
+                        packetLength = IPAddress.NetworkToHostOrder(packetLength);
 
-                        byte[] dataBuffer = new byte[4096];
-                        RecvLength = clientSocket.Receive(dataBuffer, packetlength, SocketFlags.None);
+                        byte[] dataBuffer = new byte[packetLength];
+                        RecvLength = clientSocket.Receive(dataBuffer, packetLength, SocketFlags.None);
                         var packet = MessagePackSerializer.Deserialize<TKPacketChat>(dataBuffer);
 
                         try
@@ -85,9 +94,10 @@ namespace Server
                             {
                                 Message = "Failed : " + clientSocket.RemoteEndPoint,
                                 SendTime = DateTime.Now,
+                                UserID = 1.ToString(),
                                 NickName = "Server"
                             };
-
+                            
                             SendPacket(clientSocket, ePacket);
                         }
                     }
@@ -97,6 +107,7 @@ namespace Server
                         {
                             Message = "Disconnect : " + clientSocket.RemoteEndPoint,
                             SendTime = DateTime.Now,
+                            UserID = 1.ToString(),
                             NickName = "Server"
                         };
 
@@ -119,6 +130,7 @@ namespace Server
                     {
                         Message = $"Disconnect : " + clientSocket.RemoteEndPoint,
                         SendTime = DateTime.Now,
+                        UserID = 1.ToString(),
                         NickName = "Server"
                     };
 
@@ -152,6 +164,11 @@ namespace Server
             acceptThread.Join();
 
             listenSocket.Close();
+        }
+
+        public static string GenerateRandomUserId()
+        {
+            return Guid.NewGuid().ToString(); // 예: "3F2504E0-4F89-11D3-9A0C-0305E82C3301"
         }
     }
 }

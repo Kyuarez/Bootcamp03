@@ -122,8 +122,6 @@ public class PlayerManager : MonoBehaviour
 
     private void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-
         isImmersion = true;
         currentDistance = immersionDistance;
         targetDistance = thirdPersonDistance;
@@ -146,7 +144,7 @@ public class PlayerManager : MonoBehaviour
 
     private void Update()
     {
-        if(Operator.Instance.IsOnCutscene == true)
+        if(Operator.Instance.IsOnCutscene == true || Operator.Instance.IsOnChat == true)
         {
             return;
         }

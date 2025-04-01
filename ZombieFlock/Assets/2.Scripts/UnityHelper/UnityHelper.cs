@@ -17,20 +17,6 @@ public static class UnityHelper
         float dot = Vector3.Dot(playerBack, toTarget);
         return dot > 0;
     }
-    public static List<T> Shuffle<T>(List<T> originalList)
-    {
-        List<T> list = new List<T>(originalList);
-        System.Random rng = new System.Random();
-        int n = list.Count;
-        while (n > 1)
-        {
-            n--;
-            int k = rng.Next(n + 1);
-            (list[k], list[n]) = (list[n], list[k]);
-        }
-        return list;
-    }
-
     public static Transform FindRecursiveChild(this Transform root, string name)
     {
         foreach (Transform trans in root.transform)
@@ -49,6 +35,29 @@ public static class UnityHelper
 
         return null;
     }
+    public static void DestroyImmediateAllChild(this Transform parent)
+    {
+        foreach (Transform child in parent)
+        {
+            GameObject.DestroyImmediate(child.gameObject);
+        }
+    }
+
+
+    public static List<T> Shuffle<T>(List<T> originalList)
+    {
+        List<T> list = new List<T>(originalList);
+        System.Random rng = new System.Random();
+        int n = list.Count;
+        while (n > 1)
+        {
+            n--;
+            int k = rng.Next(n + 1);
+            (list[k], list[n]) = (list[n], list[k]);
+        }
+        return list;
+    }
+
 
 
 }

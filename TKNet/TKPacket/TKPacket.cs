@@ -22,6 +22,8 @@ namespace TKPacket
         [Key(2)]
         public DateTime SendTime { get; set; }
         [Key(3)]
+        public string UserID { get; set; } //GUID 
+        [Key(4)]
         public string NickName { get; set; }
     }
 }

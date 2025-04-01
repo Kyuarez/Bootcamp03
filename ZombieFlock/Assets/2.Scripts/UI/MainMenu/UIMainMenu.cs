@@ -160,6 +160,7 @@ public class UIMainMenu : MonoBehaviour
     public void OnClickOnNewGame()
     {
         Operator.Instance.ChangeGameState(GameState.InGame);
+        ClientPacketManager.Instance.IsConnected = false;
     }
 
     //TODO
@@ -167,12 +168,15 @@ public class UIMainMenu : MonoBehaviour
     {
         //TODO : 로컬 데이터를 통해서 현재 챕터 반영
         Operator.Instance.ChangeGameState(GameState.InGame);
+        ClientPacketManager.Instance.IsConnected = false;
     }
 
     //TODO 
     public void OnClickOnMultiGame()    
     {
-
+        //TODO : 나중엔 PVP 등 다양한 컨텐츠 할 수 있게 하기. 일단 챕터는 동일하게
+        Operator.Instance.ChangeGameState(GameState.InGame);
+        ClientPacketManager.Instance.IsConnected = true;
     }
 
     //TODO

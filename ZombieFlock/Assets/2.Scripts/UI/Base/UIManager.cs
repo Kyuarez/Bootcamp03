@@ -9,6 +9,7 @@ public class UIManager : MonoSingleton<UIManager>
     public static UIChapter Chapter;
     public static UIHUD HUD;
     public static UIEnding Ending;
+    public static UIChat Chat;
 
     protected override void Awake()
     {
@@ -19,6 +20,7 @@ public class UIManager : MonoSingleton<UIManager>
         Chapter = GetComponentInChildren<UIChapter>();
         HUD = GetComponentInChildren<UIHUD>();
         Ending = GetComponentInChildren<UIEnding>();
+        Chat = GetComponentInChildren<UIChat>();
 
         Operator.OnPreTitle += OnTitle;
         Operator.OnPostInGame += OnInGame;

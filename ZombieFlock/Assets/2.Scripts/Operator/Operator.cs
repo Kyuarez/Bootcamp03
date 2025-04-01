@@ -10,6 +10,7 @@ public class Operator : MonoSingleton<Operator>
     
     [SerializeField] private bool isDevMode;
     private bool isOnCutscene;
+    private bool isOnChat = false; 
 
 
     public static event Action OnPostInGame;
@@ -26,6 +27,8 @@ public class Operator : MonoSingleton<Operator>
     private PlayerManager ingamePlayer;
 
     public bool IsDevMode { get { return isDevMode; } }
+
+    public bool IsOnChat { get { return isOnChat; } }
 
 
     public event Action<bool> OnPostCutscene;
@@ -187,6 +190,13 @@ public class Operator : MonoSingleton<Operator>
                 Time.timeScale = (isPause == true) ? 0 : 1;
             }
 
+            if(Input.GetKeyDown(KeyCode.Return) == true)
+            {
+                isOnChat = !isOnChat;
+                Cursor.lockState = (isOnChat == true) ? CursorLockMode.None : CursorLockMode.Locked;
+                UIManager.Chat.ActivateInputField(isOnChat);
+            }
+
             questManager.CheckCurrentQuestProgress();
         }
 
@@ -219,6 +229,8 @@ public class Operator : MonoSingleton<Operator>
     public void SetPostLoadScene(Chapter chapter)
     {
         //Player Setting
+        Cursor.lockState = CursorLockMode.Locked;
+
         Vector3 spawnPos = chapter.playerSpawnPosition;
         Instantiate(cameraObj, spawnPos, Quaternion.identity);
         ingamePlayer = Instantiate(playerObj, spawnPos, Quaternion.identity).GetComponent<PlayerManager>();
