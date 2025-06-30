@@ -23,11 +23,12 @@ namespace Client
             byte[] tkpacket = MessagePackSerializer.Serialize(packet);
             ushort length = (ushort)tkpacket.Length;
             
-            // 1. 헤더 생성
+            // 1. 헤더 생성 
             byte[] header = BitConverter.GetBytes(IPAddress.HostToNetworkOrder((short)length));
             
             toSocket.Send(header);
             int sendLength = toSocket.Send(tkpacket, 0, length, SocketFlags.None);
+            //@한번에 보낸다는 보장 X -> 보낸 개수랑 실제 보내진 개수 체크 (안보내진거 다시 QUEUE 보내기)
         }
 
         static TKPacketChat RecvPacket(Socket toSocket)
@@ -43,6 +44,7 @@ namespace Client
                 byte[] recvBuffer = new byte[packetLength];
                 int RecvLength = clientSocket.Receive(recvBuffer, packetLength, SocketFlags.None);
                 return MessagePackSerializer.Deserialize<TKPacketChat>(recvBuffer);
+                //@한번에 받는다는 보장 X -> 보낸 개수랑 실제 보내진 개수 체크 (안보내진거 다시 QUEUE 보내기)
             }
 
             return null;

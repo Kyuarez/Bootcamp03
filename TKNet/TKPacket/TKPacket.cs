@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace TKPacket
 {
+    //모델 PROTO-C gRPC 설치, protobuf 설치, protoc 설치
+    //@PACKET 상속 구조 : 참조 타입은 좀...
+
     [MessagePackObject]
     public class TKPacket
     {

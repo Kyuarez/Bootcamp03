@@ -9,8 +9,6 @@ using MessagePack;
 
 public class ClientPacketManager : MonoSingleton<ClientPacketManager>
 {
-
-
     private Socket serverSocket;
     private IPEndPoint serverEndPoint;
     private string userID = string.Empty;
