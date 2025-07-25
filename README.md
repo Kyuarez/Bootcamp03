@@ -2,7 +2,7 @@
 
 > "좀비 배경의 서바이벌 호러 스토리 게임”
 
-![Header Banner](https://your-image-link) <!-- (옵션) 상단 배너 이미지 -->
+<!--![Header Banner](https://your-image-link)  (옵션) 상단 배너 이미지 -->
 
 ---
 
